@@ -9,9 +9,12 @@ namespace Main
         public readonly Fighter b1;
         public readonly Fighter b2;
 
-        //int totalRounds;
-        //int timeOfStopage; //in seconds
+        public string[] judges;
 
+        public double timeOfStoppage = -1; //Minute fight ended... should do seconds eventually
+        public MethodOfResult method = MethodOfResult.NC;
+        public Fighter winner        = null;
+        
         public Fight(Fighter b1, Fighter b2, int roundsScheduled = 12)
         {
             this.b1 = b1;

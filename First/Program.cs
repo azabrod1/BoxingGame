@@ -95,9 +95,9 @@ namespace Main
             double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 1.5)) * 4; //How damaging will I be in this block
             double blockAccuracy = Math.Max(0, StatsUtils.Gauss(0.33, 0.07));
 
-            double[] result = new double[] { blockAccuracy*blockDamage*PUNCHES, blockAccuracy };
+            double[] result = new double[] { blockAccuracy * blockDamage * PUNCHES, blockAccuracy };
 
-          //  Console.WriteLine( string.Join(",", result));
+            //  Console.WriteLine( string.Join(",", result));
 
             return result;
         }
@@ -113,26 +113,26 @@ namespace Main
                 double power = Math.Max(StatsUtils.Gauss(0.75, 0.75), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
                 double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 0.75));
                 //Console.WriteLine(accuracy);
-                results[i] = Math.Max(power * accuracy, 0) * 11.1 * blockDamage*(1.40);
+                results[i] = Math.Max(power * accuracy, 0) * 11.1 * blockDamage * (1.40);
             }
 
-            double[] result = new double[] { results.Sum(), results.Where( d => d > 0).Count()/(double)PUNCHES};
+            double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
 
-           // Console.WriteLine( string.Join(",", result));
+            // Console.WriteLine( string.Join(",", result));
 
             return result;
         }
 
         static string resultsSummary(BoxScore[] results, bool detailed = false)
         {
-            int KO_Percent = (int) (100 * results.Where(r => r.Result < 36).Count() / (double) results.Count());
+            int KO_Percent = (int)(100 * results.Where(r => r.Result < 36).Count() / (double)results.Count());
             double AvgTotalDamage = (int)results.Select(r => r.TotalDamage()).Average();
             double AvgPercentLanded = (int)results.Select(r => r.LandedPercent()).Average();
 
             System.Text.StringBuilder summary = new System.Text.StringBuilder("", 50);
 
             if (detailed)
-                foreach(BoxScore fr in results)
+                foreach (BoxScore fr in results)
                     summary.Append(fr + "\n");
 
             summary.AppendFormat($"KO_Percent: {KO_Percent} Landed % {AvgPercentLanded}, Avg Damage: {AvgTotalDamage}");
@@ -150,13 +150,13 @@ namespace Main
 
             double rndDam = 0;
 
-            for(int round = 0; round < 12; ++round)
+            for (int round = 0; round < 12; ++round)
             {
                 rndDam = 0;
-                for(int min = 0; min < 3; ++min)
+                for (int min = 0; min < 3; ++min)
                 {
                     double[] outcome = F();
-                    fightStats.AppendData(round, outcome[0], PUNCHES, PUNCHES*outcome[1]);
+                    fightStats.AppendData(round, outcome[0], PUNCHES, PUNCHES * outcome[1]);
 
                     rndDam += damage[result] = outcome[0];
                     hits[result] = outcome[1];
@@ -166,13 +166,13 @@ namespace Main
                         round = 12;
                         break;
                     }
-                    
-                     fighter.incrementHealth(fighter.RecoveryRate());
+
+                    fighter.incrementHealth(fighter.RecoveryRate());
                     ++result;
 
                 }
 
-                   Console.WriteLine("Damage " + (int) rndDam);
+                Console.WriteLine("Damage " + (int)rndDam);
 
                 fighter.incrementHealth(fighter.RecoveryRate());
             }
@@ -180,7 +180,7 @@ namespace Main
             fightStats.Result = result;
 
             return fightStats;
-            
+
         }
 
         static void AccuracyPower()
@@ -198,15 +198,15 @@ namespace Main
                 for (int i = 0; i < S; ++i)
                 {
                     double power = Math.Max(StatsUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
-                    double accuracy = Math.Max(0,StatsUtils.Gauss(-0.3, 1));
-                    results[i] = Math.Max(power*accuracy, 0)*10;
+                    double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 1));
+                    results[i] = Math.Max(power * accuracy, 0) * 10;
                 }
 
-                 Array.Sort(results);
+                Array.Sort(results);
 
-                   for (int i = S - S; i < S; ++i)
-                    if(false)
-                      Console.WriteLine($"{i} {results[i]}");
+                for (int i = S - S; i < S; ++i)
+                    if (false)
+                        Console.WriteLine($"{i} {results[i]}");
 
                 sum += results.Sum();
 
@@ -243,7 +243,7 @@ namespace Main
                 for (int i = 0; i < PUNCHES; ++i)
                 {
                     double power = Math.Max(StatsUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
-                    double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 1)) * blockMult[ i*4 / PUNCHES ];
+                    double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 1)) * blockMult[i * 4 / PUNCHES];
                     results[i] = Math.Max(power * accuracy, 0) * 10;
                 }
 
@@ -317,7 +317,7 @@ namespace Main
                 //    Console.WriteLine($"{i} {results[i]}");
 
                 Console.WriteLine($"Sum {(int)results.Sum()}");
-                Console.WriteLine($"Percent > 1 {(int) (100*results.Where(x => x > 1).Count() / (double)S)}");
+                Console.WriteLine($"Percent > 1 {(int)(100 * results.Where(x => x > 1).Count() / (double)S)}");
                 Console.WriteLine($"Largest {results.Max()}");
 
 
