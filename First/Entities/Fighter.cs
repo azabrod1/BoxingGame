@@ -28,7 +28,7 @@ namespace Main
 
         public Fighter()
         {
-            JabPercent = 0.000851 * Weight + 0.288; //Regression we did
+            JabPercent = 0.000851 * Weight + 0.288; //Regression we did on weight
         }
 
        
