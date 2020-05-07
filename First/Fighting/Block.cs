@@ -9,7 +9,7 @@ namespace Fighting
         public readonly FighterState f1, f2;
         FightState CurrFight;
 
-        const double PUNCHES_FROM_INTENSITY = 55; //per fighter
+        const double PUNCHES_FROM_INTENSITY = 55; //per fighter!
         readonly double PUNCHES_THROWN_STD = 6.123;//Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
                                                    // const double PUNCH_DEFICIT_EARLY_FIGHT = 20; //20 less punches in first 3 rounds
 
