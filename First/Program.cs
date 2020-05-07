@@ -113,7 +113,7 @@ namespace Main
                 double power = Math.Max(StatsUtils.Gauss(0.75, 0.75), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
                 double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 0.75));
                 //Console.WriteLine(accuracy);
-                results[i] = Math.Max(power * accuracy, 0) * 11.1 * blockDamage*(1.50);
+                results[i] = Math.Max(power * accuracy, 0) * 11.1 * blockDamage*(1.40);
             }
 
             double[] result = new double[] { results.Sum(), results.Where( d => d > 0).Count()/(double)PUNCHES};
