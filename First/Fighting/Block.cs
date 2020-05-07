@@ -15,7 +15,7 @@ namespace Fighting
 
 
         //randoms
-        public double intensityR;
+        public double BlockIntensity;
 
         //invisible vars
         public double intensity;
@@ -59,9 +59,9 @@ namespace Fighting
 
             mean += (aggressiveness - 50) * 0.35;
 
-            intensityR = StatsUtils.Gauss(mean, PUNCHES_THROWN_STD);
+            BlockIntensity = StatsUtils.Gauss(mean, PUNCHES_THROWN_STD);
 
-            return intensityR;
+            return BlockIntensity;
         }
 
         public double BoxerPunchesPerRound(FighterState boxer)
