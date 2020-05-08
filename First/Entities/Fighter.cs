@@ -5,7 +5,9 @@ namespace Main
 {
     public class Fighter
     {
-        public readonly string name; //Uniquely identifies player
+        public readonly int id;
+        public string name { get; set; } //Uniquely identifies player
+
 
         //Attributes
         public int Accuracy { get; set; }
