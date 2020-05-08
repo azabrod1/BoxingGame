@@ -29,6 +29,7 @@ namespace Main
 
             //LogNormal();
 
+
             // AccuracyPower2();
 
             //  FuckingFight();
@@ -48,7 +49,7 @@ namespace Main
 
             // Console.WriteLine("wdef");
 
-            FuckingFight();
+          //  FuckingFight();
 
 
         }
