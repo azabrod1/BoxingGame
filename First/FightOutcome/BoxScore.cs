@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Fighting
 {
-
     public class BoxScore
     {
         public int Result; //Minute the fight ended
