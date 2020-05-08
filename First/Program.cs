@@ -31,7 +31,7 @@ namespace Main
 
             // AccuracyPower2();
 
-            FuckingFight();
+            //  FuckingFight();
             /*
             Fighter lite = new Fighter();
             lite.Weight = 147;
@@ -44,7 +44,11 @@ namespace Main
             FighterState H = new FighterState(heavy);
 
 
-            Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
+           Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
+
+            // Console.WriteLine("wdef");
+
+            FuckingFight();
 
 
         }
