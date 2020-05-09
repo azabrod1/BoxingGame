@@ -51,7 +51,7 @@ namespace Fighting
        
         public override string ToString()
         {
-            return String.Format($"Result: {Result} Landed % {LandedPercent()}, Total Damage: {TotalDamage()}");
+            return String.Format($"Result: {Result} Landed % {LandedPercent()}, Avg Damage: {AvgDamage()}");
         }
     }
 }

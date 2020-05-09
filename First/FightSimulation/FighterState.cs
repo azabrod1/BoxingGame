@@ -23,10 +23,14 @@ namespace Fighting
         //How much damage will I do in a round? 
         public double Power()
         {
-            double powerBuff = (self.Power - 50) * 0.004 + 0.8;
-            return 0.5*(self.Weight + powerBuff);
+            //double powerBuff = (self.Power - 50) * 0.004 + 0.8;
+            //return 0.5*(self.Weight + powerBuff);
+            double power = WeightBuff(self.Power) * 0.045;
+           // Console.WriteLine(power);
+            return power;
         }
 
+        //Depricated
         public double WeightPowerBuff()
         {
             double _weight = Math.Min(self.Weight, 245); //For now, weight ain't help you after 245
@@ -34,14 +38,23 @@ namespace Fighting
             return buff;
         }
 
+        public double WeightBuff(double skill)
+        {
+            return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
+        }
+
         public double getDurability()
         {
-            return 150 + 2 * self.Durability;
+            return WeightBuff(self.Durability);
+           // return PowerBuff(self.Durability);
+             // return 200 + 2 * self.Durability;
+           // return 150 + 2 * self.Durability;
         }
 
         public double RecoveryRate()
         {
-            return getDurability() * 0.083333; //divide by 12
+              return getDurability() * 0.0625;   //Divide by 16
+          //  return getDurability() * 0.083333; //divide by 12
         }
 
         public double AggressionCalc(int round)
