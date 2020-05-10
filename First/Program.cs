@@ -13,6 +13,16 @@ namespace Main
         static void Main(string[] args)
         {
 
+            FighterPool pool = new FighterPool();
+
+            Console.WriteLine(pool.stats());
+
+            pool.simulateFights();
+
+            Console.WriteLine(pool.stats());
+
+
+
             //TestRoundIntensity();
             //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
 
@@ -49,7 +59,7 @@ namespace Main
 
             // Console.WriteLine("wdef");
 
-          //  FuckingFight();
+            //  FuckingFight();
 
 
         }
