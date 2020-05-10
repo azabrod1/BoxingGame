@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fighting
+namespace Fighting1
 {
 
     public class BoxScore
