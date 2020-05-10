@@ -5,47 +5,41 @@ namespace Fighting
 {
     public class FighterState
     {
-        Fighter self;
-        public double health { get; set; }
+        Fighter Self;
+        public double Health { get; set; }
 
         public FighterState(Fighter fighter)
         {
-            this.self = fighter;
-            this.health = getDurability();
+            this.Self = fighter;
+            this.Health = GetDurability();
         }
 
-        public double incrementHealth(double change)
+        public double IncrementHealth(double change)
         {
-            health = Math.Min(change + health, getDurability() );
-            return health;
+            Health = Math.Min(change + Health, GetDurability() );
+            return Health;
         }
+
 
         //How much damage will I do in a round? 
         public double Power()
         {
             //double powerBuff = (self.Power - 50) * 0.004 + 0.8;
             //return 0.5*(self.Weight + powerBuff);
-            double power = WeightBuff(self.Power) * 0.045;
+            double power = PowerDurabilityFormula(Self.Power) * 0.045;
            // Console.WriteLine(power);
             return power;
         }
 
-        //Depricated
-        public double WeightPowerBuff()
-        {
-            double _weight = Math.Min(self.Weight, 245); //For now, weight ain't help you after 245
-            double buff = 0.5 * self.Weight;
-            return buff;
-        }
-
-        public double WeightBuff(double skill)
+        public double PowerDurabilityFormula(double skill)
         {
             return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
         }
 
-        public double getDurability()
+        public double GetDurability()
         {
-            return WeightBuff(self.Durability);
+            double weightRatio = Self.Weight * Constants.AVG_WEIGHT_INV;
+            return PowerDurabilityFormula(Self.Durability);
            // return PowerBuff(self.Durability);
              // return 200 + 2 * self.Durability;
            // return 150 + 2 * self.Durability;
@@ -53,19 +47,19 @@ namespace Fighting
 
         public double RecoveryRate()
         {
-              return getDurability() * 0.0625;   //Divide by 16
+              return GetDurability() * 0.0625;   //Divide by 16
           //  return getDurability() * 0.083333; //divide by 12
         }
 
         public double AggressionCalc(int round)
         {
-            double agg = round <= 2 ? self.Aggression * .5 : self.Aggression * 1.1;
+            double agg = round <= 2 ? Self.Aggression * .5 : Self.Aggression * 1.1;
             return agg;
         }
 
         public double PreferredDistance(FighterState opponent)
         {
-            double reachDifference    = self.Reach - opponent.self.Reach;
+            double reachDifference    = Self.Reach - opponent.Self.Reach;
             double absReachDifference = Math.Abs(reachDifference) - 0.7; //small reach adv does not rly matter
             if (absReachDifference < 0)
                 absReachDifference = 0;
@@ -75,7 +69,7 @@ namespace Fighting
             preferredDistance = reachDifference >= 0 ? 1 - preferredDistance : preferredDistance;
 
             //You don't know how to set up distance if your ring IQ is low
-            preferredDistance = preferredDistance * (self.RingGen / 100.0) + 0.5 * ((100 - self.RingGen) / 100.0);
+            preferredDistance = preferredDistance * (Self.RingGen / 100.0) + 0.5 * ((100 - Self.RingGen) / 100.0);
 
             return preferredDistance;
         }
@@ -89,16 +83,16 @@ namespace Fighting
         public const double PUNCH_FUDGE = 2.5;
         public double PunchCapacity()
         {
-            double realStamina = PUNCH_FUDGE + 0.2 * (self.Stamina + self.HandSpeed) - self.Weight * 0.15; //we should consider doing .15 for all these
-            if (self.Weight > 190)
-                realStamina += (self.Weight - 190) * .05;
+            double realStamina = PUNCH_FUDGE + 0.2 * (Self.Stamina + Self.HandSpeed) - Self.Weight * 0.15; //we should consider doing .15 for all these
+            if (Self.Weight > 190)
+                realStamina += (Self.Weight - 190) * .05;
             return realStamina;
         }
 
         public double ExpectedJabRatio()
         {
-            double jabPercentNormal = self.JabPercent;
-            return self.JabPercent;
+            double jabPercentNormal = Self.JabPercent;
+            return Self.JabPercent;
         }
 
     }

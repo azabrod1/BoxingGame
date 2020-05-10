@@ -17,6 +17,9 @@ namespace Main
         public const double JAB_RATIO_STD_RND = 0.1;
         public const double JAB_MULTIPLIER_STD = 0.30;
 
+        public const double AVG_WEIGHT_INV = 1d/150d;
+
+
 
     }
 }
