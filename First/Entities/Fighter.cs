@@ -8,6 +8,10 @@ namespace Main
         public readonly int id;
         public string name { get; set; } //Uniquely identifies player
 
+        // fighter's elo rating - most recent and before the last fight
+        public double elo { get; set; }
+        public double previous_elo { get; set; }
+
 
         //Attributes
         public int Accuracy { get; set; }
@@ -27,6 +31,13 @@ namespace Main
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
         public double JabPercent;
+
+        public Fighter(string name, double elo = 0): this()
+        {
+            this.name = name;
+            this.elo = this.previous_elo = elo;
+        }
+
 
         public Fighter()
         {

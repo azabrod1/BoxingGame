@@ -23,10 +23,12 @@ namespace Main
             this.b1 = b1;
             this.b2 = b2;
             this.roundsScheduled = roundsScheduled;
-            this.result = Result.BeforeFight;
+            this.result = Result.BEFORE_FIGHT;
 
 
-        }  
+        }
+
+
         
 
     }
