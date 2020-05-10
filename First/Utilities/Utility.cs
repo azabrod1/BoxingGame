@@ -37,6 +37,12 @@ namespace Main
 
         //names
 
+        static int PlayerNO = 1;
+        public static string RandomNameSimple()
+        {
+            return String.Format("Fighter {0}", PlayerNO++);
+        }
+
         static StrAttDistribution fnames;
         public static string getRandomLastName()
         {
@@ -45,6 +51,7 @@ namespace Main
 
             return ResultFromDistribution(fnames);
         }
+
 
         public static string getRandomFirstName()
         {
