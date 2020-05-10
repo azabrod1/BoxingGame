@@ -20,7 +20,6 @@ namespace Fighting
             return Health;
         }
 
-
         //How much damage will I do in a round? 
         public double Power()
         {
@@ -29,6 +28,16 @@ namespace Fighting
             double power = PowerDurabilityFormula(Self.Power) * 0.045;
            // Console.WriteLine(power);
             return power;
+        }
+
+        public double ExpectedAccuracy()
+        {
+            return Self.Accuracy + Constants.HAND_SPEED_ACC_BUFF* Self.HandSpeed;
+        }
+
+        public double ExpectedDefense()
+        {
+            return (1+Constants.HAND_SPEED_ACC_BUFF)*Self.Defense;
         }
 
         public double PowerDurabilityFormula(double skill)
@@ -64,7 +73,7 @@ namespace Fighting
             if (absReachDifference < 0)
                 absReachDifference = 0;
 
-            double preferredDistance = 1.0 / (1.0 + Math.Pow(Constants.CubeRootTwo, absReachDifference));
+            double preferredDistance = 1.0 / (1.0 + Math.Pow(Constants.CUBE_ROOT_TWO, absReachDifference));
 
             preferredDistance = reachDifference >= 0 ? 1 - preferredDistance : preferredDistance;
 

@@ -130,7 +130,7 @@ namespace Main
 
         }
 
-        public static double AttributeRatio(int x, int y, double attDif = Constants.attDif)
+        public static double AttributeRatio(int x, int y, double attDif = Constants.ATTRIB_BUFF_DEFAULT)
         {
             double xx = Math.Pow(attDif, x / 10.0);
             double yy = Math.Pow(attDif, y / 10.0);
