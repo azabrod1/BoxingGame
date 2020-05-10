@@ -4,12 +4,13 @@ namespace Fighting
 
     public enum Result
 	{
-        BeforeFight = 0,
-        Won = 1, // by first fighter
-        Lost = 2,
-        Draw = 3,
-        Canceled = 4,
-        InProgress = 5
+        BEFORE_FIGHT = -1,
+        FIGHTER1_WON = 1, 
+        FIGHTER2_WON = 2,
+        DRAW = 3,
+        CANCELLED = 4,
+        IN_PROGRESS = 5,
+        OTHER = 10
 
 
     };
