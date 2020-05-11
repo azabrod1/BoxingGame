@@ -77,7 +77,7 @@ namespace Main
         public static void TryKO()
         {
             Fighter fighter = new Fighter();
-            fighter.Weight = 150;
+            fighter.Weight = 200;
             fighter.Stamina = 50;
             fighter.HandSpeed = 50;
             fighter.RingGen = 95;
@@ -88,7 +88,7 @@ namespace Main
             fighter.Power = 50;
 
             Fighter opponent = new Fighter();
-            opponent.Weight = 150;
+            opponent.Weight = 120;
             opponent.Stamina = 50;
             opponent.HandSpeed = 50;
             opponent.RingGen = 95;
@@ -118,7 +118,7 @@ namespace Main
                 // double _acc = -0.33 + 0d*0.01;
                 //double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
 
-                double _acc = -0.28 - 10d * 0.01;
+                double _acc = -0.28 - 0d * 0.01;
                 double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.5));
                 //Console.WriteLine(accuracy);
                 results[i] = Math.Max(power * accuracy, 0) * blockDamage;

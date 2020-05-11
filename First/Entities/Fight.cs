@@ -17,8 +17,6 @@ namespace Main
             this.b1 = b1;
             this.b2 = b2;
             this.roundsScheduled = roundsScheduled;
-
-
         }  
 
     }

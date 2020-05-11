@@ -23,10 +23,8 @@ namespace Fighting
         //How much damage will I do in a round? 
         public double Power()
         {
-            //double powerBuff = (self.Power - 50) * 0.004 + 0.8;
-            //return 0.5*(self.Weight + powerBuff);
             double power = PowerDurabilityFormula(Self.Power) * 0.045;
-           // Console.WriteLine(power);
+            power *= Self.Weight * Constants.AVG_WEIGHT_INV;
             return power;
         }
 
@@ -47,11 +45,11 @@ namespace Fighting
 
         public double GetDurability()
         {
-            double weightRatio = Self.Weight * Constants.AVG_WEIGHT_INV;
-            return PowerDurabilityFormula(Self.Durability);
-           // return PowerBuff(self.Durability);
-             // return 200 + 2 * self.Durability;
-           // return 150 + 2 * self.Durability;
+            const double WEIGHT_DURABILITY_BUFF = 0.8;
+            //Power should increase with weight at a slightly higher rate than durability w weight  i.e. HW KOs are more powerful 
+            double weightBuff = Utility.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1-WEIGHT_DURABILITY_BUFF);
+           // Console.WriteLine(weightBuff);
+            return PowerDurabilityFormula(Self.Durability)*weightBuff;
         }
 
         public double RecoveryRate()

@@ -137,6 +137,27 @@ namespace Main
 
         }
 
+        public static double WeightedAverage(params double[] list)
+        {
+            if (list.Length == 0 || (list.Length & 1) == 1)
+                return -1;
+
+            int i = 0;
+            double weightSum = 0;
+            double weightedSum = 0;
+            while (i < list.Length)
+            {
+                double element = list[i++];
+                double weight = list[i++];
+                weightSum += weight;
+                weightedSum += element * weight;
+
+            }
+
+            return weightedSum / weightSum;
+
+        }
+
         public static double AttributeRatio(int x, int y, double attDif = Constants.ATTRIB_BUFF_DEFAULT)
         {
             double xx = Math.Pow(attDif, x / 10.0);
