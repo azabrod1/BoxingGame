@@ -39,7 +39,7 @@ namespace Fighting
         //Percent of match control that b1 gets
         public double FightControl()
         {
-            double control = Utility.AttributeRatioCustom(fight.b1.RingGen, fight.b2.RingGen, 2d, fight.b1.FootWork, fight.b2.FootWork, Constants.SqrRootTwo);
+            double control = Utility.AttributeRatioCustom(fight.b1.RingGen, fight.b2.RingGen, 2d, fight.b1.FootWork, fight.b2.FootWork, Constants.SQR_ROOT_TWO);
             return control;
         }
 

@@ -4,8 +4,6 @@ using System.Linq;
 
 namespace Main
 {
-
-
     public static class StatsUtils
     {
 
@@ -25,7 +23,7 @@ namespace Main
 
         public static double Gauss(double μ = 0.5, double σ = 0.5)
         {
-            double u1 = 1.0 - random.NextDouble(); //uniform(0,1] random doubles
+            double u1 = 1.0 - random.NextDouble(); //uniform(0,1]  ranom doubles
             double u2 = 1.0 - random.NextDouble();
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
                          Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)

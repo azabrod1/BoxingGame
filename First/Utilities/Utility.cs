@@ -37,6 +37,12 @@ namespace Main
 
         //names
 
+        static int PlayerNO = 1;
+        public static string RandomNameSimple()
+        {
+            return String.Format("Fighter {0}", PlayerNO++);
+        }
+
         static StrAttDistribution fnames;
         public static string getRandomLastName()
         {
@@ -45,6 +51,7 @@ namespace Main
 
             return ResultFromDistribution(fnames);
         }
+
 
         public static string getRandomFirstName()
         {
@@ -130,7 +137,28 @@ namespace Main
 
         }
 
-        public static double AttributeRatio(int x, int y, double attDif = Constants.attDif)
+        public static double WeightedAverage(params double[] list)
+        {
+            if (list.Length == 0 || (list.Length & 1) == 1)
+                return -1;
+
+            int i = 0;
+            double weightSum = 0;
+            double weightedSum = 0;
+            while (i < list.Length)
+            {
+                double element = list[i++];
+                double weight = list[i++];
+                weightSum += weight;
+                weightedSum += element * weight;
+
+            }
+
+            return weightedSum / weightSum;
+
+        }
+
+        public static double AttributeRatio(int x, int y, double attDif = Constants.ATTRIB_BUFF_DEFAULT)
         {
             double xx = Math.Pow(attDif, x / 10.0);
             double yy = Math.Pow(attDif, y / 10.0);

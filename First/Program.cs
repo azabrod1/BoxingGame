@@ -49,7 +49,7 @@ namespace Main
 
             // Console.WriteLine("wdef");
 
-          //  FuckingFight();
+            TryKO();
 
 
         }
@@ -70,29 +70,89 @@ namespace Main
         }
 
         const int PUNCHES = 13;
-        const int FIGHTS = 1000; //ree
+        const int FIGHTS = 10000; //ree
 
-        public delegate double[] BlockOutcome();
+        public delegate double[] BlockOutcome( FighterState figher);
 
-        public static void FuckingFight()
+        public static void TryKO()
         {
-            Fighter normal = new Fighter();
-            normal.Weight = 150;
-            normal.Stamina = 50;
-            normal.HandSpeed = 50;
-            normal.RingGen = 95;
-            normal.Aggression = 50;
-            normal.FootWork = 90;
-            normal.Reach = 84;
-            normal.Durability = 150;
+            Fighter fighter = new Fighter();
+            fighter.Weight = 200;
+            fighter.Stamina = 50;
+            fighter.HandSpeed = 50;
+            fighter.RingGen = 95;
+            fighter.Aggression = 50;
+            fighter.FootWork = 90;
+            fighter.Reach = 84;
+            fighter.Durability = 50;
+            fighter.Power = 50;
+
+            Fighter opponent = new Fighter();
+            opponent.Weight = 120;
+            opponent.Stamina = 50;
+            opponent.HandSpeed = 50;
+            opponent.RingGen = 95;
+            opponent.Aggression = 50;
+            opponent.FootWork = 90;
+            opponent.Reach = 84;
+            opponent.Durability = 50;
 
             BoxScore[] fightResults = new BoxScore[FIGHTS];
 
             for (int f = 0; f < FIGHTS; ++f)
-                fightResults[f] = simFight(new FighterState(normal), NormalCorr);
+                fightResults[f] = SimFight(new FighterState(fighter), new FighterState(opponent), NormalCorr);
 
             Console.WriteLine(resultsSummary(fightResults, true));
 
+        }
+
+        public static double[] NormalCorr(FighterState fighter)
+        {
+            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
+
+            double[] results = new double[PUNCHES];
+
+            for (int i = 0; i < PUNCHES; ++i)
+            {
+                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power()*1.2;
+                // double _acc = -0.33 + 0d*0.01;
+                //double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
+
+                double _acc = -0.28 - 0d * 0.01;
+                double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.5));
+                //Console.WriteLine(accuracy);
+                results[i] = Math.Max(power * accuracy, 0) * blockDamage;
+            }
+
+            double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
+
+            // Console.WriteLine( string.Join(",", result));
+
+            return result;
+        }
+
+        public static double[] NormalCorrOld(FighterState fighter)
+        {
+            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
+
+            double[] results = new double[PUNCHES];
+
+            for (int i = 0; i < PUNCHES; ++i)
+            {
+                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power();
+                double _acc = -0.33 + 0d*0.01;
+                double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
+
+       
+                //Console.WriteLine(accuracy);
+                results[i] = Math.Max(power * accuracy, 0) * blockDamage*1.4;
+            }
+
+            double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
+
+            // Console.WriteLine( string.Join(",", result));
+
+            return result;
         }
 
         public static double[] NormalBlock()
@@ -107,32 +167,11 @@ namespace Main
             return result;
         }
 
-        public static double[] NormalCorr()
-        {
-            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(0.75, 0.75)); //How damaging will I be in this block?
-
-            double[] results = new double[PUNCHES];
-
-            for (int i = 0; i < PUNCHES; ++i)
-            {
-                double power = Math.Max(StatsUtils.Gauss(0.75, 0.75), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
-                double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 0.75));
-                //Console.WriteLine(accuracy);
-                results[i] = Math.Max(power * accuracy, 0) * 11.1 * blockDamage * (1.40);
-            }
-
-            double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
-
-            // Console.WriteLine( string.Join(",", result));
-
-            return result;
-        }
-
         static string resultsSummary(BoxScore[] results, bool detailed = false)
         {
             int KO_Percent = (int)(100 * results.Where(r => r.Result < 36).Count() / (double)results.Count());
-            double AvgTotalDamage = (int)results.Select(r => r.TotalDamage()).Average();
-            double AvgPercentLanded = (int)results.Select(r => r.LandedPercent()).Average();
+            double AvgDamage = (int)results.Select(r => r.AvgDamage()).Average();
+            double AvgPercentLanded = (int) 100*results.Select(r => r.LandedPercent()).Average();
 
             System.Text.StringBuilder summary = new System.Text.StringBuilder("", 50);
 
@@ -140,12 +179,12 @@ namespace Main
                 foreach (BoxScore fr in results)
                     summary.Append(fr + "\n");
 
-            summary.AppendFormat($"KO_Percent: {KO_Percent} Landed % {AvgPercentLanded}, Avg Damage: {AvgTotalDamage}");
+            summary.AppendFormat($"KO_Percent: {KO_Percent} Landed % {AvgPercentLanded}, Avg Damage: {AvgDamage}");
             return summary.ToString();
         }
 
 
-        static BoxScore simFight(FighterState fighter, BlockOutcome F, int punchesPerBlock = PUNCHES)
+        static BoxScore SimFight(FighterState fighter, FighterState opponent, BlockOutcome F, int punchesPerBlock = PUNCHES)
         {
             BoxScore fightStats = new BoxScore();
 
@@ -160,26 +199,26 @@ namespace Main
                 rndDam = 0;
                 for (int min = 0; min < 3; ++min)
                 {
-                    double[] outcome = F();
+                    double[] outcome = F(fighter);
                     fightStats.AppendData(round, outcome[0], PUNCHES, PUNCHES * outcome[1]);
 
                     rndDam += damage[result] = outcome[0];
                     hits[result] = outcome[1];
 
-                    if (fighter.incrementHealth(-damage[result]) <= 0)
+                    if (opponent.IncrementHealth(-damage[result]) <= 0)
                     {
                         round = 12;
                         break;
                     }
 
-                    fighter.incrementHealth(fighter.RecoveryRate());
+                    opponent.IncrementHealth(opponent.RecoveryRate());
                     ++result;
 
                 }
 
-                Console.WriteLine("Damage " + (int)rndDam);
+             //   Console.WriteLine("Damage " + (int)rndDam);
 
-                fighter.incrementHealth(fighter.RecoveryRate());
+                opponent.IncrementHealth(opponent.RecoveryRate());
             }
 
             fightStats.Result = result;
@@ -386,7 +425,7 @@ namespace Main
             for (int i = 1; i < 200; ++i)
             {
                 state.round = StatsUtils.RangeUniform(1, 13);
-                block.simBlock();
+                block.SimBlock();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -450,7 +489,7 @@ namespace Main
             //.WriteLine(state.fightControl);
             //  Console.WriteLine(state.ReachBuff());
             Block block = new Block(state);
-            block.simBlock();
+            block.SimBlock();
 
             //Console.WriteLine(state.f2.PunchCapacity());
 
@@ -464,7 +503,7 @@ namespace Main
             for (int i = 1; i < 3000; ++i)
             {
                 state.round = StatsUtils.RangeUniform(1, 13);
-                block.simBlock();
+                block.SimBlock();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -518,7 +557,7 @@ namespace Main
             FightState state = new FightState(fight);
             state.round = 4;
             Block block = new Block(state);
-            Console.WriteLine(block.RoundIntensity());
+            Console.WriteLine(block.CalcBlockIntensity());
 
         }
 
@@ -552,7 +591,7 @@ namespace Main
             fs.round = 3;
 
 
-            block.simBlock();
+            block.SimBlock();
             //block.cur
 
             List<double> list = new List<double>();
@@ -561,7 +600,7 @@ namespace Main
             for (int i = 1; i < 3000; ++i)
             {
                 fs.round = StatsUtils.RangeUniform(1, 13);
-                block.simBlock();
+                block.SimBlock();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
