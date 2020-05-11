@@ -4,22 +4,18 @@ namespace Main
     public static class Constants
     {
 
-        public const double ATTRIB_BUFF_DEFAULT       = 2;
+        public const double attDif       = 2;
 
         //Math
-        public const double CUBE_ROOT_TWO  = 1.25992104989;
-        public const double SQR_ROOT_TWO   = 1.41421356237;
-        public const double SQR_ROOT_THREE = 1.73205080757;
+        public const double CubeRootTwo  = 1.25992104989;
+        public const double SqrRootTwo   = 1.41421356237;
+        public const double SqrRootThree = 1.73205080757;
 
 
         //Figher Averages
-        public const double JAB_RATIO_AVG       = 0.415;
-        public const double JAB_RATIO_STD_RND   = 0.1;
-        public const double JAB_MULTIPLIER_STD  = 0.30;
-
-        //Fighting constants
-        public const double AVG_WEIGHT_INV      = 1d/150d;
-        public const double HAND_SPEED_ACC_BUFF = 0.2;
+        public const double JAB_RATIO_AVG = 0.415;
+        public const double JAB_RATIO_STD_RND = 0.1;
+        public const double JAB_MULTIPLIER_STD = 0.30;
 
 
     }

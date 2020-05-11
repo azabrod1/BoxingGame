@@ -5,7 +5,7 @@ namespace Main
 {
     public class Fighter
     {
-        public readonly string Name; //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
+        public readonly string name; //Uniquely identifies player
 
         //Attributes
         public int Accuracy { get; set; }
@@ -26,13 +26,11 @@ namespace Main
         public double DistancePreference = 0.5;
         public double JabPercent;
 
-        public Fighter(string name = "")
+        public Fighter()
         {
             JabPercent = 0.000851 * Weight + 0.288; //Regression we did on weight
-
-            if (string.IsNullOrEmpty(name)) //For testing 
-                this.Name = Utility.RandomNameSimple();
         }
+
        
     }
 }

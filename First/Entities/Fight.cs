@@ -10,14 +10,20 @@ namespace Main
         public readonly Fighter b2;
 
         public string[] judges;
-        public FightOutcome outcome; 
+
+        public double timeOfStoppage = -1; //Minute fight ended... should do seconds eventually
+        public MethodOfResult method = MethodOfResult.NC;
+        public Fighter winner        = null;
         
         public Fight(Fighter b1, Fighter b2, int roundsScheduled = 12)
         {
             this.b1 = b1;
             this.b2 = b2;
             this.roundsScheduled = roundsScheduled;
+
+
         }  
+        // testo 
 
     }
 }
