@@ -7,7 +7,7 @@ namespace Main
 {
     public class FighterPool
     {
-        private List<Fighter> fighters;
+        public List<Fighter> fighters { get; set; }
         Random rand; 
 
 
