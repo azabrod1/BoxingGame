@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Fighting;
+using FightSim;
 using MathNet.Numerics.Distributions;
 
 namespace Main
@@ -12,11 +12,11 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            FighterPool fp1 = new FighterPool();
+            //FighterPool fp1 = new FighterPool();
 
-            fp1.SimulateFights();
+           // fp1.SimulateFights();
 
-            Console.WriteLine(fp1.Stats());
+            //Console.WriteLine(fp1.Stats());
             //TestRoundIntensity();
             //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
 
@@ -81,23 +81,23 @@ namespace Main
         public static void TryKO()
         {
             Fighter fighter = new Fighter();
-            fighter.Weight = 200;
+            fighter.Weight = 150;
             fighter.Stamina = 50;
             fighter.HandSpeed = 50;
             fighter.RingGen = 95;
             fighter.Aggression = 50;
-            fighter.FootWork = 90;
+            fighter.FootWork = 50;
             fighter.Reach = 84;
             fighter.Durability = 50;
             fighter.Power = 50;
 
             Fighter opponent = new Fighter();
-            opponent.Weight = 120;
+            opponent.Weight = 150;
             opponent.Stamina = 50;
             opponent.HandSpeed = 50;
             opponent.RingGen = 95;
             opponent.Aggression = 50;
-            opponent.FootWork = 90;
+            opponent.FootWork = 50;
             opponent.Reach = 84;
             opponent.Durability = 50;
 
@@ -118,7 +118,7 @@ namespace Main
 
             for (int i = 0; i < PUNCHES; ++i)
             {
-                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power()*1.2;
+                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power();
                 // double _acc = -0.33 + 0d*0.01;
                 //double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
 
@@ -589,7 +589,7 @@ namespace Main
 
         static void TotalPunchTest(Fighter f1, Fighter f2)
         {
-            Fighting.FightState fs = new Fighting.FightState(new Fight(f1, f2));
+            FightSim.FightState fs = new FightSim.FightState(new Fight(f1, f2));
 
             Block block = new Block(fs);
             fs.round = 3;

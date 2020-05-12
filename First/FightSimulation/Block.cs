@@ -1,7 +1,7 @@
 using System;
 using Main;
 
-namespace Fighting
+namespace FightSim
 {
     //Represents on minute of time in a fight
     public class Block
