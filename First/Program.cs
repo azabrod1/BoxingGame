@@ -12,7 +12,11 @@ namespace Main
     {
         static void Main(string[] args)
         {
+            FighterPool fp1 = new FighterPool();
 
+            fp1.SimulateFights();
+
+            Console.WriteLine(fp1.Stats());
             //TestRoundIntensity();
             //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Fighting;
 
 namespace Main
@@ -6,6 +6,8 @@ namespace Main
     public class Fighter
     {
         public readonly string Name; //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
+
+        public double Rank { get; set; } //  Elo rank
 
         //Attributes
         public int Accuracy { get; set; }
@@ -32,6 +34,8 @@ namespace Main
 
             if (string.IsNullOrEmpty(name)) //For testing 
                 this.Name = Utility.RandomNameSimple();
+            else
+                this.Name = name;
         }
        
     }
