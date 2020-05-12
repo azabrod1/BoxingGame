@@ -22,11 +22,16 @@ namespace Fighting
                 // fighter 1 won
                 updateElo(fight.b1, fight.b2);
                 winner = fight.b1;
+                fight.b1.record.Wins++;
+                fight.b2.record.Losses++;
+
             }
             else
             {
                 updateElo(fight.b2, fight.b1);
                 winner = fight.b2;
+                fight.b2.record.Wins++;
+                fight.b1.record.Losses++;
             }
             return new FightOutcome(0, Fighting.MethodOfResult.NC, winner);
         }
