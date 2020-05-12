@@ -40,7 +40,12 @@ namespace Main
             else
                 this.Name = name;
         }
-       
+
+        public override string ToString()
+        {
+            return this.Name + "(rank = " + this.Rank.ToString("0") + ")";
+        }
+
     }
 }
 

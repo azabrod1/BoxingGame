@@ -3,23 +3,19 @@ namespace Main
 {
     public class FighterRecord
     {
-        public int Wins {get; set;}
-        public int Losses {get; set; }
-        public int WinsKO { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int KOs { get; set; }
         public int Draws { get; set; }
-        
-
 
         public FighterRecord()
         {
-            Wins = Losses = WinsKO = Draws = 0;
+            Wins = Losses = KOs = Draws = 0;
         }
 
-        public string toString()
+        public override string ToString()
         {
-            return "wins: " + Wins + " with KO: " + WinsKO + " losses: " + Losses;
+            return "wins: " + Wins + " with KO: " + KOs + " losses: " + Losses;
         }
-
-
     }
 }
