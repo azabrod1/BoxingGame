@@ -1,5 +1,5 @@
 using System;
-using Fighting;
+using FightSim;
 
 namespace Main
 {

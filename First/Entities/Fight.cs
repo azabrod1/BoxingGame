@@ -1,5 +1,5 @@
 ﻿using System;
-using Fighting;
+using FightSim;
 namespace Main
 {
     //Holds perm vars about the fight - eventually we should split it out in fight boxscore( total bunches) and fight info (like venue) 

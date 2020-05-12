@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Fighting
+namespace FightSim
 {
     public interface FightSimulator
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Main;
-namespace Fighting
+namespace FightSim
 {
     public class EloFightSimulator : FightSimulator
     {
@@ -33,7 +33,7 @@ namespace Fighting
                 fight.b2.record.Wins++;
                 fight.b1.record.Losses++;
             }
-            return new FightOutcome(0, Fighting.MethodOfResult.NC, winner);
+            return new FightOutcome(0, FightSim.MethodOfResult.NC, winner);
         }
 
         

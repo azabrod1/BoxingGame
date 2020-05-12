@@ -20,6 +20,8 @@ namespace Main
         //Fighting constants
         public const double AVG_WEIGHT_INV      = 1d/150d;
         public const double HAND_SPEED_ACC_BUFF = 0.2;
+        public const double FOOT_WORK_ACC_BUFF  = 0.1;
+
 
 
     }

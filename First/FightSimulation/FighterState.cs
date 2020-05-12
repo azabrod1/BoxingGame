@@ -1,7 +1,7 @@
 ﻿using System;
 using Main;
 
-namespace Fighting
+namespace FightSim
 {
     public class FighterState
     {
@@ -23,19 +23,19 @@ namespace Fighting
         //How much damage will I do in a round? 
         public double Power()
         {
-            double power = PowerDurabilityFormula(Self.Power) * 0.045;
+            double power = PowerDurabilityFormula(Self.Power) * 0.054;
             power *= Self.Weight * Constants.AVG_WEIGHT_INV;
             return power;
         }
 
         public double ExpectedAccuracy()
         {
-            return Self.Accuracy + Constants.HAND_SPEED_ACC_BUFF* Self.HandSpeed;
+            return Self.Accuracy + Constants.HAND_SPEED_ACC_BUFF* Self.HandSpeed + Constants.FOOT_WORK_ACC_BUFF * Self.FootWork;
         }
 
         public double ExpectedDefense()
         {
-            return (1+Constants.HAND_SPEED_ACC_BUFF)*Self.Defense;
+            return (1+Constants.HAND_SPEED_ACC_BUFF)*Self.Defense + Constants.FOOT_WORK_ACC_BUFF * Self.FootWork;
         }
 
         public double PowerDurabilityFormula(double skill)

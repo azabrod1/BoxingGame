@@ -1,6 +1,6 @@
 ﻿using System;
 using Main;
-namespace Fighting
+namespace FightSim
 {
     //Tracks the state of the fight
     public class FightState

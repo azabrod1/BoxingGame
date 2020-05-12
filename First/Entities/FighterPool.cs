@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fighting;
+using FightSim;
 
 namespace Main
 {
