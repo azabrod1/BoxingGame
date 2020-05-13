@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Main
 {
-    public static class StatsUtils
+    public static class MathUtils
     {
 
         [ThreadStatic] static readonly Random random = new Random();
@@ -90,14 +90,66 @@ namespace Main
 
             foreach(List<double> sample in allSamples){
                 Avgs.Add(sample.Average());
-                Stds.Add(Utility.StandardDeviation(sample,false));
+                Stds.Add(MathUtils.StandardDeviation(sample,false));
             }
 
             double finalAvg = Avgs.Average();
-            double finalStd = Utility.StandardDeviation(Avgs,false);
+            double finalStd = MathUtils.StandardDeviation(Avgs,false);
             double elementStd = Stds.Average();
 
             return String.Format($"Avg {finalAvg} , Std {finalStd}, elementStd {elementStd}" );
+
+        }
+
+        public static double WeightedAverage(params int[] list)
+        {
+            if (list.Length == 0 || (list.Length & 1) == 1)
+                return -1;
+
+            int i = 0;
+            double weightSum = 0;
+            double weightedSum = 0;
+            while (i < list.Length)
+            {
+                int element = list[i++];
+                int weight = list[i++];
+                weightSum += weight;
+                weightedSum += element * weight;
+
+            }
+
+            return weightedSum / weightSum;
+
+        }
+
+        public static double StandardDeviation(this IEnumerable<double> values, bool populationStd = true)
+        {
+            double avg = values.Average();
+            double std = Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
+            if (!populationStd)
+                std *= ((double)values.Count() / (values.Count() - 1.0));
+
+            return std;
+        }
+
+        public static double WeightedAverage(params double[] list)
+        {
+            if (list.Length == 0 || (list.Length & 1) == 1)
+                return -1;
+
+            int i = 0;
+            double weightSum = 0;
+            double weightedSum = 0;
+            while (i < list.Length)
+            {
+                double element = list[i++];
+                double weight = list[i++];
+                weightSum += weight;
+                weightedSum += element * weight;
+
+            }
+
+            return weightedSum / weightSum;
 
         }
 
