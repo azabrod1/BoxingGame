@@ -88,9 +88,44 @@ namespace Main
             FightState fs = new FightState(new Fight(fighter, opponent));
 
 
-            // TotalPunchTest(fs);
+            PunchDistroTest(fs);
+
+        }
 
 
+        static void PunchDistroTest(FightState fs)
+        {
+            Block block = new Block(fs);
+            fs.Round = 3;
+
+            block.Play();
+
+            List<double> list = new List<double>();
+
+            for (int i = 0; i < 1; ++i)
+            {
+                fs.Round = MathUtils.RangeUniform(1, 13);
+                double x, y;
+                x = y = 0;
+                for (int min = 0; min < 1; ++min)
+                {
+                    block.Play();
+                    var distro = block.GeneratePunchDistribution();
+                    foreach(var punch in distro)
+                        Console.WriteLine(punch);
+
+                }
+
+
+                list.Add(x + y);
+
+                //Console.WriteLine("std {0}", list[list.Count - 1]);
+
+                // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
+                // Console.WriteLine("punches {0}",  punches);
+            }
+
+          
 
         }
 

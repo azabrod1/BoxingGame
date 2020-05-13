@@ -28,6 +28,7 @@ namespace FightSim
             return power;
         }
 
+        //todo: make these out of 100?? Or maybe not
         public double ExpectedAccuracy()
         {
             return Self.Accuracy + Constants.HAND_SPEED_ACC_BUFF* Self.HandSpeed + Constants.FOOT_WORK_ACC_BUFF * Self.FootWork;

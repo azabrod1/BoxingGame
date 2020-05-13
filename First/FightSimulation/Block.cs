@@ -13,6 +13,7 @@ namespace FightSim
         const double PUNCHES_THROWN_STD = 10;  //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
 
         private double BlockIntensity;
+        private double BlockDamage;
 
         public Block(FightState fight)
         {
@@ -21,30 +22,63 @@ namespace FightSim
             this.f2 = fight.f2;
         }
 
-        enum PunchThrown
+        public enum PunchThrown
         {
             F1_JAB,
-            F1_PP,
             F2_JAB,
+
+            F1_PP,
             F2_PP,
          };
+
+        //If even, its a player 1 punch
+        public static bool IsPlayer1Punch(this PunchThrown punch)
+        {
+            return (((int)punch) & 1) == 0;
+        }
+
+        public void SetRandomVariables()
+        {
+            //How intense will this minute of the fight be?
+            this.BlockIntensity = CalcBlockIntensity();
+
+            //How damaging will the exchanges be? todo Similar to the above; consider combining
+            this.BlockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75));
+        }
 
         //Boxers fight!
         public double Play()
         {
-            //How intense will this minute of the fight be?
-            BlockIntensity = CalcBlockIntensity();
+            SetRandomVariables(); //Seperated into a dif function mainly for testing
+
             PunchThrown[] punches = GeneratePunchDistribution();
 
+            for(int p = 0; p < punches.Length; ++p)
+            {
+                PunchThrown punch = punches[p];
+                FighterState fs = Block.IsPlayer1Punch(punch) ? f1 : f2;
+                FighterState op = Block.IsPlayer1Punch(punch) ? f2 : f1;
 
+                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * f1.Power();
+              
+                double expectedAcc = -0.28 + (fs.ExpectedAccuracy() + op.ExpectedDefense()) * 0.01;
+
+                //our two big punch stats
+                double realizedAcc = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
+                double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
+
+
+            }
 
             return -1;
         }
 
-        private PunchThrown[] GeneratePunchDistribution()
+        public PunchThrown[] GeneratePunchDistribution()
         {
             (int, int) f1Punches = FighterPunchDistribution(f1, f2);
             (int, int) f2Punches = FighterPunchDistribution(f2, f1);
+
+            Console.WriteLine( f1Punches);
 
             PunchThrown[] punches = new PunchThrown[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
             int idx = 0;
@@ -68,7 +102,7 @@ namespace FightSim
             double totalPunches = BoxerPunchesPerRound(fighter) * 0.333333333; //Since block is 1/3 a round
             double jabPercent = JabPercentages(fighter, opponent);
             int jabs = (int)(jabPercent * totalPunches + 0.5);
-            int powerPunches = (int)((1 - jabPercent) * totalPunches * totalPunches + 0.5);
+            int powerPunches = (int)((1 - jabPercent) * totalPunches + 0.5);
 
             return (jabs, powerPunches);
         }
