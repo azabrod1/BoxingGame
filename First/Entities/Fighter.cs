@@ -8,6 +8,7 @@ namespace Main
         public readonly string Name; //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
         public double Rank { get; set; } //  Elo rank
+        public FighterRecord record { get; set; } 
 
         //Attributes
         public int Accuracy { get; set; }
@@ -32,12 +33,19 @@ namespace Main
         {
             JabPercent = 0.000851 * Weight + 0.288; //Regression we did on weight
 
+            record = new FighterRecord();
+
             if (string.IsNullOrEmpty(name)) //For testing 
                 this.Name = Utility.RandomNameSimple();
             else
                 this.Name = name;
         }
-       
+
+        public override string ToString()
+        {
+            return this.Name + "(rank = " + this.Rank.ToString("0") + ")";
+        }
+
     }
 }
 
