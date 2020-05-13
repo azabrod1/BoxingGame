@@ -31,8 +31,7 @@ namespace FightSim
             return new FightOutcome(0, FightSim.MethodOfResult.NC, winner);
         }
 
-        
-
+       
         private static void updateElo(Fighter winner, Fighter loser)
         {
             double delta = eloDelta(winner.Rank, loser.Rank);

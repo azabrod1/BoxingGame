@@ -14,7 +14,7 @@ namespace Main
         {
             //FighterPool fp1 = new FighterPool();
 
-           // fp1.SimulateFights();
+            // fp1.SimulateFights();
 
             //Console.WriteLine(fp1.Stats());
             //TestRoundIntensity();
@@ -52,8 +52,44 @@ namespace Main
            Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
             // Console.WriteLine("wdef");
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
+          //  TryKO();
+         //   stopwatch.Stop();
+         //   Console.WriteLine( "{0}\n",stopwatch.ElapsedMilliseconds);
 
-            TryKO();
+
+            Fighter fighter = new Fighter
+            {
+                Weight = 150,
+                Stamina = 50,
+                HandSpeed = 50,
+                RingGen = 95,
+                Aggression = 50,
+                FootWork = 50,
+                Reach = 84,
+                Durability = 50,
+                Power = 50
+            };
+
+            Fighter opponent = new Fighter
+            {
+                Weight = 150,
+                Stamina = 50,
+                HandSpeed = 50,
+                RingGen = 95,
+                Aggression = 50,
+                FootWork = 50,
+                Reach = 84,
+                Durability = 50
+            };
+
+
+            FightState fs = new FightState(new Fight(fighter, opponent));
+
+
+            // TotalPunchTest(fs);
+
 
 
         }
@@ -61,11 +97,10 @@ namespace Main
         void Profile()
         {
             var stopwatch = new Stopwatch();
-
             stopwatch.Start();
             for (int i = 0; i < 1000000; i++)
             {
-                StatsUtils.Gauss2(0.5, 3);
+                MathUtils.Gauss2(0.5, 3);
             }
             stopwatch.Stop();
             long elapsed_time = stopwatch.ElapsedMilliseconds;
@@ -76,7 +111,7 @@ namespace Main
         const int PUNCHES = 13;
         const int FIGHTS = 10000; //ree
 
-        public delegate double[] BlockOutcome( FighterState figher);
+        public delegate double[] BlockOutcome(FighterState figher);
 
         public static void TryKO()
         {
@@ -112,44 +147,50 @@ namespace Main
 
         public static double[] NormalCorr(FighterState fighter)
         {
-            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
+
+            double blockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
 
             double[] results = new double[PUNCHES];
+            stopwatch.Start();
 
             for (int i = 0; i < PUNCHES; ++i)
             {
-                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power();
+
+                double power = Math.Max(MathUtils.Gauss(1, 0.75), 1) * fighter.Power();
                 // double _acc = -0.33 + 0d*0.01;
                 //double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
 
                 double _acc = -0.28 - 0d * 0.01;
-                double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.5));
+                double accuracy = Math.Max(0, MathUtils.Gauss(_acc, 0.5));
                 //Console.WriteLine(accuracy);
                 results[i] = Math.Max(power * accuracy, 0) * blockDamage;
+
+
             }
+
+            stopwatch.Stop();
 
             double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
 
-            // Console.WriteLine( string.Join(",", result));
-
             return result;
         }
+        static Stopwatch stopwatch = new Stopwatch();
 
         public static double[] NormalCorrOld(FighterState fighter)
         {
-            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
+            double blockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
 
             double[] results = new double[PUNCHES];
 
             for (int i = 0; i < PUNCHES; ++i)
             {
-                double power = Math.Max(StatsUtils.Gauss(1, 0.75), 1) * fighter.Power();
-                double _acc = -0.33 + 0d*0.01;
-                double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
+                double power = Math.Max(MathUtils.Gauss(1, 0.75), 1) * fighter.Power();
+                double _acc = -0.33 + 0d * 0.01;
+                double accuracy = Math.Max(0, MathUtils.Gauss(_acc, 0.6));
 
-       
+
                 //Console.WriteLine(accuracy);
-                results[i] = Math.Max(power * accuracy, 0) * blockDamage*1.4;
+                results[i] = Math.Max(power * accuracy, 0) * blockDamage * 1.4;
             }
 
             double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
@@ -161,8 +202,8 @@ namespace Main
 
         public static double[] NormalBlock()
         {
-            double blockDamage = Math.Max(0.5, StatsUtils.Gauss(1, 1.5)) * 4; //How damaging will I be in this block
-            double blockAccuracy = Math.Max(0, StatsUtils.Gauss(0.33, 0.07));
+            double blockDamage = Math.Max(0.5, MathUtils.Gauss(1, 1.5)) * 4; //How damaging will I be in this block
+            double blockAccuracy = Math.Max(0, MathUtils.Gauss(0.33, 0.07));
 
             double[] result = new double[] { blockAccuracy * blockDamage * PUNCHES, blockAccuracy };
 
@@ -175,7 +216,7 @@ namespace Main
         {
             int KO_Percent = (int)(100 * results.Where(r => r.Result < 36).Count() / (double)results.Count());
             double AvgDamage = (int)results.Select(r => r.AvgDamage()).Average();
-            double AvgPercentLanded = (int) 100*results.Select(r => r.LandedPercent()).Average();
+            double AvgPercentLanded = (int)100 * results.Select(r => r.LandedPercent()).Average();
 
             System.Text.StringBuilder summary = new System.Text.StringBuilder("", 50);
 
@@ -193,7 +234,7 @@ namespace Main
             BoxScore fightStats = new BoxScore();
 
             double[] damage = new double[36];
-            double[] hits = new double[36];
+            double[] hits   = new double[36];
             int result = 0;
 
             double rndDam = 0;
@@ -220,7 +261,7 @@ namespace Main
 
                 }
 
-             //   Console.WriteLine("Damage " + (int)rndDam);
+                //   Console.WriteLine("Damage " + (int)rndDam);
 
                 opponent.IncrementHealth(opponent.RecoveryRate());
             }
@@ -245,8 +286,8 @@ namespace Main
                 double[] results = new double[S];
                 for (int i = 0; i < S; ++i)
                 {
-                    double power = Math.Max(StatsUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
-                    double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 1));
+                    double power = Math.Max(MathUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
+                    double accuracy = Math.Max(0, MathUtils.Gauss(-0.3, 1));
                     results[i] = Math.Max(power * accuracy, 0) * 10;
                 }
 
@@ -286,12 +327,12 @@ namespace Main
                 double[] blockMult = new double[4];
 
                 for (int b = 0; b < 4; ++b)
-                    blockMult[b] = StatsUtils.Gauss(1, 1);
+                    blockMult[b] = MathUtils.Gauss(1, 1);
 
                 for (int i = 0; i < PUNCHES; ++i)
                 {
-                    double power = Math.Max(StatsUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
-                    double accuracy = Math.Max(0, StatsUtils.Gauss(-0.3, 1)) * blockMult[i * 4 / PUNCHES];
+                    double power = Math.Max(MathUtils.Gauss(1, 1), 1);// *Math.Max(StatsUtils.Gauss(1, 1), 1);// * Math.Max(StatsUtils.Gauss(1, 10), 1);
+                    double accuracy = Math.Max(0, MathUtils.Gauss(-0.3, 1)) * blockMult[i * 4 / PUNCHES];
                     results[i] = Math.Max(power * accuracy, 0) * 10;
                 }
 
@@ -328,7 +369,7 @@ namespace Main
 
                 double[] results = new double[S];
                 for (int i = 0; i < S; ++i)
-                    results[i] = (Math.Abs(StatsUtils.Gauss(0, 12) * StatsUtils.Gauss(0, 12)) - 100);
+                    results[i] = (Math.Abs(MathUtils.Gauss(0, 12) * MathUtils.Gauss(0, 12)) - 100);
 
                 //Array.Sort(results);
 
@@ -357,7 +398,7 @@ namespace Main
 
                 double[] results = new double[S];
                 for (int i = 0; i < S; ++i)
-                    results[i] = Math.Pow(1.7, StatsUtils.Gauss(0.5, 2)) - 1;
+                    results[i] = Math.Pow(1.7, MathUtils.Gauss(0.5, 2)) - 1;
 
                 //Array.Sort(results);
 
@@ -386,7 +427,7 @@ namespace Main
             bum.Aggression = 30;
 
             Console.WriteLine("Fat Bum Fighter");
-            TotalPunchTest(bum, bum);
+            TotalPunchTest(new FightState(new Fight(bum, bum)));
 
             // Console.BackgroundColor = ConsoleColor.Blue;
             // Console.WriteLine("dds {0}", normal.PunchCapacity(fs));
@@ -428,8 +469,8 @@ namespace Main
 
             for (int i = 1; i < 200; ++i)
             {
-                state.round = StatsUtils.RangeUniform(1, 13);
-                block.SimBlock();
+                state.Round = MathUtils.RangeUniform(1, 13);
+                block.Play();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -481,7 +522,7 @@ namespace Main
 
             Fight fight = new Fight(normal, normalAgg, 12);
             FightState state = new FightState(fight);
-            state.round = 4;
+            state.Round = 4;
 
             double distancePref1 = state.f1.PreferredDistance(state.f2);
             Console.WriteLine(distancePref1);
@@ -489,11 +530,11 @@ namespace Main
             double distancePref2 = state.f2.PreferredDistance(state.f1);
             Console.WriteLine(distancePref2);
 
-            Console.WriteLine(state.fightDistance);
+            Console.WriteLine(state.FightDistance);
             //.WriteLine(state.fightControl);
             //  Console.WriteLine(state.ReachBuff());
             Block block = new Block(state);
-            block.SimBlock();
+            block.Play();
 
             //Console.WriteLine(state.f2.PunchCapacity());
 
@@ -506,8 +547,8 @@ namespace Main
 
             for (int i = 1; i < 3000; ++i)
             {
-                state.round = StatsUtils.RangeUniform(1, 13);
-                block.SimBlock();
+                state.Round = MathUtils.RangeUniform(1, 13);
+                block.Play();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -525,10 +566,10 @@ namespace Main
             }
 
 
-            Console.WriteLine("std b {0}", Utility.StandardDeviation(f1));
+            Console.WriteLine("std b {0}", MathUtils.StandardDeviation(f1));
             Console.WriteLine("avg b {0}", f1.Average());
 
-            Console.WriteLine("std b {0}", Utility.StandardDeviation(f2));
+            Console.WriteLine("std b {0}", MathUtils.StandardDeviation(f2));
             Console.WriteLine("avg b {0}", f2.Average());
 
         }
@@ -559,73 +600,45 @@ namespace Main
 
             Fight fight = new Fight(normal, normalAgg, 12);
             FightState state = new FightState(fight);
-            state.round = 4;
+            state.Round = 4;
             Block block = new Block(state);
             Console.WriteLine(block.CalcBlockIntensity());
 
         }
 
-
-
-        static void TestTotalPuncher()
+        static void TotalPunchTest(FightState fs)
         {
-            //Normal Fighter
-            Fighter normal = new Fighter();
-
-
-            normal.Weight = 150;
-            normal.Stamina = 50;
-            normal.HandSpeed = 50;
-            normal.RingGen = 50;
-            normal.Aggression = 50;
-
-            Console.WriteLine("Normal Fighter");
-            TotalPunchTest(normal, normal);
-
-            // Console.BackgroundColor = ConsoleColor.Blue;
-            // Console.WriteLine("dds {0}", normal.PunchCapacity(fs));
-
-        }
-
-        static void TotalPunchTest(Fighter f1, Fighter f2)
-        {
-            FightSim.FightState fs = new FightSim.FightState(new Fight(f1, f2));
-
             Block block = new Block(fs);
-            fs.round = 3;
+            fs.Round = 3;
 
-
-            block.SimBlock();
-            //block.cur
+            block.Play();
 
             List<double> list = new List<double>();
 
-
             for (int i = 1; i < 3000; ++i)
             {
-                fs.round = StatsUtils.RangeUniform(1, 13);
-                block.SimBlock();
-                // double r =block.RoundIntensity();
-                //list.Add(normal.PunchCapacity(fs));
-
-
-                var x = block.BoxerPunchesPerRound(fs.f1);
-                double y = block.BoxerPunchesPerRound(fs.f2);
+                fs.Round = MathUtils.RangeUniform(1, 13);
+                double x, y;
+                x = y = 0;
+                for (int min = 0; min < 3; ++min)
+                {
+                    block.Play();
+                    x += block.BoxerPunchesPerRound(fs.f1) / 3;
+                    y += block.BoxerPunchesPerRound(fs.f2) / 3;
+                }
 
                 list.Add(x + y);
 
-                Console.WriteLine("std {0}", list[list.Count - 1]);
+                //Console.WriteLine("std {0}", list[list.Count - 1]);
 
                 // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
                 // Console.WriteLine("punches {0}",  punches);
             }
 
-            double std = Utility.StandardDeviation(list);
+            double std = MathUtils.StandardDeviation(list);
 
             Console.WriteLine("std {0}", std);
             Console.WriteLine("avg {0}", list.Average());
-
-            // Console.WriteLine("punches {0}", punches);
 
         }
 

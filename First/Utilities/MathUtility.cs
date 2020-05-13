@@ -97,7 +97,7 @@ namespace Main
             double finalStd = MathUtils.StandardDeviation(Avgs,false);
             double elementStd = Stds.Average();
 
-            return String.Format($"Avg {finalAvg} , Std {finalStd}, elementStd {elementStd}" );
+            return String.Format($"Avg {finalAvg} , Std {finalStd}, ElementStd {elementStd}" );
 
         }
 
