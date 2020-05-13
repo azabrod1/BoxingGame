@@ -19,7 +19,7 @@ namespace Main
             Console.WriteLine(fp1.Stats());
             Console.WriteLine(fp1.Index("Fighter 594"));
 
-
+            fp1.SimulateFight(1, 2);
 
 
             //TestRoundIntensity();

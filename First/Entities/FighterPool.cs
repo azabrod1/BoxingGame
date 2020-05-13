@@ -7,11 +7,14 @@ namespace Main
 {
     public class FighterPool
     {
+        public readonly int top_index = 30;
+
+
         public List<Fighter> Fighters { get; set; }
         Random rand; //todo check out my MathUtiliy lib from rand functionality
 
 
-        public FighterPool(int size = 1024)
+        public FighterPool(int size = 1024, int top_index = 30)
         {
             Fighters = new List<Fighter>(size);
             Fighter f;
@@ -21,11 +24,11 @@ namespace Main
             for (int i = 0; i < size; i++)
             {
                 f = new Fighter("Fighter " + i.ToString());
-                f.Rank = rand.NextDouble() * EloFightSimulator.ELO_MAX_INIT;
+                f.Record.Rank = rand.NextDouble() * EloFightSimulator.ELO_MAX_INIT;
                 Fighters.Add(f);
             }
 
-            Fighters.Sort((x, y) => x.Rank.CompareTo(y.Rank));
+            Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
             Fighters.Reverse();
 
         }
@@ -33,8 +36,8 @@ namespace Main
         public (double avg, double std) Stats()
         {
             double count = Fighters.Count();
-            double avg = Fighters.Sum(d => d.Rank) / count;
-            double std = Fighters.Sum(d => (d.Rank - avg) * (d.Rank - avg));
+            double avg = Fighters.Sum(d => d.Record.Rank) / count;
+            double std = Fighters.Sum(d => (d.Record.Rank - avg) * (d.Record.Rank - avg));
             std = Math.Sqrt(std / count);
             return (avg, std);   
         }
@@ -51,24 +54,45 @@ namespace Main
         }
 
 
-        public bool isTopFighter(Fighter f, int top = 30)
+        public bool isTopFighter(Fighter f)
         {
-            return isTopFighter(f.Name, top);
+            return isTopFighter(f.Name);
         }
 
-        public bool isTopFighter(string name, int top = 30)
+        public bool isTopFighter(string name)
         {
             int index = this.Index(name);
 
-            return (index >= 0 && index < top);
-                
+            return isTopFighter(index);
+        }
+
+        public bool isTopFighter(int index)
+        {
+            return (index >= 0 && index < top_index);
+        }
+
+
+        public FightOutcome SimulateFight(int index1, int index2)
+        {
+            Fighter f1 = Fighters[index1];
+            Fighter f2 = Fighters[index2];
+            Fight ff = new Fight(f1, f2);
+            FightSimulator fs = new EloFightSimulator();
+            FightOutcome fo = fs.SimulateFight(ff);
+
+            if (this.isTopFighter(index1) || this.isTopFighter(index2))
+            {
+                Console.WriteLine(fo.Winner.Name + " wins " + Fighters[index1].Name + "(" + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(" + Fighters[index2].Record.Rank.ToString("0") + ")");
+
+            }
+            return fo;
+
         }
 
         public void SimulateFights(int epsilon = 16)
         {
             int op;
             int coeff;
-            Fight fight;
             FightSimulator fs = new EloFightSimulator();
             for (int i = 0; i < Fighters.Count(); i++)
             {
@@ -82,12 +106,9 @@ namespace Main
                 {
                     op -= epsilon;
                 }
-                fight = new Fight(Fighters[i], Fighters[op]);
 
-                FightOutcome fo = fs.SimulateFight(fight);
+                FightOutcome fo = this.SimulateFight(i, op);
 
-                // this is for debug only - PLEASE REMOVE
-                Console.WriteLine(fo.Winner.Name + " is the winner of " + Fighters[i].Name + "(" + Fighters[i].Rank.ToString("0") + ") vs " + Fighters[op].Name + "(" + Fighters[op].Rank.ToString("0") + ")");
 
 
             }

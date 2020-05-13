@@ -22,16 +22,16 @@ namespace FightSim
                 // fighter 1 won
                 updateElo(fight.b1, fight.b2);
                 winner = fight.b1;
-                fight.b1.record.Wins++;
-                fight.b2.record.Losses++;
+                fight.b1.Record.Wins++;
+                fight.b2.Record.Losses++;
 
             }
             else
             {
                 updateElo(fight.b2, fight.b1);
                 winner = fight.b2;
-                fight.b2.record.Wins++;
-                fight.b1.record.Losses++;
+                fight.b2.Record.Wins++;
+                fight.b1.Record.Losses++;
             }
             return new FightOutcome(0, FightSim.MethodOfResult.NC, winner);
         }
@@ -39,11 +39,14 @@ namespace FightSim
        
         private static void updateElo(Fighter winner, Fighter loser)
         {
-            double delta = eloDelta(winner.Rank, loser.Rank);
+            double delta = eloDelta(winner.Record.Rank, loser.Record.Rank);
             //winner.previous_elo = winner.rank;
             //loser.previous_elo = loser.rank;
-            winner.Rank += delta;
-            loser.Rank -= delta;
+            winner.Record.PreviousRank = winner.Record.Rank;
+            loser.Record.PreviousRank = loser.Record.Rank;
+
+            winner.Record.Rank += delta;
+            loser.Record.Rank -= delta;
         }
 
 
