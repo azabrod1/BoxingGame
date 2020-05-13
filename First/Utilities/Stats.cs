@@ -9,10 +9,38 @@ namespace Main
 
         [ThreadStatic] static readonly Random random = new Random();
 
+        public static void Shuffle<T>(T[] array)
+        {
+            int n = array.Length;
+            for (int i = 0; i < n; i++)
+            {
+                // NextDouble returns a random number between 0 and 1.
+                // ... It is equivalent to Math.random() in Java.
+                int r = i + RangeUniform(0, n-i);
+                T t = array[r];
+                array[r] = array[i];
+                array[i] = t;
+            }
+        }
+
+        public static void Shuffle<T>(this List<T> values)
+        {
+            int n = values.Count();
+            for (int i = 0; i < n; i++)
+            {
+                // NextDouble returns a random number between 0 and 1.
+                // ... It is equivalent to Math.random() in Java.
+                int r = i + RangeUniform(0, n - i);
+                T t = values[r];
+                values[r] = values[i];
+                values[i] = t;
+            }
+        }
+
 
         public static int RangeUniform(int from, int to)
         {
-
+       
             return random.Next(from, to);    
         }
 

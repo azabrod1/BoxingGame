@@ -10,7 +10,6 @@ namespace Main
         private List<Fighter> fighters;
         Random rand; 
 
-
         public FighterPool(int size = 1024)
         {
             fighters = new List<Fighter>(size);
