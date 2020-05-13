@@ -12,11 +12,16 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            //FighterPool fp1 = new FighterPool();
+            FighterPool fp1 = new FighterPool();
 
-            // fp1.SimulateFights();
+             fp1.SimulateFights();
 
-            //Console.WriteLine(fp1.Stats());
+            Console.WriteLine(fp1.Stats());
+            Console.WriteLine(fp1.Index("Fighter 594"));
+
+
+
+
             //TestRoundIntensity();
             //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
 
@@ -51,7 +56,7 @@ namespace Main
 
             Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
-            // Console.WriteLine("wdef");
+            Console.WriteLine("wdef");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             TryKO();
