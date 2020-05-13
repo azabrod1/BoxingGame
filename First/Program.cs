@@ -49,14 +49,14 @@ namespace Main
             FighterState H = new FighterState(heavy);
 
 
-           Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
+            Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
             // Console.WriteLine("wdef");
-        //    var stopwatch = new Stopwatch();
-        //    stopwatch.Start();
-          //  TryKO();
-         //   stopwatch.Stop();
-         //   Console.WriteLine( "{0}\n",stopwatch.ElapsedMilliseconds);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            TryKO();
+            stopwatch.Stop();
+            Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
 
 
             Fighter fighter = new Fighter
@@ -151,14 +151,11 @@ namespace Main
             double blockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75)); //How damaging will we be in this block?
 
             double[] results = new double[PUNCHES];
-            stopwatch.Start();
 
             for (int i = 0; i < PUNCHES; ++i)
             {
 
                 double power = Math.Max(MathUtils.Gauss(1, 0.75), 1) * fighter.Power();
-                // double _acc = -0.33 + 0d*0.01;
-                //double accuracy = Math.Max(0, StatsUtils.Gauss(_acc, 0.6));
 
                 double _acc = -0.28 - 0d * 0.01;
                 double accuracy = Math.Max(0, MathUtils.Gauss(_acc, 0.5));
@@ -168,7 +165,8 @@ namespace Main
 
             }
 
-            stopwatch.Stop();
+            MathUtils.Shuffle(results);
+
 
             double[] result = new double[] { results.Sum(), results.Where(d => d > 0).Count() / (double)PUNCHES };
 
@@ -234,7 +232,7 @@ namespace Main
             BoxScore fightStats = new BoxScore();
 
             double[] damage = new double[36];
-            double[] hits   = new double[36];
+            double[] hits = new double[36];
             int result = 0;
 
             double rndDam = 0;

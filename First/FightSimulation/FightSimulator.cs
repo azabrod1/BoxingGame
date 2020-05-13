@@ -7,8 +7,8 @@ namespace FightSim
 
         public FightState SimulateFightDetailed(Main.Fight fight)
         {
-            Console.WriteLine("Optional Method!");
-            return null;
+            //"Optional Method!
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace FightSim
         FightState Fight;
 
         const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
-        const double PUNCHES_THROWN_STD     = 10;  //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
-                                                      
+        const double PUNCHES_THROWN_STD = 10;  //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
+
         private double BlockIntensity;
 
         public Block(FightState fight)
@@ -21,19 +21,57 @@ namespace FightSim
             this.f2 = fight.f2;
         }
 
+        enum PunchThrown
+        {
+            F1_JAB,
+            F1_PP,
+            F2_JAB,
+            F2_PP,
+         };
+
         //Boxers fight!
         public double Play()
         {
             //How intense will this minute of the fight be?
             BlockIntensity = CalcBlockIntensity();
+            PunchThrown[] punches = GeneratePunchDistribution();
 
-            //BoxerPunchesPerRound(f1);
-            //BoxerPunchesPerRound(f2);
+
 
             return -1;
         }
 
-     ///   public double Figher1 
+        private PunchThrown[] GeneratePunchDistribution()
+        {
+            (int, int) f1Punches = FighterPunchDistribution(f1, f2);
+            (int, int) f2Punches = FighterPunchDistribution(f2, f1);
+
+            PunchThrown[] punches = new PunchThrown[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
+            int idx = 0;
+            for (int x = 0; x < f1Punches.Item1; ++x)
+                punches[idx++] = PunchThrown.F1_JAB;
+            for (int x = 0; x < f1Punches.Item2; ++x)
+                punches[idx++] = PunchThrown.F1_PP;
+            for (int x = 0; x < f2Punches.Item1; ++x)
+                punches[idx++] = PunchThrown.F2_JAB;
+            for (int x = 0; x < f2Punches.Item2; ++x)
+                punches[idx++] = PunchThrown.F2_PP;
+
+            MathUtils.Shuffle(punches);
+
+            return punches;
+
+        }
+
+        private (int, int) FighterPunchDistribution(FighterState fighter, FighterState opponent)
+        {
+            double totalPunches = BoxerPunchesPerRound(fighter) * 0.333333333; //Since block is 1/3 a round
+            double jabPercent = JabPercentages(fighter, opponent);
+            int jabs = (int)(jabPercent * totalPunches + 0.5);
+            int powerPunches = (int)((1 - jabPercent) * totalPunches * totalPunches + 0.5);
+
+            return (jabs, powerPunches);
+        }
 
         /* Intensity of a round is chosen by ring general's aggressiveness
          * Follows normal distribution
