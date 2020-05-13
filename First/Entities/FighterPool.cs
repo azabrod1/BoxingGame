@@ -7,13 +7,12 @@ namespace Main
 {
     public class FighterPool
     {
-        public List<Fighter> Fighters { get; set; }
+        private List<Fighter> fighters;
+        Random rand; //todo check out my MathUtiliy lib from rand functionality
 
-       // readonly Random rand;  TODO: consider using MathUtils library I wrote for randomess
- 
         public FighterPool(int size = 1024)
         {
-            Fighters = new List<Fighter>(size);
+            fighters = new List<Fighter>(size);
             Fighter f;
             rand = new Random(Guid.NewGuid().GetHashCode());
 
@@ -22,33 +21,19 @@ namespace Main
             {
                 f = new Fighter("Fighter " + i.ToString());
                 f.Rank = rand.NextDouble() * EloFightSimulator.ELO_MAX_INIT;
-                Fighters.Add(f);
+                fighters.Add(f);
             }
 
-            Fighters.Sort((x, y) => x.Rank.CompareTo(y.Rank));
-            Fighters.Reverse();
+            fighters.Sort((x, y) => x.Rank.CompareTo(y.Rank));
+            fighters.Reverse();
 
         }
-
-        public List<Fighter> TopFighters(int n)
-        {
-            if (n >= this.Fighters.Count)
-            {
-                return this.Fighters.ToList();
-            }
-            return Fighters.GetRange(0, n);
-
-        }
-
-
-        
-
 
         public (double avg, double std) Stats()
         {
-            double count = Fighters.Count();
-            double avg = Fighters.Sum(d => d.Rank) / count;
-            double std = Fighters.Sum(d => (d.Rank - avg) * (d.Rank - avg));
+            double count = fighters.Count();
+            double avg = fighters.Sum(d => d.Rank) / count;
+            double std = fighters.Sum(d => (d.Rank - avg) * (d.Rank - avg));
             std = Math.Sqrt(std / count);
             return (avg, std);   
         }
@@ -59,7 +44,7 @@ namespace Main
             int coeff;
             Fight fight;
             FightSimulator fs = new EloFightSimulator();
-            for (int i = 0; i < Fighters.Count(); i++)
+            for (int i = 0; i < fighters.Count(); i++)
             {
                 coeff = (rand.Next(0, 2) > 0) ? 1 : -1;
                 op = i + coeff * rand.Next(1, epsilon);
@@ -67,16 +52,16 @@ namespace Main
                 {
                     op += epsilon;
                 }
-                else if (op > Fighters.Count() - 1)
+                else if (op > fighters.Count() - 1)
                 {
                     op -= epsilon;
                 }
-                fight = new Fight(Fighters[i], Fighters[op]);
+                fight = new Fight(fighters[i], fighters[op]);
 
                 FightOutcome fo = fs.SimulateFight(fight);
 
                 // this is for debug only - PLEASE REMOVE
-                Console.WriteLine(fo.Winner.Name + " is the winner of " + Fighters[i].Name + "(" + Fighters[i].Rank.ToString("0") + ") vs " + Fighters[op].Name + "(" + Fighters[op].Rank.ToString("0") + ")");
+                Console.WriteLine(fo.Winner.Name + " is the winner of " + fighters[i].Name + "(" + fighters[i].Rank.ToString("0") + ") vs " + fighters[op].Name + "(" + fighters[op].Rank.ToString("0") + ")");
 
 
             }
