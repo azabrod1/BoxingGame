@@ -9,8 +9,8 @@ namespace Main
     {
         public List<Fighter> Fighters { get; set; }
 
-        readonly Random rand; 
-
+       // readonly Random rand;  TODO: consider using MathUtils library I wrote for randomess
+ 
         public FighterPool(int size = 1024)
         {
             Fighters = new List<Fighter>(size);
