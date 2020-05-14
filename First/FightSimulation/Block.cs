@@ -10,7 +10,7 @@ namespace FightSim
         FightState Fight;
 
         const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
-        const double PUNCHES_THROWN_STD = 10;  //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
+        const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
 
         private double BlockIntensity;
         private double BlockDamage;
@@ -22,19 +22,35 @@ namespace FightSim
             this.f2 = fight.f2;
         }
 
-        public enum PunchThrown
-        {
-            F1_JAB,
-            F2_JAB,
+        ////If even, its a player 1 punch
+        //public static bool IsPlayer1Punch(PunchThrown punch)
+        //{
+        //    return (((int)punch) & 1) == 0;
+        //}
 
-            F1_PP,
-            F2_PP,
-         };
+        ////If even, its a player 1 punch
+        //public static bool IsJab(PunchThrown punch)
+        //{
+        //    return punch == PunchThrown.F1_JAB || punch == PunchThrown.F2_JAB;
+        //}
 
-        //If even, its a player 1 punch
-        public static bool IsPlayer1Punch(this PunchThrown punch)
+        public struct BlockResult
         {
-            return (((int)punch) & 1) == 0;
+            double F1Damage;
+            double F2Damage;
+            double F1Thrown;
+            double F2Thrown;
+            double F1Landed;
+            double F2Landed;
+        }
+
+        public class PunchResult
+        {
+            public readonly FighterState ThrownBy;
+            public readonly double Damage;
+            public readonly double Accuracy;
+            public readonly PunchType Punch;
+
         }
 
         public void SetRandomVariables()
@@ -46,50 +62,66 @@ namespace FightSim
             this.BlockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75));
         }
 
-        //Boxers fight!
+        /*Boxers fight!
+        *Return -1 if no KO
+        * Return when in block it happened i.e. punch we at/ total punches this block * 60 (convert to seconds) 
+        */
+        
         public double Play()
         {
             SetRandomVariables(); //Seperated into a dif function mainly for testing
 
-            PunchThrown[] punches = GeneratePunchDistribution();
+            (PunchType, FighterState)[] punches = GeneratePunchDistribution();
 
-            for(int p = 0; p < punches.Length; ++p)
+            for(int p = 1; p <= punches.Length; ++p)
             {
-                PunchThrown punch = punches[p];
-                FighterState fs = Block.IsPlayer1Punch(punch) ? f1 : f2;
-                FighterState op = Block.IsPlayer1Punch(punch) ? f2 : f1;
+                (PunchType, FighterState) punch = punches[p-1];
+                FighterState puncher = punch.Item2;
+                FighterState defender = puncher == f1 ? f2 : f1;
 
                 double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * f1.Power();
+
+                if (punch.Item1 == PunchType.JAB)
+                    expectedDamage *= Constants.JAB_POWER;
               
-                double expectedAcc = -0.28 + (fs.ExpectedAccuracy() + op.ExpectedDefense()) * 0.01;
+                double expectedAcc = -0.28 + (puncher.ExpectedAccuracy() + defender.ExpectedDefense()) * 0.01;
 
                 //our two big punch stats
-                double realizedAcc = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
+                double realizedAcc    = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
                 double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
 
+                //DOWN GOES THE DEFENDER! 
+                if (defender.IncrementHealth(-realizedDamage) < 0) //todo maybe we should not write to fighter state class from this class ?
+                    return 60d * p / punches.Length;               //Basically which second of the block was the stopage
 
             }
 
             return -1;
         }
 
-        public PunchThrown[] GeneratePunchDistribution()
+        public (PunchType, FighterState)[] GeneratePunchDistribution()
         {
             (int, int) f1Punches = FighterPunchDistribution(f1, f2);
             (int, int) f2Punches = FighterPunchDistribution(f2, f1);
 
             Console.WriteLine( f1Punches);
 
-            PunchThrown[] punches = new PunchThrown[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
-            int idx = 0;
+            (PunchType, FighterState)[] punches = new (PunchType, FighterState)[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
+
+            (PunchType, FighterState) F1_Jab = (PunchType.JAB, f1);
+            (PunchType, FighterState) F2_Jab = (PunchType.JAB, f2);
+            (PunchType, FighterState) F1_PP = (PunchType.POWER_PUNCH, f1);
+            (PunchType, FighterState) F2_PP = (PunchType.POWER_PUNCH, f2);
+
+            int p = 0;
             for (int x = 0; x < f1Punches.Item1; ++x)
-                punches[idx++] = PunchThrown.F1_JAB;
+                punches[p++] = F1_Jab;
             for (int x = 0; x < f1Punches.Item2; ++x)
-                punches[idx++] = PunchThrown.F1_PP;
+                punches[p++] = F1_PP;
             for (int x = 0; x < f2Punches.Item1; ++x)
-                punches[idx++] = PunchThrown.F2_JAB;
+                punches[p++] = F2_Jab;
             for (int x = 0; x < f2Punches.Item2; ++x)
-                punches[idx++] = PunchThrown.F2_PP;
+                punches[p++] = F2_PP;
 
             MathUtils.Shuffle(punches);
 
