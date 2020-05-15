@@ -17,21 +17,33 @@ namespace Main
 
         static void Main(string[] args)
         {
+
             Alex();
             //Vlad(); TODO Uncomment and comment out mine
 
  
         }
 
-        static void Vlad() {; }
+        static void Vlad() {
+                      FighterPool fp1 = new FighterPool();
+
+             fp1.SimulateFights();
+
+            Console.WriteLine(fp1.Stats());
+            Console.WriteLine(fp1.Index("Fighter 594"));
+
+            fp1.SimulateFight(1, 2);
+          
+          
+          
+        }
 
         static void Alex()
         {
             //FighterPool fp1 = new FighterPool();
 
-            // fp1.SimulateFights();
 
-            //Console.WriteLine(fp1.Stats());
+
             //TestRoundIntensity();
             //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
 
@@ -65,6 +77,11 @@ namespace Main
 
 
             Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
+
+
+            Console.WriteLine("wdef");
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             // Console.WriteLine("wdef");
             //var stopwatch = new Stopwatch();
