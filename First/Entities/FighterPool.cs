@@ -8,7 +8,7 @@ namespace Main
     public class FighterPool
     {
         private List<Fighter> fighters;
-        Random rand; //todo check out my MathUtiliy lib from rand functionality
+        Random rand; //todo check out my MathUtility lib from rand functionality
 
         public FighterPool(int size = 1024)
         {

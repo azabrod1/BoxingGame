@@ -7,16 +7,24 @@ namespace FightSim
     {
         Fighter Self;
         public double Health { get; set; }
+        public double RecoveryRate;
 
         public FighterState(Fighter fighter)
         {
             this.Self = fighter;
             this.Health = GetDurability();
+            this.RecoveryRate = CalcRecoveryRate();
         }
 
         public double IncrementHealth(double change)
         {
             Health = Math.Min(change + Health, GetDurability() );
+            return Health;
+        }
+
+        public double RecoverFor(double seconds)
+        {
+            IncrementHealth(RecoveryRate*seconds);
             return Health;
         }
 
@@ -53,10 +61,10 @@ namespace FightSim
             return PowerDurabilityFormula(Self.Durability)*weightBuff;
         }
 
-        public double RecoveryRate()
+        //How much fighters are expected to recover per second
+        private double CalcRecoveryRate()
         {
-              return GetDurability() * 0.0625;   //Divide by 16
-          //  return getDurability() * 0.083333; //divide by 12
+              return GetDurability() * 0.00104166666;   //Divide by 16 * 60
         }
 
         public double AggressionCalc(int round)
@@ -101,6 +109,11 @@ namespace FightSim
         {
             double jabPercentNormal = Self.JabPercent;
             return Self.JabPercent;
+        }
+
+        public string Name()
+        {
+            return Self.Name;
         }
 
     }

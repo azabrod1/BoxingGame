@@ -15,37 +15,39 @@ namespace FightSim
         {
             FightState fightState = new FightState(fight);
             return null;
+
+
         }
 
-        private BoxScore SimFight(FightState fight)
+        private FightOutcome SimFight(FightState fight)
         {
             double result = -1; //Second fight ends
 
-            for (int round = 1; round <= fight.Fight.RoundsScheduled; ++round)
+            for (; fight.Round <= fight.Fight.RoundsScheduled; fight.Round++)
             {
-                for (int min = 0; min < 3 && result == -1; ++min)
+                for (int min = 0; min < 3; ++min)
                 {
                     Block block = new Block(fight);
 
-                    result = block.Play();
+                    var blockOutcome = block.Play();
 
-                    /*
-                    if (opponent.IncrementHealth(-damage[result]) <= 0)
-                    {
-                        round = 12;
+                    //Incorperate into BoxScore somehow?
+                    
+
+                    if (blockOutcome.Stoppage != -1)
                         break;
-                    }
 
-                    opponent.IncrementHealth(opponent.RecoveryRate());
-                    ++result;
-                    */
-
+                    fight.f1.RecoverFor(60);
+                    fight.f2.RecoverFor(60);
                 }
+
+                fight.f1.RecoverFor(60);
+                fight.f2.RecoverFor(60);
 
                 //   Console.WriteLine("Damage " + (int)rndDam);
 
                 //opponent.IncrementHealth(opponent.RecoveryRate());
-                
+
             }
 
             return null;

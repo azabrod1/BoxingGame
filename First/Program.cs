@@ -10,8 +10,14 @@ namespace Main
 {
     class Program
     {
+        struct X
+        {
+            public List<int> list;
+        }
+
         static void Main(string[] args)
         {
+
             //FighterPool fp1 = new FighterPool();
 
             // fp1.SimulateFights();
@@ -52,11 +58,11 @@ namespace Main
             Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
             // Console.WriteLine("wdef");
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //var stopwatch = new Stopwatch();
+            //stopwatch.Start();
             TryKO();
-            stopwatch.Stop();
-            Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
+            //stopwatch.Stop();
+            //Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
 
 
             Fighter fighter = new Fighter
@@ -88,7 +94,7 @@ namespace Main
             FightState fs = new FightState(new Fight(fighter, opponent));
 
 
-            PunchDistroTest(fs);
+           // PunchDistroTest(fs);
 
         }
 
@@ -112,7 +118,7 @@ namespace Main
                     block.Play();
                     var distro = block.GeneratePunchDistribution();
                     foreach(var punch in distro)
-                        Console.WriteLine(punch);
+                        Console.WriteLine(punch.Item2.Name());
 
                 }
 
@@ -150,16 +156,18 @@ namespace Main
 
         public static void TryKO()
         {
-            Fighter fighter = new Fighter();
-            fighter.Weight = 150;
-            fighter.Stamina = 50;
-            fighter.HandSpeed = 50;
-            fighter.RingGen = 95;
-            fighter.Aggression = 50;
-            fighter.FootWork = 50;
-            fighter.Reach = 84;
-            fighter.Durability = 50;
-            fighter.Power = 50;
+            Fighter fighter = new Fighter
+            {
+                Weight = 150,
+                Stamina = 50,
+                HandSpeed = 50,
+                RingGen = 95,
+                Aggression = 50,
+                FootWork = 50,
+                Reach = 84,
+                Durability = 50,
+                Power = 50
+            };
 
             Fighter opponent = new Fighter();
             opponent.Weight = 150;
@@ -289,14 +297,14 @@ namespace Main
                         break;
                     }
 
-                    opponent.IncrementHealth(opponent.RecoveryRate());
+                    opponent.RecoverFor(60);
                     ++result;
 
                 }
 
                 //   Console.WriteLine("Damage " + (int)rndDam);
 
-                opponent.IncrementHealth(opponent.RecoveryRate());
+                opponent.RecoverFor(60);
             }
 
             fightStats.Result = result;
