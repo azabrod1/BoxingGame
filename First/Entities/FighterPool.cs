@@ -7,6 +7,7 @@ namespace Main
 {
     public class FighterPool
     {
+
         public readonly int top_index = 30;
 
 

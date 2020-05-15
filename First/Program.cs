@@ -10,6 +10,11 @@ namespace Main
 {
     class Program
     {
+        struct X
+        {
+            public List<int> list;
+        }
+
         static void Main(string[] args)
         {
             FighterPool fp1 = new FighterPool();
@@ -20,6 +25,9 @@ namespace Main
             Console.WriteLine(fp1.Index("Fighter 594"));
 
             fp1.SimulateFight(1, 2);
+
+            //FighterPool fp1 = new FighterPool();
+
 
 
             //TestRoundIntensity();
@@ -56,12 +64,17 @@ namespace Main
 
             Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
+
             Console.WriteLine("wdef");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            // Console.WriteLine("wdef");
+            //var stopwatch = new Stopwatch();
+            //stopwatch.Start();
             TryKO();
-            stopwatch.Stop();
-            Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
+            //stopwatch.Stop();
+            //Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
 
 
             Fighter fighter = new Fighter
@@ -93,9 +106,44 @@ namespace Main
             FightState fs = new FightState(new Fight(fighter, opponent));
 
 
-            // TotalPunchTest(fs);
+           // PunchDistroTest(fs);
+
+        }
 
 
+        static void PunchDistroTest(FightState fs)
+        {
+            Block block = new Block(fs);
+            fs.Round = 3;
+
+            block.Play();
+
+            List<double> list = new List<double>();
+
+            for (int i = 0; i < 1; ++i)
+            {
+                fs.Round = MathUtils.RangeUniform(1, 13);
+                double x, y;
+                x = y = 0;
+                for (int min = 0; min < 1; ++min)
+                {
+                    block.Play();
+                    var distro = block.GeneratePunchDistribution();
+                    foreach(var punch in distro)
+                        Console.WriteLine(punch.Item2.Name());
+
+                }
+
+
+                list.Add(x + y);
+
+                //Console.WriteLine("std {0}", list[list.Count - 1]);
+
+                // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
+                // Console.WriteLine("punches {0}",  punches);
+            }
+
+          
 
         }
 
@@ -120,16 +168,18 @@ namespace Main
 
         public static void TryKO()
         {
-            Fighter fighter = new Fighter();
-            fighter.Weight = 150;
-            fighter.Stamina = 50;
-            fighter.HandSpeed = 50;
-            fighter.RingGen = 95;
-            fighter.Aggression = 50;
-            fighter.FootWork = 50;
-            fighter.Reach = 84;
-            fighter.Durability = 50;
-            fighter.Power = 50;
+            Fighter fighter = new Fighter
+            {
+                Weight = 150,
+                Stamina = 50,
+                HandSpeed = 50,
+                RingGen = 95,
+                Aggression = 50,
+                FootWork = 50,
+                Reach = 84,
+                Durability = 50,
+                Power = 50
+            };
 
             Fighter opponent = new Fighter();
             opponent.Weight = 150;
@@ -259,14 +309,14 @@ namespace Main
                         break;
                     }
 
-                    opponent.IncrementHealth(opponent.RecoveryRate());
+                    opponent.RecoverFor(60);
                     ++result;
 
                 }
 
                 //   Console.WriteLine("Damage " + (int)rndDam);
 
-                opponent.IncrementHealth(opponent.RecoveryRate());
+                opponent.RecoverFor(60);
             }
 
             fightStats.Result = result;
