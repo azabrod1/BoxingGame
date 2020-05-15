@@ -39,8 +39,9 @@ namespace Boxing.FightOutcome
             };
 
             return summary;
-
         }
+
+
 
 
 

@@ -17,7 +17,15 @@ namespace Main
 
         static void Main(string[] args)
         {
-            FighterPool fp1 = new FighterPool();
+
+            Alex();
+            //Vlad(); TODO Uncomment and comment out mine
+
+ 
+        }
+
+        static void Vlad() {
+                      FighterPool fp1 = new FighterPool();
 
              fp1.SimulateFights();
 
@@ -25,7 +33,13 @@ namespace Main
             Console.WriteLine(fp1.Index("Fighter 594"));
 
             fp1.SimulateFight(1, 2);
+          
+          
+          
+        }
 
+        static void Alex()
+        {
             //FighterPool fp1 = new FighterPool();
 
 
@@ -106,8 +120,7 @@ namespace Main
             FightState fs = new FightState(new Fight(fighter, opponent));
 
 
-           // PunchDistroTest(fs);
-
+            // PunchDistroTest(fs);
         }
 
 
