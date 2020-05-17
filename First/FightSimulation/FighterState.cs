@@ -18,13 +18,13 @@ namespace FightSim
 
         public double IncrementHealth(double change)
         {
-            Health = Math.Min(change + Health, GetDurability() );
+            Health = Math.Min(change + Health, GetDurability());
             return Health;
         }
 
         public double RecoverFor(double seconds)
         {
-            IncrementHealth(RecoveryRate*seconds);
+            IncrementHealth(RecoveryRate * seconds);
             return Health;
         }
 
@@ -36,15 +36,16 @@ namespace FightSim
             return power;
         }
 
-        //todo: make these out of 100?? Or maybe not - need to make sure if fighter has everything better they dominate 
         public double ExpectedAccuracy()
         {
-            return Self.Accuracy + Constants.HAND_SPEED_ACC_BUFF* Self.HandSpeed + Constants.FOOT_WORK_ACC_BUFF * Self.FootWork;
+            double accuracy = MathUtils.WeightedAverage(Self.Accuracy, 1, Self.HandSpeed, Constants.HAND_SPEED_ACC_BUFF, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
+            return accuracy;
         }
 
         public double ExpectedDefense()
         {
-            return (1+Constants.HAND_SPEED_ACC_BUFF)*Self.Defense + Constants.FOOT_WORK_ACC_BUFF * Self.FootWork;
+            double defense = MathUtils.WeightedAverage(Self.Defense, 1, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
+            return defense;
         }
 
         public double PowerDurabilityFormula(double skill)
@@ -56,26 +57,26 @@ namespace FightSim
         {
             const double WEIGHT_DURABILITY_BUFF = 0.8;
             //Power should increase with weight at a slightly higher rate than durability w weight  i.e. HW KOs are more powerful 
-            double weightBuff = MathUtils.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1-WEIGHT_DURABILITY_BUFF);
-           // Console.WriteLine(weightBuff);
-            return PowerDurabilityFormula(Self.Durability)*weightBuff;
+            double weightBuff = MathUtils.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1 - WEIGHT_DURABILITY_BUFF);
+            double durability = PowerDurabilityFormula(Self.Durability) * weightBuff;
+            return durability;
         }
 
         //How much fighters are expected to recover per second
         private double CalcRecoveryRate()
         {
-              return GetDurability() * 0.00104166666;   //Divide by 16 * 60
+            return GetDurability() * 0.00104166666;   //Divide by 16 * 60
         }
 
         public double AggressionCalc(int round)
         {
-            double agg = round <= 2 ? Self.Aggression * .5 : Self.Aggression * 1.1;
+            double agg = round <= 1 ? Self.Aggression * .5 : Self.Aggression * 1.1;
             return agg;
         }
 
         public double PreferredDistance(FighterState opponent)
         {
-            double reachDifference    = Self.Reach - opponent.Self.Reach;
+            double reachDifference = Self.Reach - opponent.Self.Reach;
             double absReachDifference = Math.Abs(reachDifference) - 0.7; //small reach adv does not rly matter
             if (absReachDifference < 0)
                 absReachDifference = 0;
@@ -107,7 +108,6 @@ namespace FightSim
 
         public double ExpectedJabRatio()
         {
-            double jabPercentNormal = Self.JabPercent;
             return Self.JabPercent;
         }
 

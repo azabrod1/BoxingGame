@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Main;
 namespace FightSim
 {
@@ -7,13 +8,13 @@ namespace FightSim
 
     public class FightState
     {
-        public int Round = 1;
+        public int Round = 0;
 
         public Fight Fight;
-        public FighterState f1, f2;
-        public double fightControl;
-        public double FightDistance; //Distance the fight is faught at
-        public BoxScore boxScore;
+        public FighterState F1, F2;
+        public double FightControl;
+        public double FightDistance;     //Distance the fight is faught at
+        public List<FightStats> FightStats; //Round By Round fight stats 
 
         public const double REACH_ADV = 0.025;
 
@@ -30,19 +31,18 @@ namespace FightSim
         public FightState(Fight fight)
         {
             this.Fight = fight;
-            this.fightControl = FightControl();
+            this.FightControl = CalcFightControl();
 
-            this.f1 = new FighterState(fight.b1);
-            this.f2 = new FighterState(fight.b2);
+            this.F1 = new FighterState(fight.b1);
+            this.F2 = new FighterState(fight.b2);
 
             //We should add some randomness here?
-            FightDistance = fightControl * f1.PreferredDistance(f2) + (1-fightControl) * f2.PreferredDistance(f1);
-
-            this.boxScore = new BoxScore();
+            FightDistance = FightControl * F1.PreferredDistance(F2) + (1-FightControl) * F2.PreferredDistance(F1);
+            FightStats = new List<FightStats>();
         }
 
         //Percent of match control that b1 gets
-        public double FightControl()
+        public double CalcFightControl()
         {
             double control = Utility.AttributeRatioCustom(Fight.b1.RingGen, Fight.b2.RingGen, 2d, Fight.b1.FootWork, Fight.b2.FootWork, Constants.SQR_ROOT_TWO);
             return control;

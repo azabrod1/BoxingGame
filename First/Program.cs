@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using FightSim;
-using MathNet.Numerics.Distributions;
 
 namespace Main
 {
@@ -19,23 +18,22 @@ namespace Main
         {
 
             Alex();
-            //Vlad(); TODO Uncomment and comment out mine
+            //Vlad(); //TODO Uncomment and comment out mine
 
- 
+
         }
 
-        static void Vlad() {
-                      FighterPool fp1 = new FighterPool();
+        static void Vlad()
+        {
+            FighterPool fp1 = new FighterPool();
 
-             fp1.SimulateFights();
+            fp1.SimulateFights();
 
             Console.WriteLine(fp1.Stats());
             Console.WriteLine(fp1.Index("Fighter 594"));
 
             fp1.SimulateFight(1, 2);
-          
-          
-          
+
         }
 
         static void Alex()
@@ -79,50 +77,70 @@ namespace Main
             Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
 
-            Console.WriteLine("wdef");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             // Console.WriteLine("wdef");
             //var stopwatch = new Stopwatch();
             //stopwatch.Start();
-            TryKO();
+            // TryKO();
             //stopwatch.Stop();
             //Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
 
+            const int A_Skill = 50;
+            const int B_Skill = 50;
 
-            Fighter fighter = new Fighter
+            Fighter fighter = new Fighter("Benji")
             {
-                Weight = 150,
-                Stamina = 50,
-                HandSpeed = 50,
-                RingGen = 95,
-                Aggression = 50,
-                FootWork = 50,
-                Reach = 84,
-                Durability = 50,
-                Power = 50
+                Weight     = 150,
+                Stamina    = A_Skill,
+                HandSpeed  = A_Skill,
+                RingGen    = A_Skill,
+                Aggression = A_Skill,
+                FootWork   = A_Skill,
+                Reach      = A_Skill,
+                Durability = A_Skill,
+                Power      = A_Skill,
+                Defense    = A_Skill,
+
             };
 
-            Fighter opponent = new Fighter
+            Fighter opponent = new Fighter("Cody")
             {
-                Weight = 150,
-                Stamina = 50,
-                HandSpeed = 50,
-                RingGen = 95,
-                Aggression = 50,
-                FootWork = 50,
-                Reach = 84,
-                Durability = 50
+                Weight     = 150,
+                Stamina    = B_Skill,
+                HandSpeed  = B_Skill,
+                RingGen    = B_Skill,
+                Aggression = B_Skill,
+                FootWork   = B_Skill,
+                Reach      = B_Skill,
+                Durability = B_Skill,
+                Power      = B_Skill,
+                Defense    = B_Skill,
+
             };
 
+            List<FightOutcome> outcomes = new List<FightOutcome>();
+            List<FightStats> fightStats = new List<FightStats>();
 
-            FightState fs = new FightState(new Fight(fighter, opponent));
+            for (int f = 0; f < 2000; ++f)
+            {
+                Fight fight = new Fight(fighter, opponent);
 
+                FightSimulator fs = new FightSimulatorGauss();
+                var result = fs.SimulateFightWithDetails(fight);
 
-            // PunchDistroTest(fs);
+                //    Console.WriteLine(result.outcome);
+
+                outcomes.Add(result.outcome);
+                fightStats.Add(result.Stats.Condense());
+            }
+
+            Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
+            Console.WriteLine(outcomes.SummaryFightOutcomes());
+
+            //  TryKO();
         }
-
 
         static void PunchDistroTest(FightState fs)
         {
@@ -155,8 +173,6 @@ namespace Main
                 // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
                 // Console.WriteLine("punches {0}",  punches);
             }
-
-          
 
         }
 
@@ -540,8 +556,8 @@ namespace Main
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
-                double f1Jab = block.JabPercentages(state.f1, state.f2);
-                double f2Jab = block.JabPercentages(state.f2, state.f1);
+                double f1Jab = block.JabPercentages(state.F1, state.F2);
+                double f2Jab = block.JabPercentages(state.F2, state.F1);
 
                 Console.WriteLine("f1  {0}, f2 std {1}", (int)(f1Jab * 100), (int)(f2Jab * 100));
 
@@ -590,10 +606,10 @@ namespace Main
             FightState state = new FightState(fight);
             state.Round = 4;
 
-            double distancePref1 = state.f1.PreferredDistance(state.f2);
+            double distancePref1 = state.F1.PreferredDistance(state.F2);
             Console.WriteLine(distancePref1);
 
-            double distancePref2 = state.f2.PreferredDistance(state.f1);
+            double distancePref2 = state.F2.PreferredDistance(state.F1);
             Console.WriteLine(distancePref2);
 
             Console.WriteLine(state.FightDistance);
@@ -619,8 +635,8 @@ namespace Main
                 //list.Add(normal.PunchCapacity(fs));
 
 
-                var x = block.BoxerPunchesPerRound(state.f1);
-                double y = block.BoxerPunchesPerRound(state.f2);
+                var x = block.BoxerPunchesPerRound(state.F1);
+                double y = block.BoxerPunchesPerRound(state.F2);
 
                 f1.Add(x);
                 f2.Add(y);
@@ -689,8 +705,8 @@ namespace Main
                 for (int min = 0; min < 3; ++min)
                 {
                     block.Play();
-                    x += block.BoxerPunchesPerRound(fs.f1) / 3;
-                    y += block.BoxerPunchesPerRound(fs.f2) / 3;
+                    x += block.BoxerPunchesPerRound(fs.F1) / 3;
+                    y += block.BoxerPunchesPerRound(fs.F2) / 3;
                 }
 
                 list.Add(x + y);

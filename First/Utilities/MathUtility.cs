@@ -101,7 +101,10 @@ namespace Main
             return String.Format($"Avg {finalAvg} , Std {finalStd}, ElementStd {elementStd}" );
 
         }
-
+        
+        /* Weighted Average
+         * Gives weighted average and normalizes the weights to one
+         */
         public static double WeightedAverage(params int[] list)
         {
             if (list.Length == 0 || (list.Length & 1) == 1)

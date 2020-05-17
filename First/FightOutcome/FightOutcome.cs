@@ -11,22 +11,37 @@ namespace FightSim
 
     /* This object will be stamped on the Fight object after a fight
 
-    */ 
-     
+    */
+
     public class FightOutcome
     {
-        public readonly double TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
+        public readonly int TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
         public readonly MethodOfResult Method;
         public readonly Main.Fighter Winner;
 
-        public readonly int[,] Scorecards = new int[3,2]; 
+        public readonly int[,] Scorecards = new int[3, 2];
 
-        public FightOutcome(double timeOfStoppage, MethodOfResult method, Main.Fighter winner)
+        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner)
         {
             this.TimeOfStoppage = timeOfStoppage; //use double.PositiveInfinity for no KO
             this.Method = method;
             this.Winner = winner;
         }
-     
+
+        public override string ToString()
+        {
+            string ret = String.Format($"Winner: {Winner}, Method: {Method}");
+            if (this.IsKO())
+                ret += String.Format(", Time of stoppage: Round {0}, Time: {1}", RoundOfStoppage(), TimeOfStoppage - RoundOfStoppage() * 180);
+
+            return ret; 
+
+        }
+
+        public int RoundOfStoppage()
+        {
+            return TimeOfStoppage / 180;
+        }
+
     }
 }

@@ -25,7 +25,6 @@ namespace Main
     public static class Utility
     {
 
-
         //names
 
         static int PlayerNO = 1;

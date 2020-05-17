@@ -6,6 +6,9 @@ namespace Main
 
         public const double ATTRIB_BUFF_DEFAULT       = 2;
 
+        public const double BLOCKS_IN_ROUND           = 3;
+
+
         //Math
         public const double CUBE_ROOT_TWO  = 1.25992104989;
         public const double SQR_ROOT_TWO   = 1.41421356237;

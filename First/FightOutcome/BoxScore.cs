@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace FightSim
 {
+    //Depricated
     public class BoxScore
     {
         public double Result; //Second the fight ended

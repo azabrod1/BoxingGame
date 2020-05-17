@@ -19,22 +19,9 @@ namespace FightSim
         public Block(FightState fight)
         {
             this.Fight = fight;
-            this.f1 = fight.f1;
-            this.f2 = fight.f2;
+            this.f1 = fight.F1;
+            this.f2 = fight.F2;
         }
-
-        ////If even, its a player 1 punch
-        //public static bool IsPlayer1Punch(PunchThrown punch)
-        //{
-        //    return (((int)punch) & 1) == 0;
-        //}
-
-        ////If even, its a player 1 punch
-        //public static bool IsJab(PunchThrown punch)
-        //{
-        //    return punch == PunchThrown.F1_JAB || punch == PunchThrown.F2_JAB;
-        //}
-
 
         public class PunchResult
         {
@@ -46,9 +33,9 @@ namespace FightSim
             public PunchResult(FighterState thrownBy, double damage, double accuracy, PunchType punch)
             {
                 this.ThrownBy = thrownBy;
-                this.Damage = damage;
+                this.Damage   = damage;
                 this.Accuracy = accuracy;
-                this.Punch = punch;
+                this.Punch    = punch;
             }
 
         }
@@ -67,7 +54,7 @@ namespace FightSim
         * Return when in block it happened i.e. punch we at/ total punches this block * 60 (convert to seconds) 
         */
         
-        public (List<PunchResult> Punches, double Stoppage) Play()
+        public (List<PunchResult> Punches, int Stoppage) Play()
         {
             SetRandomVariables(); //Seperated into a dif function mainly for testing
 
@@ -78,25 +65,24 @@ namespace FightSim
             for (int p = 1; p <= punches.Length; ++p)
             {
                 (PunchType, FighterState) punch = punches[p - 1];
-                FighterState puncher = punch.Item2;
-                FighterState defender = puncher == f1 ? f2 : f1;
+                FighterState attacker = punch.Item2;
+                FighterState defender = attacker == f1 ? f2 : f1;
 
-                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * f1.Power();
+                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * attacker.Power();
 
                 if (punch.Item1 == PunchType.JAB)
                     expectedDamage *= Constants.JAB_POWER;
 
-                double expectedAcc = -0.28 + (puncher.ExpectedAccuracy() + defender.ExpectedDefense()) * 0.01;
-
                 //our two big punch stats
-                double realizedAcc = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
+                double expectedAcc    = ExpectedAccuracy(attacker, defender);
+                double realizedAcc    = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
                 double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
 
-                punchOutcomes.Add(new PunchResult(puncher, realizedDamage, realizedAcc, punch.Item1));
+                punchOutcomes.Add(new PunchResult(attacker, realizedDamage, realizedAcc, punch.Item1));
 
                 //DOWN GOES THE DEFENDER! 
-                if (defender.IncrementHealth(-realizedDamage) < 0)                         //todo maybe we should not write to fighter state class from this class ?
-                    return (Punches : punchOutcomes, Stoppage: 60d * p / punches.Length);  //Basically which second of the block was the stopage
+                if (defender.IncrementHealth(-realizedDamage) <= 0)                              //todo maybe we should not write to fighter state class from this class ?
+                    return (Punches : punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Basically which second of the block was the stopage
 
             }
 
@@ -107,8 +93,6 @@ namespace FightSim
         {
             (int, int) f1Punches = FighterPunchDistribution(f1, f2);
             (int, int) f2Punches = FighterPunchDistribution(f2, f1);
-
-            Console.WriteLine( f1Punches);
 
             (PunchType, FighterState)[] punches = new (PunchType, FighterState)[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
 
@@ -155,7 +139,7 @@ namespace FightSim
         {
             double mean = PUNCHES_FROM_INTENSITY;
 
-            double aggressiveness = Fight.fightControl * f1.AggressionCalc(Fight.Round) + (1 - Fight.fightControl) * f2.AggressionCalc(Fight.Round);
+            double aggressiveness = Fight.FightControl * f1.AggressionCalc(Fight.Round) + (1 - Fight.FightControl) * f2.AggressionCalc(Fight.Round);
 
             mean += (aggressiveness - 50) * 0.35;
 
@@ -199,10 +183,10 @@ namespace FightSim
 
         }
 
-        public static double ExpectedAccuracy(FighterState fighter, FighterState opponent)
+        public static double ExpectedAccuracy(FighterState attacker, FighterState defender)
         {
-
-            return -1;
+            double expectedAcc = -0.28 + (attacker.ExpectedAccuracy() - defender.ExpectedDefense()) * 0.0012;
+            return expectedAcc;
         }
 
     }
