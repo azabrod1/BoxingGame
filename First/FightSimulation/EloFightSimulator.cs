@@ -68,7 +68,7 @@ namespace FightSim
 
         private static double getNetworkViewers(double elo1, double elo2)
         {
-            return (elo1 + elo2) / 2;
+            return MathUtils.Gauss(((elo1 + elo2) / 2), 100);
         }
 
     }
