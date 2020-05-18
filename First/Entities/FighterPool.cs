@@ -7,7 +7,7 @@ namespace Main
 {
     public class FighterPool
     {
-        private List<Fighter> Fighters;
+        public List<Fighter> Fighters { get; set; }
         Random rand;
         int top_index;
 
@@ -70,7 +70,7 @@ namespace Main
         }
 
 
-        public FightOutcome SimulateFight(int index1, int index2)
+        public FightOutcome SimulateFight(int index1, int index2, bool printResult = true)
         {
             Fighter f1 = Fighters[index1];
             Fighter f2 = Fighters[index2];
@@ -78,14 +78,27 @@ namespace Main
             FightSimulator fs = new EloFightSimulator();
             FightOutcome fo = fs.SimulateFight(ff);
 
-            if (this.isTopFighter(index1) || this.isTopFighter(index2))
+            if (printResult && (this.isTopFighter(index1) || this.isTopFighter(index2)))
             {
-                Console.WriteLine(fo.Winner.Name + " wins " + Fighters[index1].Name + "(" + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(" + Fighters[index2].Record.Rank.ToString("0") + ")");
-
+                printFightResult(index1, index2, fo);
             }
             return fo;
 
         }
+
+        public void printFightResult(int index1, int index2, FightOutcome fo)
+        {
+            Console.WriteLine(Fighters[index1].Name + "(elo = " + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(elo = " + Fighters[index2].Record.Rank.ToString("0") + ")");
+
+            Console.WriteLine(fo.Winner.Name + " wins in front of " + fo.Viewership + "k audience");
+
+            Console.Write("Elo changes: " + Fighters[index1].Name + " (" + Fighters[index1].Record.PreviousRank.ToString("0") + " to " + Fighters[index1].Record.Rank.ToString("0") + ") ");
+
+            Console.WriteLine(Fighters[index2].Name + " (" + Fighters[index2].Record.PreviousRank.ToString("0") + " to " + Fighters[index2].Record.Rank.ToString("0") + ")\n");
+
+        }
+
+
 
         public void SimulateFights(int epsilon = 16)
         {
