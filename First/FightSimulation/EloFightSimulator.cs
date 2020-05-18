@@ -1,6 +1,6 @@
 ﻿using System;
 using Main;
-namespace Fighting
+namespace FightSim
 {
     public class EloFightSimulator : FightSimulator
     {
@@ -17,29 +17,39 @@ namespace Fighting
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             Fighter winner;
+
             if (rand.Next(0, 2) > 0)
             {
                 // fighter 1 won
                 updateElo(fight.b1, fight.b2);
                 winner = fight.b1;
+                fight.b1.Record.Wins++;
+                fight.b2.Record.Losses++;
+
             }
             else
             {
                 updateElo(fight.b2, fight.b1);
                 winner = fight.b2;
+                fight.b2.Record.Wins++;
+                fight.b1.Record.Losses++;
             }
-            return new FightOutcome(0, Fighting.MethodOfResult.NC, winner);
+            FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner);
+            fo.Viewership = getNetworkViewers(fight.b1.Record.Rank, fight.b2.Record.Rank);
+            return fo;
         }
 
-        
 
         private static void updateElo(Fighter winner, Fighter loser)
         {
-            double delta = eloDelta(winner.Rank, loser.Rank);
+            double delta = eloDelta(winner.Record.Rank, loser.Record.Rank);
             //winner.previous_elo = winner.rank;
             //loser.previous_elo = loser.rank;
-            winner.Rank += delta;
-            loser.Rank -= delta;
+            winner.Record.PreviousRank = winner.Record.Rank;
+            loser.Record.PreviousRank = loser.Record.Rank;
+
+            winner.Record.Rank += delta;
+            loser.Record.Rank -= delta;
         }
 
 
@@ -56,6 +66,10 @@ namespace Fighting
             return delta;
         }
 
+        private static double getNetworkViewers(double elo1, double elo2)
+        {
+            return (elo1 + elo2) / 2;
+        }
 
     }
 }

@@ -25,16 +25,6 @@ namespace Main
     public static class Utility
     {
 
-        public static double StandardDeviation(this IEnumerable<double> values, bool populationStd = true)
-        {
-            double avg = values.Average();
-            double std =  Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
-            if (!populationStd)
-                std *= ((double) values.Count() / (values.Count() - 1.0));
-
-            return std;
-        }
-
         //names
 
         static int PlayerNO = 1;
@@ -96,7 +86,7 @@ namespace Main
         private static string ResultFromDistribution(StrAttDistribution d)
         {
             double bound = d.HiLimit[d.HiLimit.Count - 1];
-            double target = StatsUtils.RangeUniform(0d, bound);
+            double target = MathUtils.RangeUniform(0d, bound);
 
             int lo = 0, hi = d.Names.Count - 1;
 
@@ -116,47 +106,6 @@ namespace Main
 
         }
 
-        public static double WeightedAverage(params int[] list)
-        {
-            if (list.Length == 0 || (list.Length & 1) == 1)
-                return -1;
-
-            int i = 0;
-            double weightSum = 0;
-            double weightedSum = 0;
-            while( i < list.Length)
-            {
-                int element = list[i++];
-                int weight  = list[i++];
-                weightSum += weight;
-                weightedSum += element * weight;
-
-            }
-
-            return weightedSum / weightSum;
-
-        }
-
-        public static double WeightedAverage(params double[] list)
-        {
-            if (list.Length == 0 || (list.Length & 1) == 1)
-                return -1;
-
-            int i = 0;
-            double weightSum = 0;
-            double weightedSum = 0;
-            while (i < list.Length)
-            {
-                double element = list[i++];
-                double weight = list[i++];
-                weightSum += weight;
-                weightedSum += element * weight;
-
-            }
-
-            return weightedSum / weightSum;
-
-        }
 
         public static double AttributeRatio(int x, int y, double attDif = Constants.ATTRIB_BUFF_DEFAULT)
         {

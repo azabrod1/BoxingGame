@@ -1,37 +1,130 @@
 using System;
+using System.Collections.Generic;
 using Main;
 
-namespace Fighting
+namespace FightSim
 {
     //Represents on minute of time in a fight
     public class Block
     {
-
-        public readonly FighterState f1, f2;
-        FightState CurrFight;
+        private readonly FighterState f1, f2;
+        FightState Fight;
 
         const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
-        readonly double PUNCHES_THROWN_STD = 6.123; //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
-                                                    // const double PUNCH_DEFICIT_EARLY_FIGHT = 20; //20 less punches in first 3 rounds
+        const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
 
+        private double BlockIntensity;
+        private double BlockDamage;
 
-        //randoms
-        public double BlockIntensity;
-
-        //invisible vars
-        public double intensity;
-
-        public Block(FightState currFight)
+        public Block(FightState fight)
         {
-            this.CurrFight = currFight;
-            this.f1 = currFight.f1;
-            this.f2 = currFight.f2;
+            this.Fight = fight;
+            this.f1 = fight.F1;
+            this.f2 = fight.F2;
         }
 
-        //Boxers fight!
-        public void SimBlock()
+        public class PunchResult
         {
-            intensity = CalcBlockIntensity();
+            public readonly FighterState ThrownBy;
+            public readonly double Damage;
+            public readonly double Accuracy;
+            public readonly PunchType Punch;
+
+            public PunchResult(FighterState thrownBy, double damage, double accuracy, PunchType punch)
+            {
+                this.ThrownBy = thrownBy;
+                this.Damage   = damage;
+                this.Accuracy = accuracy;
+                this.Punch    = punch;
+            }
+
+        }
+
+        public void SetRandomVariables()
+        {
+            //How intense will this minute of the fight be?
+            this.BlockIntensity = CalcBlockIntensity();
+
+            //How damaging will the exchanges be? todo Similar to the above; consider combining
+            this.BlockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75));
+        }
+
+        /* Boxers fight!
+        * Return -1 if no KO
+        * Return when in block it happened i.e. punch we at/ total punches this block * 60 (convert to seconds) 
+        */
+        
+        public (List<PunchResult> Punches, int Stoppage) Play()
+        {
+            SetRandomVariables(); //Seperated into a dif function mainly for testing
+
+            (PunchType, FighterState)[] punches = GeneratePunchDistribution();
+
+            List<PunchResult> punchOutcomes = new List<PunchResult>(punches.Length);
+
+            for (int p = 1; p <= punches.Length; ++p)
+            {
+                (PunchType, FighterState) punch = punches[p - 1];
+                FighterState attacker = punch.Item2;
+                FighterState defender = attacker == f1 ? f2 : f1;
+
+                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * attacker.Power();
+
+                if (punch.Item1 == PunchType.JAB)
+                    expectedDamage *= Constants.JAB_POWER;
+
+                //our two big punch stats
+                double expectedAcc    = ExpectedAccuracy(attacker, defender);
+                double realizedAcc    = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
+                double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
+
+                punchOutcomes.Add(new PunchResult(attacker, realizedDamage, realizedAcc, punch.Item1));
+
+                //DOWN GOES THE DEFENDER! 
+                if (defender.IncrementHealth(-realizedDamage) <= 0)                              //todo maybe we should not write to fighter state class from this class ?
+                    return (Punches : punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Basically which second of the block was the stopage
+
+            }
+
+            return (Punches: punchOutcomes, Stoppage: -1);
+        }
+
+        public (PunchType, FighterState)[] GeneratePunchDistribution()
+        {
+            (int, int) f1Punches = FighterPunchDistribution(f1, f2);
+            (int, int) f2Punches = FighterPunchDistribution(f2, f1);
+
+            (PunchType, FighterState)[] punches = new (PunchType, FighterState)[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
+
+            (PunchType, FighterState) F1_Jab = (PunchType.JAB, f1);
+            (PunchType, FighterState) F2_Jab = (PunchType.JAB, f2);
+            (PunchType, FighterState) F1_PP = (PunchType.POWER_PUNCH, f1);
+            (PunchType, FighterState) F2_PP = (PunchType.POWER_PUNCH, f2);
+
+            int p = 0;
+            for (int x = 0; x < f1Punches.Item1; ++x)
+                punches[p++] = F1_Jab;
+            for (int x = 0; x < f1Punches.Item2; ++x)
+                punches[p++] = F1_PP;
+            for (int x = 0; x < f2Punches.Item1; ++x)
+                punches[p++] = F2_Jab;
+            for (int x = 0; x < f2Punches.Item2; ++x)
+                punches[p++] = F2_PP;
+
+            MathUtils.Shuffle(punches);
+
+            return punches;
+
+        }
+
+        private (int, int) FighterPunchDistribution(FighterState fighter, FighterState opponent)
+        {
+            double totalPunches = BoxerPunchesPerRound(fighter) * 0.333333333; //Since block is 1/3 a round
+            double jabPercent = JabPercentages(fighter, opponent);
+            int jabs = (int)(jabPercent * totalPunches + 0.5);
+            int powerPunches = (int)((1 - jabPercent) * totalPunches + 0.5);
+
+            return (jabs, powerPunches);
         }
 
         /* Intensity of a round is chosen by ring general's aggressiveness
@@ -44,37 +137,26 @@ namespace Fighting
          */
         public double CalcBlockIntensity()
         {
-            //  double mean = currFight.round < 4 ? PUNCHES_FROM_INTENSITY - PUNCH_DEFICIT_EARLY_FIGHT : PUNCHES_FROM_INTENSITY + PUNCH_DEFICIT_EARLY_FIGHT * 1.3333;
-
-
             double mean = PUNCHES_FROM_INTENSITY;
 
-            double aggressiveness = CurrFight.fightControl * f1.AggressionCalc(CurrFight.round) + (1 - CurrFight.fightControl) * f2.AggressionCalc(CurrFight.round);
-
-            /*
-            if (b1.RingGen == b2.RingGen)
-                aggressiveness = b1.AggressionCalc(CurrFight);
-            else
-                 aggressiveness = ( b1.RingGen * b1.AggressionCalc(CurrFight) + b2.RingGen * b2.AggressionCalc(CurrFight) ) / (b1.RingGen + b2.RingGen);
-                 */
+            double aggressiveness = Fight.FightControl * f1.AggressionCalc(Fight.Round) + (1 - Fight.FightControl) * f2.AggressionCalc(Fight.Round);
 
             mean += (aggressiveness - 50) * 0.35;
 
-            BlockIntensity = StatsUtils.Gauss(mean, PUNCHES_THROWN_STD);
-
-            return BlockIntensity;
+            return MathUtils.Gauss(mean, PUNCHES_THROWN_STD);
         }
 
+        //How much would they throw this round if the entire round was like this block
+        //Should be divided by how many blocks in a round
         public double BoxerPunchesPerRound(FighterState figher)
         {
-            //How much they can throw on an avg round?
-            double punchMean = figher.PunchCapacity();
-            double punchR = StatsUtils.Gauss(punchMean, PUNCHES_THROWN_STD);
-            double reachBuff = CurrFight.ReachBuff();
+            double figherMean      = figher.PunchCapacity();
+            double randomComponent = MathUtils.Gauss(figherMean, PUNCHES_THROWN_STD);
+            double reachBuff       = Fight.ReachBuff();
             if (figher == f2)
                 reachBuff *= -1;
 
-            return Math.Abs(intensity + punchR) * (1 + reachBuff);
+            return Math.Abs(BlockIntensity + randomComponent) * (1 + reachBuff);
         }
 
         public double JabPercentages(FighterState fighter, FighterState opponent)
@@ -84,9 +166,9 @@ namespace Fighting
             double jabMean      = fighter.ExpectedJabRatio();
 
             //Figher jab percent is affected by preferred distance and what distance the fight is at
-            double jabOffset = (prefDistance - 0.5) * 0.70 + (CurrFight.fightDistance-0.5)*0.30;
+            double jabOffset = (prefDistance - 0.5) * 0.70 + (Fight.FightDistance-0.5)*0.30;
 
-            double jabMultiplier = StatsUtils.Gauss(1, Constants.JAB_MULTIPLIER_STD);
+            double jabMultiplier = MathUtils.Gauss(1, Constants.JAB_MULTIPLIER_STD);
             jabOffset += jabMultiplier;
 
             if (jabOffset < 1)
@@ -101,10 +183,10 @@ namespace Fighting
 
         }
 
-        public static double ExpectedAccuracy(FighterState fighter, FighterState opponent)
+        public static double ExpectedAccuracy(FighterState attacker, FighterState defender)
         {
-
-            return -1;
+            double expectedAcc = -0.28 + (attacker.ExpectedAccuracy() - defender.ExpectedDefense()) * 0.0012;
+            return expectedAcc;
         }
 
     }

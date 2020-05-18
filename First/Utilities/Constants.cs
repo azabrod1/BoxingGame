@@ -6,6 +6,9 @@ namespace Main
 
         public const double ATTRIB_BUFF_DEFAULT       = 2;
 
+        public const double BLOCKS_IN_ROUND           = 3;
+
+
         //Math
         public const double CUBE_ROOT_TWO  = 1.25992104989;
         public const double SQR_ROOT_TWO   = 1.41421356237;
@@ -19,8 +22,9 @@ namespace Main
 
         //Fighting constants
         public const double AVG_WEIGHT_INV      = 1d/150d;
-        public const double HAND_SPEED_ACC_BUFF = 0.2;
-
+        public const double HAND_SPEED_ACC_BUFF = 0.25;
+        public const double FOOT_WORK_ACC_BUFF  = 0.1;
+        public const double JAB_POWER           = 0.15;
 
     }
 }
