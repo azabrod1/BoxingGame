@@ -8,8 +8,21 @@ namespace Main
         public int KOs { get; set; }
         public int Draws { get; set; }
 
-        public double Rank { get; set; }
-        public double PreviousRank { get; set; }
+        private double _rank;
+
+        public double Rank {
+            get { return _rank; }
+            set { PreviousRank = _rank; _rank = value; }
+            }
+
+        public double PreviousRank { get; private set; } // automatically preserved
+
+
+        public double Elo // synonim to Rank
+        {
+            get { return Rank; }
+            set { Rank = value; }
+        }
 
         public FighterRecord()
         {

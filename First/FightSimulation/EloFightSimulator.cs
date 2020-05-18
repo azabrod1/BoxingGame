@@ -36,6 +36,7 @@ namespace FightSim
             }
             FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner);
             fo.Viewership = getNetworkViewers(fight.b1.Record.Rank, fight.b2.Record.Rank);
+            fight.Outcome = fo;
             return fo;
         }
 
@@ -45,8 +46,8 @@ namespace FightSim
             double delta = eloDelta(winner.Record.Rank, loser.Record.Rank);
             //winner.previous_elo = winner.rank;
             //loser.previous_elo = loser.rank;
-            winner.Record.PreviousRank = winner.Record.Rank;
-            loser.Record.PreviousRank = loser.Record.Rank;
+            //winner.Record.PreviousRank = winner.Record.Rank;
+            //loser.Record.PreviousRank = loser.Record.Rank;
 
             winner.Record.Rank += delta;
             loser.Record.Rank -= delta;

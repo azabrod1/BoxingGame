@@ -25,6 +25,7 @@ namespace Main
 
         static void Vlad()
         {
+
             FighterPool fp1 = new FighterPool();
 
             fp1.SimulateFights();
