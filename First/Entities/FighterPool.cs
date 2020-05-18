@@ -27,8 +27,7 @@ namespace Main
                 Fighters.Add(f);
             }
 
-            Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
-            Fighters.Reverse();
+            sortFighters();
 
         }
 
@@ -112,11 +111,18 @@ namespace Main
 
 
             }
-
+            sortFighters();
 
 
         }
 
-
+        public void sortFighters()
+        {
+            Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
+            Fighters.Reverse();
+        }
     }
+
+    
+
 }
