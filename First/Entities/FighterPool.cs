@@ -8,8 +8,8 @@ namespace Main
     public class FighterPool
     {
         public List<Fighter> Fighters { get; set; }
-        Random rand;
-        int top_index;
+        private Random rand;
+        public readonly int top_index;
 
         public FighterPool(int size = 1024, int top_index = 30)
         {
@@ -27,7 +27,7 @@ namespace Main
                 Fighters.Add(f);
             }
 
-            sortFighters();
+            SortFighters();
 
         }
 
@@ -52,25 +52,25 @@ namespace Main
         }
 
 
-        public bool isTopFighter(Fighter f)
+        public bool IsTopFighter(Fighter f)
         {
-            return isTopFighter(f.Name);
+            return IsTopFighter(f.Name);
         }
 
-        public bool isTopFighter(string name)
+        public bool IsTopFighter(string name)
         {
             int index = this.Index(name);
 
-            return isTopFighter(index);
+            return IsTopFighter(index);
         }
 
-        public bool isTopFighter(int index)
+        public bool IsTopFighter(int index)
         {
             return (index >= 0 && index < top_index);
         }
 
 
-        public FightOutcome SimulateFight(int index1, int index2, bool printResult = true)
+        public FightOutcome SimulateFight(int index1, int index2, bool printResult = true, bool sortFighters = false)
         {
             Fighter f1 = Fighters[index1];
             Fighter f2 = Fighters[index2];
@@ -78,15 +78,19 @@ namespace Main
             FightSimulator fs = new EloFightSimulator();
             FightOutcome fo = fs.SimulateFight(ff);
 
-            if (printResult && (this.isTopFighter(index1) || this.isTopFighter(index2)))
+            if (printResult && (this.IsTopFighter(index1) || this.IsTopFighter(index2)))
             {
-                printFightResult(index1, index2, fo);
+                PrintFightResult(index1, index2, fo);
+            }
+            if (sortFighters) // sort the pool 
+            {
+                SortFighters();
             }
             return fo;
 
         }
 
-        public void printFightResult(int index1, int index2, FightOutcome fo)
+        public void PrintFightResult(int index1, int index2, FightOutcome fo)
         {
             Console.WriteLine(Fighters[index1].Name + "(elo = " + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(elo = " + Fighters[index2].Record.Rank.ToString("0") + ")");
 
@@ -121,15 +125,13 @@ namespace Main
 
                 FightOutcome fo = this.SimulateFight(i, op);
 
-
-
             }
-            sortFighters();
+            SortFighters();
 
 
         }
 
-        public void sortFighters()
+        public void SortFighters()
         {
             Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
             Fighters.Reverse();

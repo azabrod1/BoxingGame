@@ -62,6 +62,10 @@ namespace FightSim
 
             List<PunchResult> punchOutcomes = new List<PunchResult>(punches.Length);
 
+            //Caching for speed
+            double expectedAccF1 = ExpectedAccuracy(f1, f2);
+            double expectedAccF2 = ExpectedAccuracy(f2, f1);
+
             for (int p = 1; p <= punches.Length; ++p)
             {
                 (PunchType, FighterState) punch = punches[p - 1];
@@ -74,16 +78,27 @@ namespace FightSim
                     expectedDamage *= Constants.JAB_POWER;
 
                 //our two big punch stats
-                double expectedAcc    = ExpectedAccuracy(attacker, defender);
+                double expectedAcc = attacker == f1 ? expectedAccF1 : expectedAccF2;
                 double realizedAcc    = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
                 double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
 
                 punchOutcomes.Add(new PunchResult(attacker, realizedDamage, realizedAcc, punch.Item1));
 
-                //DOWN GOES THE DEFENDER! 
-                if (defender.IncrementHealth(-realizedDamage) <= 0)                              //todo maybe we should not write to fighter state class from this class ?
-                    return (Punches : punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Basically which second of the block was the stopage
+                /***    DOWN HE GOES!
+                 * A knockdown happens if fighter is 0 health or they eat a shot their chin cant handle.
+                 * They get back up if they have enough time to get positive health 
+                 *
+                 * ***/
+                if (defender.IncrementHealth(-realizedDamage) <= 0 || realizedDamage > defender.Chin()) 
+                {          
+                    defender.RecoverFor(15); //Knockdown gives you about 15 seconds to recover
 
+                    if (defender.Health <= 0) //THE REF IS GONNA WAVE IT OFF!
+                        return (Punches: punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Basically which second of the block was the stopage
+                    else
+                                             //The fighter recovers and its regestered as knockdown
+                        Fight.RegisterKnockdown(attacker);
+                }
             }
 
             return (Punches: punchOutcomes, Stoppage: -1);

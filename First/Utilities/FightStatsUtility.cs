@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Main;
 
 namespace FightSim
 {
@@ -86,7 +87,7 @@ namespace FightSim
                   .AppendFormat("Avg Landed     {0}\n", list.AverageLanded(isFighter1))
                   .AppendFormat("Avg Accuracy   {0}\n", list.LandedPercent(isFighter1))
                   .AppendFormat("Jab Percent    {0}\n", list.AvgJabPercent(isFighter1))
-                  .AppendFormat("Avg Knockdowns {0}\n", list.KnockDowns(isFighter1))
+                  .AppendFormat("Avg Knockdowns {0}\n", list.KnockDownsAvg(isFighter1))
                   .AppendLine();
             }
 
@@ -96,6 +97,11 @@ namespace FightSim
         public static double AverageDamage(this List<FightStats> list, bool Fighter1)
         {
             return list.Select(s => Fighter1 ? s.Damage.Fighter1 : s.Damage.Fighter2).Average();
+        }
+
+        public static double StandardDeviationDamage(this List<FightStats> list, bool Fighter1)
+        {
+            return list.Select(s => Fighter1 ? s.Damage.Fighter1 : s.Damage.Fighter2).ToList().StandardDeviation();
         }
 
         public static int TotalLanded(this List<FightStats> list, bool Fighter1)
@@ -130,15 +136,35 @@ namespace FightSim
 
         public static int KnockDowns(this List<FightStats> list, bool Fighter1)
         {
-            return list.Select(s => Fighter1 ? s.KnockedDown.Fighter1 : s.KnockedDown.Fighter2).Sum();
+            return list.Select(s => Fighter1 ? s.Knockdowns.Fighter1 : s.Knockdowns.Fighter2).Sum();
+        }
+
+        public static double KnockDownsAvg(this List<FightStats> list, bool Fighter1)
+        {
+            return list.Select(s => Fighter1 ? s.Knockdowns.Fighter1 : s.Knockdowns.Fighter2).Average();
         }
 
 
-        public static FightStats Condense(this List<FightStats> list)
+        public static FightStats Condense(this List<FightStats> list, bool useAverages = false)
         {
             FightStats summaryOfSummaries = new FightStats();
             foreach (FightStats s in list)
                 summaryOfSummaries.Append(s);
+
+            if (useAverages) //Flawed due to integer rounding issues, used mostly for rounds - for testing only
+            {
+                summaryOfSummaries.Damage.Fighter1 /= list.Count;
+                summaryOfSummaries.Damage.Fighter2 /= list.Count;
+
+                summaryOfSummaries.Thrown.Fighter1 /= list.Count;
+                summaryOfSummaries.Thrown.Fighter2 /= list.Count;
+
+                summaryOfSummaries.Landed.Fighter1 /= list.Count;
+                summaryOfSummaries.Landed.Fighter2 /= list.Count;
+
+                summaryOfSummaries.Jabs.Fighter1 /= list.Count;
+                summaryOfSummaries.Jabs.Fighter2 /= list.Count;
+            }
 
             return summaryOfSummaries;
 
