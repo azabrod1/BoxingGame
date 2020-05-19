@@ -25,8 +25,12 @@ namespace FightSim
 
             List<Task> tasks = new List<Task>();
 
-            for (int f = 0; f < fights.Count; f+= FIGHTS_PER_THREAD)
-                tasks[f / FIGHTS_PER_THREAD] = Task.Factory.StartNew(() => SimFights(results, fights, f, Math.Min(fights.Count, f + FIGHTS_PER_THREAD ) - 1 ) ) ;
+            for (int f = 0; f < fights.Count; f += FIGHTS_PER_THREAD)
+            {
+                int idx = f;
+                tasks.Add(Task.Factory.StartNew(() =>
+                                 SimFights(results, fights, idx, Math.Min(fights.Count, idx + FIGHTS_PER_THREAD) - 1)));
+            }
 
             foreach (Task task in tasks)
                 task.Wait();
@@ -36,8 +40,8 @@ namespace FightSim
 
         private void SimFights(FightOutcome[] results, List<Main.Fight> fights, int from, int to)
         {
-            for (int f = from; from < to; ++f)
-                results[f] = SimulateFight(fights[f]);
+            for (int t = from; t <= to; t++)
+                results[t] = SimulateFight(fights[t]);
         }
 
         public List<(FightOutcome outcome, List<FightStats> Stats)> SimulateManyFightsWithDetails(List<Main.Fight> fights)
@@ -63,8 +67,6 @@ namespace FightSim
         {
             for (int t = from; t <= to; t++)
                 results[t] = SimulateFightWithDetails(fights[t]);
-            
-
         }
 
     }
