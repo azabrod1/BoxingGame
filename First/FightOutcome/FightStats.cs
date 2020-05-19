@@ -19,7 +19,7 @@ namespace FightSim
         public (int Fighter1, int Fighter2) Thrown;
         public (int Fighter1, int Fighter2) Landed;
         public (int Fighter1, int Fighter2) Jabs;
-        public (int Fighter1, int Fighter2) KnockedDown;
+        public (int Fighter1, int Fighter2) Knockdowns;
 
 
         public FightStats(double F1Damage, double F2Damage, int F1Thrown, int F2Thrown, int F1Landed, int F2Landed,
@@ -29,7 +29,7 @@ namespace FightSim
             this.Thrown      = (F1Thrown, F2Thrown);
             this.Landed      = (F1Landed, F2Landed);
             this.Jabs        = (F1Jabs,   F2Jabs);
-            this.KnockedDown = (F1KDs,    F2KDs);
+            this.Knockdowns  = (F1KDs,    F2KDs);
         }
 
         public override string ToString()
@@ -46,7 +46,7 @@ namespace FightSim
               .AppendFormat("Thrown {0}\n", Thrown.Fighter1)
               .AppendFormat("Landed {0}\n", Landed.Fighter1)
               .AppendFormat("Jabs   {0}\n", Jabs.Fighter1)
-              .AppendFormat("KDs    {0}\n", KnockedDown.Fighter1);
+              .AppendFormat("KDs    {0}\n", Knockdowns.Fighter1);
 
 
             sb.AppendFormat("{0}\n", f2Name)
@@ -54,7 +54,7 @@ namespace FightSim
               .AppendFormat("Thrown {0}\n", Thrown.Fighter2)
               .AppendFormat("Landed {0}\n", Landed.Fighter2)
               .AppendFormat("Jabs   {0}\n", Jabs.Fighter2)
-              .AppendFormat("KDs    {0}\n", KnockedDown.Fighter2);
+              .AppendFormat("KDs    {0}\n", Knockdowns.Fighter2);
 
             return sb.ToString();
 
@@ -67,7 +67,7 @@ namespace FightSim
             this.Damage = (0d, 0d);
             this.Thrown = (0, 0);
             this.Landed = (0, 0);
-            this.KnockedDown = (F1KDs, F2KDs);
+            this.Knockdowns = (F1KDs, F2KDs);
 
             foreach (PunchResult punch in punches){
                 if(punch.ThrownBy == F1)
@@ -92,7 +92,7 @@ namespace FightSim
             }
 
         }
-        
+
         public static FightStats operator +(FightStats A, FightStats B)
         {
             FightStats summary = new FightStats();
@@ -102,21 +102,21 @@ namespace FightSim
         }
 
         public void Append(FightStats that)
-        { 
+        {
             this.Damage = (this.Damage.Fighter1 + that.Damage.Fighter1, this.Damage.Fighter2 + that.Damage.Fighter2);
             this.Thrown = (this.Thrown.Fighter1 + that.Thrown.Fighter1, this.Thrown.Fighter2 + that.Thrown.Fighter2);
             this.Landed = (this.Landed.Fighter1 + that.Landed.Fighter1, this.Landed.Fighter2 + that.Landed.Fighter2);
-            this.Jabs   = (this.Jabs.Fighter1   + that.Jabs.Fighter1,   this.Jabs.Fighter2   + that.Jabs.Fighter2);
-            this.KnockedDown = (this.KnockedDown.Fighter1 + that.KnockedDown.Fighter1, this.KnockedDown.Fighter2 + that.KnockedDown.Fighter2);
-     
+            this.Jabs   = (this.Jabs.Fighter1 + that.Jabs.Fighter1, this.Jabs.Fighter2 + that.Jabs.Fighter2);
+            this.Knockdowns = (this.Knockdowns.Fighter1 + that.Knockdowns.Fighter1, this.Knockdowns.Fighter2 + that.Knockdowns.Fighter2);
+
         }
 
-                public double JabPercent(bool Fighter1)
+        public double JabPercent(bool Fighter1)
         {
             if (Fighter1)
-                return (double) 100 * Jabs.Fighter1 / Thrown.Fighter1;
+                return (double)100 * Jabs.Fighter1 / Thrown.Fighter1;
 
-            return (double) 100 * Jabs.Fighter2 / Thrown.Fighter2;
+            return (double)100 * Jabs.Fighter2 / Thrown.Fighter2;
         }
 
     }

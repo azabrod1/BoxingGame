@@ -25,6 +25,7 @@ namespace FightSim
         public double RecoverFor(double seconds)
         {
             IncrementHealth(RecoveryRate * seconds);
+
             return Health;
         }
 
@@ -46,6 +47,11 @@ namespace FightSim
         {
             double defense = MathUtils.WeightedAverage(Self.Defense, 1, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
             return defense;
+        }
+
+        public double Chin()
+        {
+            return RecoveryRate * 180;
         }
 
         public double PowerDurabilityFormula(double skill)

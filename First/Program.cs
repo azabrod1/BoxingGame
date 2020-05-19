@@ -17,10 +17,9 @@ namespace Main
         static void Main(string[] args)
         {
 
-            Alex();
+            //Alex();
             //Vlad(); //TODO Uncomment and comment out mine
-
-
+            AlexConc();
         }
 
         static void Vlad()
@@ -38,92 +37,48 @@ namespace Main
 
         static void Alex()
         {
-            //FighterPool fp1 = new FighterPool();
-
-
-
-            //TestRoundIntensity();
-            //  double attR = Utility.AttributeRatioCustom(100, 90, 2.0, 70, 80, 2.0, 90, 80, 2.0, 50, 40, 2.0);
-
-
-            //Console.WriteLine(attR);
-            //TestLazyPussyFatSlowBum()
-
-            //TestPreferredDistance();
-
-            //    String result = StatsUtils.RandomSample( 10000, 10, () => StatsUtils.Gauss(40, 10) );
-            //   Console.WriteLine(result);
-
-            //TestJabPercent();
-
-            //LogNormal();
-
-
-            // AccuracyPower2();
-
-            //  FuckingFight();
-            /*
-            Fighter lite = new Fighter();
-            lite.Weight = 147;
-            lite.Power = 80;
-            FighterState L = new FighterState(lite);
-
-            Fighter heavy = new Fighter();
-            heavy.Weight = 160;
-            heavy.Power = 50;
-            FighterState H = new FighterState(heavy);
-
-
-            Console.WriteLine("{0} {1}", L.Power(), H.Power() );*/
 
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            // Console.WriteLine("wdef");
-            //var stopwatch = new Stopwatch();
-            //stopwatch.Start();
-            // TryKO();
-            //stopwatch.Stop();
-            //Console.WriteLine("{0}\n", stopwatch.ElapsedMilliseconds);
 
             const int A_Skill = 50;
             const int B_Skill = 50;
 
             Fighter fighter = new Fighter("Benji")
             {
-                Weight     = 150,
-                Stamina    = A_Skill,
-                HandSpeed  = A_Skill,
-                RingGen    = A_Skill,
-                Aggression = A_Skill,
-                FootWork   = A_Skill,
-                Reach      = A_Skill,
+                Weight = 150,
+                Stamina = A_Skill,
+                HandSpeed = A_Skill,
+                RingGen = A_Skill,
+                Aggression = 50,
+                FootWork = A_Skill,
+                Reach = A_Skill,
                 Durability = A_Skill,
-                Power      = A_Skill,
-                Defense    = A_Skill,
+                Power = 30,
+                Defense = A_Skill,
 
             };
 
             Fighter opponent = new Fighter("Cody")
             {
-                Weight     = 150,
-                Stamina    = B_Skill,
-                HandSpeed  = B_Skill,
-                RingGen    = B_Skill,
-                Aggression = B_Skill,
-                FootWork   = B_Skill,
-                Reach      = B_Skill,
+                Weight = 150,
+                Stamina = B_Skill,
+                HandSpeed = B_Skill,
+                RingGen = B_Skill,
+                Aggression = 50,
+                FootWork = B_Skill,
+                Reach = B_Skill,
                 Durability = B_Skill,
-                Power      = B_Skill,
-                Defense    = B_Skill,
+                Power = 30,
+                Defense = B_Skill,
 
             };
 
             List<FightOutcome> outcomes = new List<FightOutcome>();
             List<FightStats> fightStats = new List<FightStats>();
 
-            for (int f = 0; f < 2000; ++f)
+            for (int f = 0; f < 20000; ++f)
             {
                 Fight fight = new Fight(fighter, opponent);
 
@@ -134,12 +89,93 @@ namespace Main
 
                 outcomes.Add(result.outcome);
                 fightStats.Add(result.Stats.Condense());
+                // Console.WriteLine("DAM {0}",result.Stats.AverageDamage(true));
             }
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
 
             Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
             Console.WriteLine(outcomes.SummaryFightOutcomes());
+            //Console.WriteLine(fightStats.StandardDeviationDamage(true));
+            //Console.WriteLine(fightStats.StandardDeviationDamage(false));
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
+
 
             //  TryKO();
+        }
+
+        static void AlexConc()
+        {
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            const int A_Skill = 50;
+            const int B_Skill = 50;
+
+            Fighter fighter = new Fighter("Benji")
+            {
+                Weight = 150,
+                Stamina = A_Skill,
+                HandSpeed = A_Skill,
+                RingGen = A_Skill,
+                Aggression = 50,
+                FootWork = A_Skill,
+                Reach = A_Skill,
+                Durability = A_Skill,
+                Power = 30,
+                Defense = A_Skill,
+
+            };
+
+            Fighter opponent = new Fighter("Cody")
+            {
+                Weight = 150,
+                Stamina = B_Skill,
+                HandSpeed = B_Skill,
+                RingGen = B_Skill,
+                Aggression = 50,
+                FootWork = B_Skill,
+                Reach = B_Skill,
+                Durability = B_Skill,
+                Power = 30,
+                Defense = B_Skill,
+
+            };
+
+            List<FightOutcome> outcomes = new List<FightOutcome>();
+            List<FightStats> fightStats = new List<FightStats>();
+
+            List<Fight> fights = new List<Fight>();
+
+            Fight fight = new Fight(fighter, opponent);
+
+            for (int f = 0; f < 20000; ++f)
+                fights.Add(fight);
+
+            FightSimulator fs = new FightSimulatorGauss();
+            var results = fs.SimulateManyFightsWithDetails(fights);
+
+            foreach (var result in results)
+            {
+                outcomes.Add(result.outcome);
+                fightStats.Add(result.Stats.Condense());
+            }
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+
+            Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
+            Console.WriteLine(outcomes.SummaryFightOutcomes());
+            //Console.WriteLine(fightStats.StandardDeviationDamage(true));
+            //Console.WriteLine(fightStats.StandardDeviationDamage(false));
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
+
         }
 
         static void PunchDistroTest(FightState fs)
@@ -160,7 +196,7 @@ namespace Main
                 {
                     block.Play();
                     var distro = block.GeneratePunchDistribution();
-                    foreach(var punch in distro)
+                    foreach (var punch in distro)
                         Console.WriteLine(punch.Item2.Name());
 
                 }
@@ -175,6 +211,7 @@ namespace Main
             }
 
         }
+
 
         void Profile()
         {

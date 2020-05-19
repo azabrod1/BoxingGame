@@ -48,6 +48,15 @@ namespace FightSim
             return control;
         }
 
+        public void RegisterKnockdown(FighterState Puncher)
+        {
+            if (Puncher == F1)
+                FightStats[Round].Knockdowns.Fighter1++;
+            else
+                FightStats[Round].Knockdowns.Fighter2++;
+
+        }
+
         //Percent of punches a fighter gains or loses due to reach advantage/disadvantage 
         public double ReachBuff()
         {

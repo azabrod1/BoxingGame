@@ -64,7 +64,7 @@ namespace FightSim
             return outcome;
         }
 
-        FightOutcome DeclareFightResult(FightState fight, int timeOfStoppage)
+        private FightOutcome DeclareFightResult(FightState fight, int timeOfStoppage)
         {
             Fighter winner;
             FightOutcome outcome;
@@ -81,8 +81,6 @@ namespace FightSim
             }
 
             return outcome;
-
-
         }
 
     }

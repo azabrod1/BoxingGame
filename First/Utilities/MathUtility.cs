@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Main
 {
     public static class MathUtils
     {
 
-        [ThreadStatic] static readonly Random random = new Random();
+        static int seed = Environment.TickCount;
+
+        static readonly ThreadLocal<Random> random =
+            new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref seed)));
 
         public static void Shuffle<T>(T[] array)
         {
@@ -42,18 +46,18 @@ namespace Main
         public static int RangeUniform(int from, int to)
         {
        
-            return random.Next(from, to);    
+            return random.Value.Next(from, to);    
         }
 
         public static double RangeUniform(double from, double to)
         {
-            return random.NextDouble() * (to - from) + from;
+            return random.Value.NextDouble() * (to - from) + from;
         }
 
         public static double Gauss(double μ = 0.5, double σ = 0.5)
         {
-            double u1 = 1.0 - random.NextDouble(); //uniform(0,1]  ranom doubles
-            double u2 = 1.0 - random.NextDouble();
+            double u1 = 1.0 - random.Value.NextDouble(); //uniform(0,1]  ranom doubles
+            double u2 = 1.0 - random.Value.NextDouble();
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
                          Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
             double randNormal =

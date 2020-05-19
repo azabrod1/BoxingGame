@@ -25,6 +25,8 @@ namespace Main
         public const double HAND_SPEED_ACC_BUFF = 0.25;
         public const double FOOT_WORK_ACC_BUFF  = 0.1;
         public const double JAB_POWER           = 0.15;
+        public const double KNOCKDOWN_THRESHOLD = 7; //Lost too much health, its a knockdown!
+
 
     }
 }
