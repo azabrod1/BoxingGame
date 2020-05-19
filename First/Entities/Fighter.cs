@@ -7,8 +7,8 @@ namespace Main
     {
         public readonly string Name; //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
-        //public double Rank { get; set; } //  Elo rank
         public FighterRecord Record { get; set; } 
+
 
         //Attributes
         public int Accuracy { get; set; } = 50;

@@ -21,6 +21,8 @@ namespace FightSim
 
         public readonly int[,] Scorecards = new int[3, 2];
 
+        public double Viewership { get; set; }
+
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner)
         {
             this.TimeOfStoppage = timeOfStoppage; //use double.PositiveInfinity for no KO

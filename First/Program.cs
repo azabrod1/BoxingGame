@@ -14,24 +14,38 @@ namespace Main
             public List<int> list;
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
+
             //Alex();
-            //Vlad(); //TODO Uncomment and comment out mine
+            Vlad(); //TODO Uncomment and comment out mine
             AlexConc();
         }
 
         static void Vlad()
         {
+
             FighterPool fp1 = new FighterPool();
 
             fp1.SimulateFights();
 
-            Console.WriteLine(fp1.Stats());
-            Console.WriteLine(fp1.Index("Fighter 594"));
+            //Console.WriteLine(fp1.Stats());
 
-            fp1.SimulateFight(1, 2);
+            //Console.WriteLine(fp1.Index("Fighter 594"));
+
+            //fp1.SimulateFight(1, 2);
+
+            Console.WriteLine("\n Fighter list: \n");
+
+            int i = 1;
+
+            foreach ( Fighter f in fp1.Fighters)
+            {
+                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + f.Record.Rank.ToString("0"));
+                i++;
+            }
+
 
         }
 
@@ -116,7 +130,7 @@ namespace Main
             const int A_Skill = 50;
             const int B_Skill = 50;
 
-            Fighter fighter = new Fighter("Benji")
+           Fighter fighter = new Fighter("Benji")
             {
                 Weight = 150,
                 Stamina = A_Skill,

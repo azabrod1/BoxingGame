@@ -7,30 +7,27 @@ namespace Main
 {
     public class FighterPool
     {
-
-        public readonly int top_index = 30;
-
-
         public List<Fighter> Fighters { get; set; }
-        Random rand; //todo check out my MathUtiliy lib from rand functionality
-
+        private Random rand;
+        public readonly int top_index;
 
         public FighterPool(int size = 1024, int top_index = 30)
         {
             Fighters = new List<Fighter>(size);
             Fighter f;
             rand = new Random(Guid.NewGuid().GetHashCode());
+            this.top_index = top_index;
 
             // assign random name and elo
             for (int i = 0; i < size; i++)
             {
                 f = new Fighter("Fighter " + i.ToString());
+             
                 f.Record.Rank = rand.NextDouble() * EloFightSimulator.ELO_MAX_INIT;
                 Fighters.Add(f);
             }
 
-            Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
-            Fighters.Reverse();
+            SortFighters();
 
         }
 
@@ -55,25 +52,25 @@ namespace Main
         }
 
 
-        public bool isTopFighter(Fighter f)
+        public bool IsTopFighter(Fighter f)
         {
-            return isTopFighter(f.Name);
+            return IsTopFighter(f.Name);
         }
 
-        public bool isTopFighter(string name)
+        public bool IsTopFighter(string name)
         {
             int index = this.Index(name);
 
-            return isTopFighter(index);
+            return IsTopFighter(index);
         }
 
-        public bool isTopFighter(int index)
+        public bool IsTopFighter(int index)
         {
             return (index >= 0 && index < top_index);
         }
 
 
-        public FightOutcome SimulateFight(int index1, int index2)
+        public FightOutcome SimulateFight(int index1, int index2, bool printResult = true, bool sortFighters = false)
         {
             Fighter f1 = Fighters[index1];
             Fighter f2 = Fighters[index2];
@@ -81,14 +78,31 @@ namespace Main
             FightSimulator fs = new EloFightSimulator();
             FightOutcome fo = fs.SimulateFight(ff);
 
-            if (this.isTopFighter(index1) || this.isTopFighter(index2))
+            if (printResult && (this.IsTopFighter(index1) || this.IsTopFighter(index2)))
             {
-                Console.WriteLine(fo.Winner.Name + " wins " + Fighters[index1].Name + "(" + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(" + Fighters[index2].Record.Rank.ToString("0") + ")");
-
+                PrintFightResult(index1, index2, fo);
+            }
+            if (sortFighters) // sort the pool 
+            {
+                SortFighters();
             }
             return fo;
 
         }
+
+        public void PrintFightResult(int index1, int index2, FightOutcome fo)
+        {
+            Console.WriteLine(Fighters[index1].Name + "(elo = " + Fighters[index1].Record.Rank.ToString("0") + ") vs " + Fighters[index2].Name + "(elo = " + Fighters[index2].Record.Rank.ToString("0") + ")");
+
+            Console.WriteLine(fo.Winner.Name + " wins in front of " + fo.Viewership + "k audience");
+
+            Console.Write("Elo changes: " + Fighters[index1].Name + " (" + Fighters[index1].Record.PreviousRank.ToString("0") + " to " + Fighters[index1].Record.Rank.ToString("0") + ") ");
+
+            Console.WriteLine(Fighters[index2].Name + " (" + Fighters[index2].Record.PreviousRank.ToString("0") + " to " + Fighters[index2].Record.Rank.ToString("0") + ")\n");
+
+        }
+
+
 
         public void SimulateFights(int epsilon = 16)
         {
@@ -103,6 +117,7 @@ namespace Main
                 {
                     op += epsilon;
                 }
+
                 else if (op > Fighters.Count() - 1)
                 {
                     op -= epsilon;
@@ -110,14 +125,19 @@ namespace Main
 
                 FightOutcome fo = this.SimulateFight(i, op);
 
-
-
             }
-
+            SortFighters();
 
 
         }
 
-
+        public void SortFighters()
+        {
+            Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
+            Fighters.Reverse();
+        }
     }
+
+    
+
 }
