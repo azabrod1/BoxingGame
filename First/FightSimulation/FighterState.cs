@@ -8,12 +8,19 @@ namespace FightSim
         Fighter Self;
         public double Health { get; set; }
         public double RecoveryRate;
+        public double DefenseBuff { get; set; } //The better your defensive, the less cleanly opponent punches land - the less damage you take
 
         public FighterState(Fighter fighter)
         {
             this.Self = fighter;
             this.Health = GetDurability();
             this.RecoveryRate = CalcRecoveryRate();
+
+            //As fighters get better, they know how to avoid taking clean damaging shots
+            //I put it in because we need something to counter the fact that as ppl get better they throw more otherwise
+            //high skilled fighters would always get KO, while its usually other way around, BUMs ko eachother
+
+            this.DefenseBuff = (1.546 + Self.Defense * (-0.01211 + 0.0000562 * Self.Defense)) * 0.054;
         }
 
         public double IncrementHealth(double change)
@@ -25,14 +32,13 @@ namespace FightSim
         public double RecoverFor(double seconds)
         {
             IncrementHealth(RecoveryRate * seconds);
-
             return Health;
         }
 
         //How much damage will I do in a round? 
         public double Power()
         {
-            double power = PowerDurabilityFormula(Self.Power) * 0.054;
+            double power = PowerSkillFormula(Self.Power);
             power *= Self.Weight * Constants.AVG_WEIGHT_INV;
             return power;
         }
@@ -49,13 +55,27 @@ namespace FightSim
             return defense;
         }
 
+        //If you get hit with a shot > Chin(), you are knocked down
         public double Chin()
         {
-            return RecoveryRate * 180;
+            return RecoveryRate * 180; 
         }
 
         public double PowerDurabilityFormula(double skill)
         {
+            return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
+        }
+
+        //The below two formulas are similar
+        //but durability increases a bit more as your quality goes up to make up for stamina and speed increasing at high level
+        public double PowerSkillFormula(double skill)
+        {
+            return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
+        }
+
+        public double DurabilitySkillFormula(double skill)
+        {
+           // return 4.1 * (skill) + 200; //250 low, 417 avg, 584 hi for avg weight
             return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
         }
 
@@ -64,14 +84,14 @@ namespace FightSim
             const double WEIGHT_DURABILITY_BUFF = 0.8;
             //Power should increase with weight at a slightly higher rate than durability w weight  i.e. HW KOs are more powerful 
             double weightBuff = MathUtils.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1 - WEIGHT_DURABILITY_BUFF);
-            double durability = PowerDurabilityFormula(Self.Durability) * weightBuff;
+            double durability = DurabilitySkillFormula(Self.Durability) * weightBuff;
             return durability;
         }
 
         //How much fighters are expected to recover per second
         private double CalcRecoveryRate()
         {
-            return GetDurability() * 0.00104166666;   //Divide by 16 * 60
+            return GetDurability() * 0.00104166666;   //Divide by 16 * 60 (4 Mins) - in other words you recover fully in 4 rounds if you took no damage in them
         }
 
         public double AggressionCalc(int round)

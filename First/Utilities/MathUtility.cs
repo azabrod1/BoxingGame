@@ -44,14 +44,18 @@ namespace Main
 
         //Exclusive to
         public static int RangeUniform(int from, int to)
-        {
-       
+        { 
             return random.Value.Next(from, to);    
         }
 
         public static double RangeUniform(double from, double to)
         {
             return random.Value.NextDouble() * (to - from) + from;
+        }
+
+        public static int NearestInt(double num)
+        {
+            return (int) (num + 0.5);
         }
 
         public static double Gauss(double μ = 0.5, double σ = 0.5)

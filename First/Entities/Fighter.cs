@@ -9,7 +9,6 @@ namespace Main
 
         public FighterRecord Record { get; set; } 
 
-
         //Attributes
         public int Accuracy { get; set; } = 50;
         public int Aggression { get; set; } = 50;

@@ -19,7 +19,7 @@ namespace Main
 
 
             //Alex();
-            Vlad(); //TODO Uncomment and comment out mine
+            //Vlad(); //TODO Uncomment and comment out mine
             AlexConc();
         }
 
@@ -56,8 +56,8 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 50;
-            const int B_Skill = 50;
+            const int A_Skill = 100;
+            const int B_Skill = 100;
 
             Fighter fighter = new Fighter("Benji")
             {
@@ -69,7 +69,7 @@ namespace Main
                 FootWork = A_Skill,
                 Reach = A_Skill,
                 Durability = A_Skill,
-                Power = 30,
+                Power = A_Skill,
                 Defense = A_Skill,
 
             };
@@ -84,7 +84,7 @@ namespace Main
                 FootWork = B_Skill,
                 Reach = B_Skill,
                 Durability = B_Skill,
-                Power = 30,
+                Power = B_Skill,
                 Defense = B_Skill,
 
             };
@@ -127,8 +127,8 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 50;
-            const int B_Skill = 50;
+            const int A_Skill = 100;
+            const int B_Skill = 100;
 
            Fighter fighter = new Fighter("Benji")
             {
@@ -140,7 +140,7 @@ namespace Main
                 FootWork = A_Skill,
                 Reach = A_Skill,
                 Durability = A_Skill,
-                Power = 30,
+                Power = A_Skill,
                 Defense = A_Skill,
 
             };
@@ -155,7 +155,7 @@ namespace Main
                 FootWork = B_Skill,
                 Reach = B_Skill,
                 Durability = B_Skill,
-                Power = 30,
+                Power = A_Skill,
                 Defense = B_Skill,
 
             };
@@ -167,7 +167,7 @@ namespace Main
 
             Fight fight = new Fight(fighter, opponent);
 
-            for (int f = 0; f < 20000; ++f)
+            for (int f = 0; f < 3000; ++f)
                 fights.Add(fight);
 
             FightSimulator fs = new FightSimulatorGauss();

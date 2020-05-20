@@ -66,13 +66,16 @@ namespace FightSim
             double expectedAccF1 = ExpectedAccuracy(f1, f2);
             double expectedAccF2 = ExpectedAccuracy(f2, f1);
 
+            double expectedPowerF1 = f1.Power() * f2.DefenseBuff;
+            double expectedPowerF2 = f2.Power() * f1.DefenseBuff;
+
             for (int p = 1; p <= punches.Length; ++p)
             {
                 (PunchType, FighterState) punch = punches[p - 1];
                 FighterState attacker = punch.Item2;
                 FighterState defender = attacker == f1 ? f2 : f1;
 
-                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * attacker.Power();
+                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * (attacker == f1 ? expectedPowerF1 : expectedPowerF2);
 
                 if (punch.Item1 == PunchType.JAB)
                     expectedDamage *= Constants.JAB_POWER;
@@ -85,7 +88,7 @@ namespace FightSim
                 punchOutcomes.Add(new PunchResult(attacker, realizedDamage, realizedAcc, punch.Item1));
 
                 /***    DOWN HE GOES!
-                 * A knockdown happens if fighter is 0 health or they eat a shot their chin cant handle.
+                 * A knockdown happens if fighter is 0 health or they eat a shot their chin cannot handle.
                  * They get back up if they have enough time to get positive health 
                  *
                  * ***/
@@ -136,8 +139,8 @@ namespace FightSim
         {
             double totalPunches = BoxerPunchesPerRound(fighter) * 0.333333333; //Since block is 1/3 a round
             double jabPercent = JabPercentages(fighter, opponent);
-            int jabs = (int)(jabPercent * totalPunches + 0.5);
-            int powerPunches = (int)((1 - jabPercent) * totalPunches + 0.5);
+            int jabs = MathUtils.NearestInt(jabPercent * totalPunches);
+            int powerPunches = MathUtils.NearestInt((1 - jabPercent) * totalPunches);
 
             return (jabs, powerPunches);
         }
