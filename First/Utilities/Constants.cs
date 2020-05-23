@@ -5,7 +5,6 @@ namespace Main
     {
 
         public const double ATTRIB_BUFF_DEFAULT       = 2;
-
         public const double BLOCKS_IN_ROUND           = 3;
 
 
@@ -13,7 +12,6 @@ namespace Main
         public const double CUBE_ROOT_TWO  = 1.25992104989;
         public const double SQR_ROOT_TWO   = 1.41421356237;
         public const double SQR_ROOT_THREE = 1.73205080757;
-
 
         //Figher Averages
         public const double JAB_RATIO_AVG       = 0.415;
@@ -26,6 +24,11 @@ namespace Main
         public const double FOOT_WORK_ACC_BUFF  = 0.15;
         public const double JAB_POWER           = 0.15;
         public const double KNOCKDOWN_THRESHOLD = 7; //Lost too much health, its a knockdown!
+        public const double P4P_BUFF_THRESHOLD  = 89; //Pound for pound fighter skills scale even faster, skills above it scale 2X as fast
+        public const double WEIGHT_POWER_BUFF   = 3.5;
+        public const double WEIGHT_DURABILITY_BUFF = 2.8;
+
+        public const double PREF_DISTANCE_WEIGHT_ON_JAB = 0.70; //Jab mean offseted effected 70% by preferred distance, 30% actual distance
 
 
     }

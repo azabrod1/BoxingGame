@@ -16,6 +16,9 @@ namespace FightSim
         private double BlockIntensity;
         private double BlockDamage;
 
+        private (int Jabs, int PowerPunches) F1PunchDistro;
+        private (int Jabs, int PowerPunches) F2PunchDistro;
+
         public Block(FightState fight)
         {
             this.Fight = fight;
@@ -25,7 +28,7 @@ namespace FightSim
 
         public class PunchResult
         {
-            public readonly FighterState ThrownBy;
+            public readonly FighterState ThrownBy; //Fighter 0 or fighter 1
             public readonly double Damage;
             public readonly double Accuracy;
             public readonly PunchType Punch;
@@ -47,6 +50,28 @@ namespace FightSim
 
             //How damaging will the exchanges be? todo Similar to the above; consider combining
             this.BlockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75));
+
+            this.F1PunchDistro = FighterPunchDistribution(f1, f2);
+            this.F2PunchDistro = FighterPunchDistribution(f2, f1);
+        }
+
+        /*Throwing more jabs increases your defense
+         Need make this functionality cleaner! gross!
+        */
+        private double DefenseBuffFromJabbing(FighterState fighter)
+        {
+            double jabPercent;
+           
+            if (fighter == f1)
+                jabPercent = F1PunchDistro.Jabs == 0?  0 : (double)F1PunchDistro.Jabs / (F1PunchDistro.PowerPunches + F1PunchDistro.Jabs);
+            else
+                jabPercent = F2PunchDistro.Jabs == 0 ? 0 : (double)F2PunchDistro.Jabs / (F2PunchDistro.PowerPunches + F2PunchDistro.Jabs);
+
+            double jabBuff = 0.020 * (jabPercent - Constants.JAB_RATIO_AVG);
+
+            //There are some diminishing returns here
+            jabBuff = Math.Max(-0.025, Math.Min(0.025, jabBuff));
+            return jabBuff;
         }
 
         /* Boxers fight!
@@ -56,15 +81,15 @@ namespace FightSim
         
         public (List<PunchResult> Punches, int Stoppage) Play()
         {
-            SetRandomVariables(); //Seperated into a dif function mainly for testing
+            SetRandomVariables(); 
 
-            (PunchType, FighterState)[] punches = GeneratePunchDistribution();
+            (PunchType, FighterState)[] punches = CreatePunchSchedule();
 
             List<PunchResult> punchOutcomes = new List<PunchResult>(punches.Length);
 
             //Caching for speed
-            double expectedAccF1 = ExpectedAccuracy(f1, f2);
-            double expectedAccF2 = ExpectedAccuracy(f2, f1);
+            double expectedAccF1 = ExpectedAccuracy(f1, f2) - DefenseBuffFromJabbing(f2);
+            double expectedAccF2 = ExpectedAccuracy(f2, f1) - DefenseBuffFromJabbing(f1);
 
             double expectedPowerF1 = f1.Power() * f2.DefenseBuff;
             double expectedPowerF2 = f2.Power() * f1.DefenseBuff;
@@ -94,25 +119,25 @@ namespace FightSim
                  * ***/
                 if (defender.IncrementHealth(-realizedDamage) <= 0 || realizedDamage > defender.Chin()) 
                 {          
-                    defender.RecoverFor(15); //Knockdown gives you about 15 seconds to recover
+                    defender.RecoverFor(15);               //Knockdown gives you about 15 seconds to recover
 
-                    if (defender.Health <= 0) //THE REF IS GONNA WAVE IT OFF!
-                        return (Punches: punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Basically which second of the block was the stopage
-                    else
-                                             //The fighter recovers and its regestered as knockdown
-                        Fight.RegisterKnockdown(attacker);
+                    if (defender.Health <= 0)              //THE REF IS GONNA WAVE IT OFF!
+                        return (Punches: punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Second of the block fight stopped
+                    else                  
+                        Fight.RegisterKnockdown(attacker); //The fighter recovers and its regestered as knockdown
                 }
             }
 
             return (Punches: punchOutcomes, Stoppage: -1);
         }
 
-        public (PunchType, FighterState)[] GeneratePunchDistribution()
+        public (PunchType, FighterState)[] CreatePunchSchedule()
         {
-            (int, int) f1Punches = FighterPunchDistribution(f1, f2);
-            (int, int) f2Punches = FighterPunchDistribution(f2, f1);
 
-            (PunchType, FighterState)[] punches = new (PunchType, FighterState)[f1Punches.Item1 + f1Punches.Item2 + f2Punches.Item1 + f2Punches.Item2];
+            (PunchType, FighterState)[] punches = new (PunchType, FighterState)[F1PunchDistro.Jabs
+                                                                              + F1PunchDistro.PowerPunches
+                                                                              + F2PunchDistro.Jabs
+                                                                              + F2PunchDistro.PowerPunches];
 
             (PunchType, FighterState) F1_Jab = (PunchType.JAB, f1);
             (PunchType, FighterState) F2_Jab = (PunchType.JAB, f2);
@@ -120,13 +145,13 @@ namespace FightSim
             (PunchType, FighterState) F2_PP = (PunchType.POWER_PUNCH, f2);
 
             int p = 0;
-            for (int x = 0; x < f1Punches.Item1; ++x)
+            for (int x = 0; x < F1PunchDistro.Jabs; ++x)
                 punches[p++] = F1_Jab;
-            for (int x = 0; x < f1Punches.Item2; ++x)
+            for (int x = 0; x < F1PunchDistro.PowerPunches; ++x)
                 punches[p++] = F1_PP;
-            for (int x = 0; x < f2Punches.Item1; ++x)
+            for (int x = 0; x < F2PunchDistro.Jabs; ++x)
                 punches[p++] = F2_Jab;
-            for (int x = 0; x < f2Punches.Item2; ++x)
+            for (int x = 0; x < F2PunchDistro.PowerPunches; ++x)
                 punches[p++] = F2_PP;
 
             MathUtils.Shuffle(punches);
@@ -139,6 +164,7 @@ namespace FightSim
         {
             double totalPunches = BoxerPunchesPerRound(fighter) * 0.333333333; //Since block is 1/3 a round
             double jabPercent = JabPercentages(fighter, opponent);
+            
             int jabs = MathUtils.NearestInt(jabPercent * totalPunches);
             int powerPunches = MathUtils.NearestInt((1 - jabPercent) * totalPunches);
 
@@ -180,11 +206,14 @@ namespace FightSim
         public double JabPercentages(FighterState fighter, FighterState opponent)
         {
             double prefDistance = fighter.PreferredDistance(opponent);
-
             double jabMean      = fighter.ExpectedJabRatio();
 
             //Figher jab percent is affected by preferred distance and what distance the fight is at
-            double jabOffset = (prefDistance - 0.5) * 0.70 + (Fight.FightDistance-0.5)*0.30;
+            double jabOffset = MathUtils.WeightedAverage(prefDistance - 0.5,
+                                                         Constants.PREF_DISTANCE_WEIGHT_ON_JAB,
+                                                         Fight.FightDistance - 0.5,
+                                                         1 - Constants.PREF_DISTANCE_WEIGHT_ON_JAB);
+
 
             double jabMultiplier = MathUtils.Gauss(1, Constants.JAB_MULTIPLIER_STD);
             jabOffset += jabMultiplier;
@@ -198,12 +227,11 @@ namespace FightSim
             jabMean = Math.Max(0, jabMean);
 
             return jabMean;
-
         }
 
         public static double ExpectedAccuracy(FighterState attacker, FighterState defender)
         {
-            double expectedAcc = -0.28 + (attacker.ExpectedAccuracy() - defender.ExpectedDefense()) * 0.0012;
+            double expectedAcc = -0.28 + (attacker.ExpectedAccuracy() - defender.ExpectedDefense()) * 0.0013;
             return expectedAcc;
         }
 

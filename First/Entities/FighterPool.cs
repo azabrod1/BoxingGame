@@ -23,7 +23,7 @@ namespace Main
             {
                 f = new Fighter("Fighter " + i.ToString());
              
-                f.Record.Rank = rand.NextDouble() * EloFightSimulator.ELO_MAX_INIT;
+                f.Record.Rank = 50;
                 Fighters.Add(f);
             }
 
@@ -68,7 +68,6 @@ namespace Main
         {
             return (index >= 0 && index < top_index);
         }
-
 
         public FightOutcome SimulateFight(int index1, int index2, bool printResult = true, bool sortFighters = false)
         {
@@ -134,7 +133,7 @@ namespace Main
         public void SortFighters()
         {
             Fighters.Sort((x, y) => x.Record.Rank.CompareTo(y.Record.Rank));
-            Fighters.Reverse();
+           // Fighters.Reverse();
         }
     }
 

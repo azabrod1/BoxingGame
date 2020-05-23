@@ -27,7 +27,7 @@ namespace FightSim
 
         private FightOutcome SimFight(FightState fight)
         {
-            int timeOfStoppage = -1; //Second fight ends
+            int timeOfStoppage = -1; //The second the fight ends
 
             for (; fight.Round < fight.Fight.RoundsScheduled; fight.Round++)
             {
@@ -40,8 +40,6 @@ namespace FightSim
                     var blockOutcome = block.Play();
                     FightStats blockStats = new FightStats(blockOutcome.Punches, fight.F1, 0, 0);
                     fight.FightStats[fight.Round].Append(blockStats);
-
-                  //  Console.WriteLine(blockStats);
 
                     if (blockOutcome.Stoppage != -1)
                     {
@@ -76,7 +74,7 @@ namespace FightSim
             }
             else
             {
-                winner = (fight.FightStats.LandedPercent(true) > fight.FightStats.LandedPercent(false))? fight.Boxer1() : fight.Boxer2();
+                winner = (fight.FightStats.AverageLanded(true)> fight.FightStats.AverageLanded(false))? fight.Boxer1() : fight.Boxer2();
                 outcome = new FightOutcome(timeOfStoppage, MethodOfResult.UD, winner);
             }
 

@@ -16,10 +16,11 @@ namespace Main
 
         public static void Main(string[] args)
         {
+            Console.WriteLine("**********************\n");
 
 
-            //Alex();
-            //Vlad(); //TODO Uncomment and comment out mine
+          //   Alex();
+           // Vlad(); //TODO Uncomment and comment out mine
             AlexConc();
         }
 
@@ -28,7 +29,9 @@ namespace Main
 
             FighterPool fp1 = new FighterPool();
 
-            fp1.SimulateFights();
+            //Sim many
+            for(int f = 0; f < 20; ++f)
+                fp1.SimulateFights();
 
             //Console.WriteLine(fp1.Stats());
 
@@ -42,10 +45,111 @@ namespace Main
 
             foreach ( Fighter f in fp1.Fighters)
             {
-                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + f.Record.Rank.ToString("0"));
+                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + (f.Record.Rank > 100?f.Record.Rank.ToString("0") : "0"));
                 i++;
             }
+        }
 
+        static void AlexConc()
+        {
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            const int A_Skill = 80;
+            const int B_Skill = 80;
+
+           Fighter fighter = new Fighter("Benji")
+            {
+                Weight = 225,
+                Stamina = A_Skill,
+                HandSpeed = A_Skill,
+                RingGen = A_Skill,
+                Aggression = 50,
+                FootWork = A_Skill,
+                Reach = 84,
+                Durability = A_Skill,
+                Power = A_Skill,
+                Defense = A_Skill,
+                Accuracy = A_Skill,
+            };
+
+            Fighter opponent = new Fighter("Cody")
+            {
+                Weight = 225,
+                Stamina = B_Skill,
+                HandSpeed = B_Skill,
+                RingGen = B_Skill,
+                Aggression = 50,
+                FootWork = B_Skill,
+                Reach = 84,
+                Durability = B_Skill,
+                Power = B_Skill,
+                Defense = B_Skill,
+                Accuracy = B_Skill,
+            };
+
+            List<FightOutcome> outcomes = new List<FightOutcome>();
+            List<FightStats> fightStats = new List<FightStats>();
+
+            List<Fight> fights = new List<Fight>();
+
+            Fight fight = new Fight(fighter, opponent);
+
+            for (int f = 0; f < 7000; ++f)
+                fights.Add(fight);
+
+            FightSimulator fs = new FightSimulatorGauss();
+            var results = fs.SimulateManyFightsWithDetails(fights);
+
+            foreach (var result in results)
+            {
+                outcomes.Add(result.outcome);
+                fightStats.Add(result.Stats.Condense());
+            }
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+
+            Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
+            Console.WriteLine(outcomes.SummaryFightOutcomes());
+            //Console.WriteLine(fightStats.StandardDeviationDamage(true));
+            //Console.WriteLine(fightStats.StandardDeviationDamage(false));
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
+        }
+
+        static void PunchDistroTest(FightState fs)
+        {
+            Block block = new Block(fs);
+            fs.Round = 3;
+
+            block.Play();
+
+            List<double> list = new List<double>();
+
+            for (int i = 0; i < 1; ++i)
+            {
+                fs.Round = MathUtils.RangeUniform(1, 13);
+                double x, y;
+                x = y = 0;
+                for (int min = 0; min < 1; ++min)
+                {
+                    block.Play();
+                    var distro = block.CreatePunchSchedule();
+                    foreach (var punch in distro)
+                        Console.WriteLine(punch.Item2.Name());
+                }
+
+
+                list.Add(x + y);
+
+                //Console.WriteLine("std {0}", list[list.Count - 1]);
+
+                // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
+                // Console.WriteLine("punches {0}",  punches);
+            }
 
         }
 
@@ -56,8 +160,8 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 100;
-            const int B_Skill = 100;
+            const int A_Skill = 90;
+            const int B_Skill = 80;//;
 
             Fighter fighter = new Fighter("Benji")
             {
@@ -67,11 +171,11 @@ namespace Main
                 RingGen = A_Skill,
                 Aggression = 50,
                 FootWork = A_Skill,
-                Reach = A_Skill,
+                Reach = 84,
                 Durability = A_Skill,
                 Power = A_Skill,
                 Defense = A_Skill,
-
+                Accuracy = A_Skill,
             };
 
             Fighter opponent = new Fighter("Cody")
@@ -82,17 +186,17 @@ namespace Main
                 RingGen = B_Skill,
                 Aggression = 50,
                 FootWork = B_Skill,
-                Reach = B_Skill,
+                Reach = 84,
                 Durability = B_Skill,
                 Power = B_Skill,
                 Defense = B_Skill,
-
+                Accuracy = B_Skill,
             };
 
             List<FightOutcome> outcomes = new List<FightOutcome>();
             List<FightStats> fightStats = new List<FightStats>();
 
-            for (int f = 0; f < 20000; ++f)
+            for (int f = 0; f < 1000; ++f)
             {
                 Fight fight = new Fight(fighter, opponent);
 
@@ -121,113 +225,7 @@ namespace Main
             //  TryKO();
         }
 
-        static void AlexConc()
-        {
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            const int A_Skill = 100;
-            const int B_Skill = 100;
-
-           Fighter fighter = new Fighter("Benji")
-            {
-                Weight = 150,
-                Stamina = A_Skill,
-                HandSpeed = A_Skill,
-                RingGen = A_Skill,
-                Aggression = 50,
-                FootWork = A_Skill,
-                Reach = A_Skill,
-                Durability = A_Skill,
-                Power = A_Skill,
-                Defense = A_Skill,
-
-            };
-
-            Fighter opponent = new Fighter("Cody")
-            {
-                Weight = 150,
-                Stamina = B_Skill,
-                HandSpeed = B_Skill,
-                RingGen = B_Skill,
-                Aggression = 50,
-                FootWork = B_Skill,
-                Reach = B_Skill,
-                Durability = B_Skill,
-                Power = A_Skill,
-                Defense = B_Skill,
-
-            };
-
-            List<FightOutcome> outcomes = new List<FightOutcome>();
-            List<FightStats> fightStats = new List<FightStats>();
-
-            List<Fight> fights = new List<Fight>();
-
-            Fight fight = new Fight(fighter, opponent);
-
-            for (int f = 0; f < 3000; ++f)
-                fights.Add(fight);
-
-            FightSimulator fs = new FightSimulatorGauss();
-            var results = fs.SimulateManyFightsWithDetails(fights);
-
-            foreach (var result in results)
-            {
-                outcomes.Add(result.outcome);
-                fightStats.Add(result.Stats.Condense());
-            }
-
-            stopwatch.Stop();
-            long elapsed_time = stopwatch.ElapsedMilliseconds;
-
-
-            Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
-            Console.WriteLine(outcomes.SummaryFightOutcomes());
-            //Console.WriteLine(fightStats.StandardDeviationDamage(true));
-            //Console.WriteLine(fightStats.StandardDeviationDamage(false));
-
-            Console.WriteLine("elapsed {0}", elapsed_time);
-
-        }
-
-        static void PunchDistroTest(FightState fs)
-        {
-            Block block = new Block(fs);
-            fs.Round = 3;
-
-            block.Play();
-
-            List<double> list = new List<double>();
-
-            for (int i = 0; i < 1; ++i)
-            {
-                fs.Round = MathUtils.RangeUniform(1, 13);
-                double x, y;
-                x = y = 0;
-                for (int min = 0; min < 1; ++min)
-                {
-                    block.Play();
-                    var distro = block.GeneratePunchDistribution();
-                    foreach (var punch in distro)
-                        Console.WriteLine(punch.Item2.Name());
-
-                }
-
-
-                list.Add(x + y);
-
-                //Console.WriteLine("std {0}", list[list.Count - 1]);
-
-                // list.Add(punches = (block.BoxerPunchesPerRound(normal) + block.BoxerPunchesPerRound(normal)));
-                // Console.WriteLine("punches {0}",  punches);
-            }
-
-        }
-
-
-        void Profile()
+            void Profile()
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();

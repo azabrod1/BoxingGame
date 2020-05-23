@@ -21,7 +21,7 @@ namespace FightSim
 
         public readonly int[,] Scorecards = new int[3, 2];
 
-        public double Viewership { get; set; }
+        public double Viewership { get; set; } //todo this should prob be on Fight object eventually
 
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner)
         {

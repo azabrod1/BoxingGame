@@ -20,7 +20,11 @@ namespace FightSim
             //I put it in because we need something to counter the fact that as ppl get better they throw more otherwise
             //high skilled fighters would always get KO, while its usually other way around, BUMs ko eachother
 
-            this.DefenseBuff = (1.546 + Self.Defense * (-0.01211 + 0.0000562 * Self.Defense)) * 0.054;
+            //this.DefenseBuff = 0.054*1.75; //Lower is better
+
+            //this.DefenseBuff = 1.546 + Self.Defense * (-0.01211 + 0.0000562 * Self.Defense)) * 0.054;
+
+            this.DefenseBuff = (1.7465 + Self.Defense * (-0.01555 + 0.0000599 * Self.Defense)) * 0.054;
         }
 
         public double IncrementHealth(double change)
@@ -39,31 +43,57 @@ namespace FightSim
         public double Power()
         {
             double power = PowerSkillFormula(Self.Power);
-            power *= Self.Weight * Constants.AVG_WEIGHT_INV;
+            power *= PowerDurabilityWeightBuff(true);
             return power;
         }
 
         public double ExpectedAccuracy()
         {
-            double accuracy = MathUtils.WeightedAverage(Self.Accuracy, 1, Self.HandSpeed, Constants.HAND_SPEED_ACC_BUFF, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
+            double accuracy = MathUtils.WeightedAverage(Self.Accuracy, 1, Self.HandSpeed,
+                                        Constants.HAND_SPEED_ACC_BUFF, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
+
+
+            //After certain point your skills really scale! 
+            if (accuracy > Constants.P4P_BUFF_THRESHOLD)
+                accuracy = 2 * accuracy - Constants.P4P_BUFF_THRESHOLD;
+
             return accuracy;
         }
 
         public double ExpectedDefense()
         {
             double defense = MathUtils.WeightedAverage(Self.Defense, 1, Self.FootWork, Constants.FOOT_WORK_ACC_BUFF);
+
+            //P4P fighters are really hard to challenge 
+            if (defense > Constants.P4P_BUFF_THRESHOLD)
+                defense = 2 * defense - Constants.P4P_BUFF_THRESHOLD;
+
             return defense;
         }
 
         //If you get hit with a shot > Chin(), you are knocked down
         public double Chin()
         {
-            return RecoveryRate * 180; 
+            return RecoveryRate * 150; 
         }
 
         public double PowerDurabilityFormula(double skill)
         {
             return 3.340 * (skill) + 250; //250 low, 417 avg, 584 hi for avg weight
+        }
+
+        //Power and Durability increase with weight, We model this exponential though
+        //in real life it might be closer to linear, lets work on that.
+        //Bring weight/avg weight to a certain power.
+        //Power scales a bit more than durablility, hence HW knockouts are more common
+        private double PowerDurabilityWeightBuff(bool PowerBuff)
+        {
+            double effectiveWeight = Math.Min(Self.Weight, 225); //Lets say it doesnt matter much after that...for now at least
+            if (PowerBuff)
+                return Math.Pow(effectiveWeight * Constants.AVG_WEIGHT_INV, Constants.WEIGHT_POWER_BUFF);
+
+            return Math.Pow(effectiveWeight * Constants.AVG_WEIGHT_INV, Constants.WEIGHT_DURABILITY_BUFF);
+
         }
 
         //The below two formulas are similar
@@ -83,7 +113,8 @@ namespace FightSim
         {
             const double WEIGHT_DURABILITY_BUFF = 0.8;
             //Power should increase with weight at a slightly higher rate than durability w weight  i.e. HW KOs are more powerful 
-            double weightBuff = MathUtils.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1 - WEIGHT_DURABILITY_BUFF);
+            // double weightBuff = MathUtils.WeightedAverage(Self.Weight * Constants.AVG_WEIGHT_INV, WEIGHT_DURABILITY_BUFF, 1, 1 - WEIGHT_DURABILITY_BUFF);
+            double weightBuff = PowerDurabilityWeightBuff(false);
             double durability = DurabilitySkillFormula(Self.Durability) * weightBuff;
             return durability;
         }
@@ -112,7 +143,7 @@ namespace FightSim
             preferredDistance = reachDifference >= 0 ? 1 - preferredDistance : preferredDistance;
 
             //You don't know how to set up distance if your ring IQ is low
-            preferredDistance = preferredDistance * (Self.RingGen / 100.0) + 0.5 * ((100 - Self.RingGen) / 100.0);
+            preferredDistance = MathUtils.WeightedAverage(preferredDistance, Self.RingGen, 0.5, 100 - Self.RingGen);
 
             return preferredDistance;
         }

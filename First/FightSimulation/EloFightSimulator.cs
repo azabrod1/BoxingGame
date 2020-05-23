@@ -1,28 +1,31 @@
 ﻿using System;
+using System.Linq;
 using Main;
 namespace FightSim
 {
     public class EloFightSimulator : FightSimulator
     {
 
-        public static double ELO_MAX_INIT = 1000.0;
+        //public static double ELO_MAX_INIT = 1000.0;
 
         public EloFightSimulator()
         {
         }
-
-
 
         public FightOutcome SimulateFight(Main.Fight fight)
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             Fighter winner;
 
-            if (rand.Next(0, 2) > 0)
+            int f1 = int.Parse(String.Join("", fight.b1.Name.Where(char.IsDigit)));
+            int f2 = int.Parse(String.Join("", fight.b2.Name.Where(char.IsDigit)));
+           
+            if (f1 > f2)
             {
                 // fighter 1 won
                 updateElo(fight.b1, fight.b2);
                 winner = fight.b1;
+
                 fight.b1.Record.Wins++;
                 fight.b2.Record.Losses++;
 
@@ -43,9 +46,12 @@ namespace FightSim
 
         private static void updateElo(Fighter winner, Fighter loser)
         {
-            double delta = eloDelta(winner.Record.Rank, loser.Record.Rank);
+            double delta = 0.45 * loser.Record.Rank - 0.05 * winner.Record.Rank;
+
+                //eloDelta(winner.Record.Rank, loser.Record.Rank);
             winner.Record.Rank += delta;
             loser.Record.Rank -= delta;
+
         }
 
 
