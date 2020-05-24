@@ -162,8 +162,23 @@ namespace Main
             }
 
             return weightedSum / weightSum;
+        }
+
+        public static double SafeDivide(double numerator, double denominator,
+            double zeroOverZero = 1, double divByZero = double.PositiveInfinity)
+        {
+            if (denominator == 0)
+            {
+                if (numerator == 0)
+                    return zeroOverZero;
+
+                return divByZero * numerator;
+            }
+
+            return numerator / denominator;
 
         }
+
 
     }
 }

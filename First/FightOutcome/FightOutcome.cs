@@ -23,16 +23,19 @@ namespace FightSim
 
         public double Viewership { get; set; } //todo this should prob be on Fight object eventually
 
-        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner)
+        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards)
         {
             this.TimeOfStoppage = timeOfStoppage; //use double.PositiveInfinity for no KO
             this.Method = method;
             this.Winner = winner;
+            this.Scorecards = scorecards;
         }
 
         public override string ToString()
         {
-            string ret = String.Format($"Winner: {Winner}, Method: {Method}");
+            string ret = String.Format($"Winner: {Winner}, Method: {Method}," +
+                $" Scorecards: {Scorecards[0,0]}-{Scorecards[0,1]} {Scorecards[1,0]}-{Scorecards[1,1]} {Scorecards[2,0]}-{Scorecards[2,1]}");
+
             if (this.IsKO())
                 ret += String.Format(", Time of stoppage: Round {0}, Time: {1}", RoundOfStoppage(), TimeOfStoppage - RoundOfStoppage() * 180);
 

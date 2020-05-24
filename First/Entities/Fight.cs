@@ -9,7 +9,7 @@ namespace Main
         public readonly Fighter b1;
         public readonly Fighter b2;
 
-        public string[] Judges;
+        public Judge[] Judges;
         public FightOutcome Outcome; 
         
         public Fight(Fighter b1, Fighter b2, int roundsScheduled = 12)
@@ -17,6 +17,7 @@ namespace Main
             this.b1 = b1;
             this.b2 = b2;
             this.RoundsScheduled = roundsScheduled;
+            this.Judges = new Judge[] { Judge.RandomJudge(), Judge.RandomJudge(), Judge.RandomJudge() };
         }  
 
     }

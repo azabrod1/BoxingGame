@@ -62,7 +62,7 @@ namespace FightSim
 
         public FightStats() {;}
 
-        public FightStats(List<PunchResult> punches, FighterState F1, int F1KDs, int F2KDs)
+        public FightStats(List<PunchResult> punches, int F1KDs, int F2KDs)
         {
             this.Damage = (0d, 0d);
             this.Thrown = (0, 0);
@@ -70,7 +70,7 @@ namespace FightSim
             this.Knockdowns = (F1KDs, F2KDs);
 
             foreach (PunchResult punch in punches){
-                if(punch.ThrownBy == F1)
+                if(punch.ThrownBy == 0)
                 {
                     Thrown.Fighter1++;
                     Damage.Fighter1 += punch.Damage;

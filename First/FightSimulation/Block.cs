@@ -7,33 +7,37 @@ namespace FightSim
     //Represents on minute of time in a fight
     public class Block
     {
-        private readonly FighterState f1, f2;
-        FightState Fight;
+       // private readonly FighterState f1, f2;
+        private readonly FighterState[] Boxer;
+
+        readonly FightState Fight;
 
         const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
         const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
 
         private double BlockIntensity;
         private double BlockDamage;
+        public int[]  Knockdowns = { 0, 0 };
 
-        private (int Jabs, int PowerPunches) F1PunchDistro;
-        private (int Jabs, int PowerPunches) F2PunchDistro;
+
+        private (int Jabs, int PowerPunches)[] PunchDistro;
 
         public Block(FightState fight)
         {
             this.Fight = fight;
-            this.f1 = fight.F1;
-            this.f2 = fight.F2;
+            Boxer = new FighterState[] { fight.F1, fight.F2 };
+            PunchDistro = new (int Jabs, int PowerPunches)[2];
+;
         }
 
         public class PunchResult
         {
-            public readonly FighterState ThrownBy; //Fighter 0 or fighter 1
+            public readonly int ThrownBy; //Fighter 0 or fighter 1
             public readonly double Damage;
             public readonly double Accuracy;
             public readonly PunchType Punch;
 
-            public PunchResult(FighterState thrownBy, double damage, double accuracy, PunchType punch)
+            public PunchResult(int thrownBy, double damage, double accuracy, PunchType punch)
             {
                 this.ThrownBy = thrownBy;
                 this.Damage   = damage;
@@ -51,21 +55,19 @@ namespace FightSim
             //How damaging will the exchanges be? todo Similar to the above; consider combining
             this.BlockDamage = Math.Max(0.5, MathUtils.Gauss(1, 0.75));
 
-            this.F1PunchDistro = FighterPunchDistribution(f1, f2);
-            this.F2PunchDistro = FighterPunchDistribution(f2, f1);
+            this.PunchDistro[0] = FighterPunchDistribution(Boxer[0], Boxer[1]);
+            this.PunchDistro[1] = FighterPunchDistribution(Boxer[1], Boxer[0]);
         }
 
         /*Throwing more jabs increases your defense
          Need make this functionality cleaner! gross!
         */
-        private double DefenseBuffFromJabbing(FighterState fighter)
+        private double DefenseBuffFromJabbing(int defender)
         {
-            double jabPercent;
-           
-            if (fighter == f1)
-                jabPercent = F1PunchDistro.Jabs == 0?  0 : (double)F1PunchDistro.Jabs / (F1PunchDistro.PowerPunches + F1PunchDistro.Jabs);
-            else
-                jabPercent = F2PunchDistro.Jabs == 0 ? 0 : (double)F2PunchDistro.Jabs / (F2PunchDistro.PowerPunches + F2PunchDistro.Jabs);
+            double jabPercent = 0;
+
+            if(PunchDistro[defender].Jabs != 0 ) //Avoid divide by zero error
+                jabPercent = (double)PunchDistro[defender].Jabs / (PunchDistro[defender].PowerPunches + PunchDistro[defender].Jabs);
 
             double jabBuff = 0.020 * (jabPercent - Constants.JAB_RATIO_AVG);
 
@@ -78,81 +80,85 @@ namespace FightSim
         * Return -1 if no KO
         * Return when in block it happened i.e. punch we at/ total punches this block * 60 (convert to seconds) 
         */
-        
         public (List<PunchResult> Punches, int Stoppage) Play()
         {
             SetRandomVariables(); 
 
-            (PunchType, FighterState)[] punches = CreatePunchSchedule();
+            var punches = CreatePunchSchedule();
 
             List<PunchResult> punchOutcomes = new List<PunchResult>(punches.Length);
 
             //Caching for speed
-            double expectedAccF1 = ExpectedAccuracy(f1, f2) - DefenseBuffFromJabbing(f2);
-            double expectedAccF2 = ExpectedAccuracy(f2, f1) - DefenseBuffFromJabbing(f1);
 
-            double expectedPowerF1 = f1.Power() * f2.DefenseBuff;
-            double expectedPowerF2 = f2.Power() * f1.DefenseBuff;
+            double[] expectedAcc = new double[]
+            {
+                ExpectedAccuracy(Boxer[0], Boxer[1]) - DefenseBuffFromJabbing(1),
+                ExpectedAccuracy(Boxer[1], Boxer[0]) - DefenseBuffFromJabbing(0)
+            };
+
+            double[] expectedPower = new double[]
+            {
+                Boxer[0].Power() * Boxer[1].DefenseBuff,
+                Boxer[1].Power() * Boxer[0].DefenseBuff
+            };
 
             for (int p = 1; p <= punches.Length; ++p)
             {
-                (PunchType, FighterState) punch = punches[p - 1];
-                FighterState attacker = punch.Item2;
-                FighterState defender = attacker == f1 ? f2 : f1;
+                (PunchType PunchType, int Attacker) punch = punches[p - 1];
 
-                double expectedDamage = Math.Max(MathUtils.Gauss(1, 0.75), 1) * (attacker == f1 ? expectedPowerF1 : expectedPowerF2);
+                int attacker = punch.Attacker;
+                int defender = 1 - attacker;
 
-                if (punch.Item1 == PunchType.JAB)
+                double expectedDamage = expectedPower[attacker] * Math.Max(MathUtils.Gauss(1, 0.75), 1);
+
+                if(punch.PunchType == PunchType.JAB)
                     expectedDamage *= Constants.JAB_POWER;
 
                 //our two big punch stats
-                double expectedAcc = attacker == f1 ? expectedAccF1 : expectedAccF2;
-                double realizedAcc    = Math.Max(0, MathUtils.Gauss(expectedAcc, 0.5));
-                double realizedDamage = Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
+                double realizedAcc = MathUtils.Gauss(expectedAcc[attacker], 0.5); //Higher acc means more clean, < 0 shows how bad it missed
+                double realizedDamage = realizedAcc == 0? 0 : Math.Max(expectedDamage * realizedAcc, 0) * BlockDamage;
 
-                punchOutcomes.Add(new PunchResult(attacker, realizedDamage, realizedAcc, punch.Item1));
+                punchOutcomes.Add(new PunchResult(punch.Attacker, realizedDamage, realizedAcc, punch.PunchType));
 
                 /***    DOWN HE GOES!
                  * A knockdown happens if fighter is 0 health or they eat a shot their chin cannot handle.
                  * They get back up if they have enough time to get positive health 
                  *
                  * ***/
-                if (defender.IncrementHealth(-realizedDamage) <= 0 || realizedDamage > defender.Chin()) 
-                {          
-                    defender.RecoverFor(15);               //Knockdown gives you about 15 seconds to recover
+                if (Boxer[defender].IncrementHealth(-realizedDamage) <= 0 || realizedDamage > Boxer[defender].Chin()) 
+                {
+                    Boxer[defender].RecoverFor(15);               //Knockdown gives you about 15 seconds to recover
 
-                    if (defender.Health <= 0)              //THE REF IS GONNA WAVE IT OFF!
-                        return (Punches: punchOutcomes, Stoppage: (int) 60d * p / punches.Length);  //Second of the block fight stopped
-                    else                  
-                        Fight.RegisterKnockdown(attacker); //The fighter recovers and its regestered as knockdown
+                    if (Boxer[defender].Health <= 0)              //THE REF IS GONNA WAVE IT OFF!
+                        return (Punches: punchOutcomes, Stoppage: (int)60d * p / punches.Length);  //Second of the block fight stopped
+                    else
+                        ++Knockdowns[attacker]; //The fighter recovers and its regestered as knockdown
                 }
             }
 
             return (Punches: punchOutcomes, Stoppage: -1);
         }
 
-        public (PunchType, FighterState)[] CreatePunchSchedule()
+        /* Given how many power punches and jabs each figher throws,
+         * determine the actual sequence the punches will be thrown
+         */
+        public (PunchType PunchType, int Attacker)[] CreatePunchSchedule()
         {
 
-            (PunchType, FighterState)[] punches = new (PunchType, FighterState)[F1PunchDistro.Jabs
-                                                                              + F1PunchDistro.PowerPunches
-                                                                              + F2PunchDistro.Jabs
-                                                                              + F2PunchDistro.PowerPunches];
-
-            (PunchType, FighterState) F1_Jab = (PunchType.JAB, f1);
-            (PunchType, FighterState) F2_Jab = (PunchType.JAB, f2);
-            (PunchType, FighterState) F1_PP = (PunchType.POWER_PUNCH, f1);
-            (PunchType, FighterState) F2_PP = (PunchType.POWER_PUNCH, f2);
+            (PunchType, int)[] punches = new (PunchType, int)[PunchDistro[0].Jabs
+                                                            + PunchDistro[0].PowerPunches
+                                                            + PunchDistro[1].Jabs
+                                                            + PunchDistro[1].PowerPunches];
 
             int p = 0;
-            for (int x = 0; x < F1PunchDistro.Jabs; ++x)
-                punches[p++] = F1_Jab;
-            for (int x = 0; x < F1PunchDistro.PowerPunches; ++x)
-                punches[p++] = F1_PP;
-            for (int x = 0; x < F2PunchDistro.Jabs; ++x)
-                punches[p++] = F2_Jab;
-            for (int x = 0; x < F2PunchDistro.PowerPunches; ++x)
-                punches[p++] = F2_PP;
+
+            for(int fighter = 0; fighter < 2; ++fighter)
+            {
+                for (int x = 0; x < PunchDistro[fighter].Jabs; ++x)
+                    punches[p++] = (PunchType.JAB, fighter);
+                for (int x = 0; x < PunchDistro[fighter].PowerPunches; ++x)
+                    punches[p++] = (PunchType.POWER_PUNCH, fighter);
+            }
 
             MathUtils.Shuffle(punches);
 
@@ -183,7 +189,7 @@ namespace FightSim
         {
             double mean = PUNCHES_FROM_INTENSITY;
 
-            double aggressiveness = Fight.FightControl * f1.AggressionCalc(Fight.Round) + (1 - Fight.FightControl) * f2.AggressionCalc(Fight.Round);
+            double aggressiveness = Fight.FightControl * Boxer[0].AggressionCalc(Fight.Round) + (1 - Fight.FightControl) * Boxer[1].AggressionCalc(Fight.Round);
 
             mean += (aggressiveness - 50) * 0.35;
 
@@ -197,7 +203,7 @@ namespace FightSim
             double figherMean      = figher.PunchCapacity();
             double randomComponent = MathUtils.Gauss(figherMean, PUNCHES_THROWN_STD);
             double reachBuff       = Fight.ReachBuff();
-            if (figher == f2)
+            if (figher == Boxer[1])
                 reachBuff *= -1;
 
             return Math.Abs(BlockIntensity + randomComponent) * (1 + reachBuff);

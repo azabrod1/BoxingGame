@@ -19,9 +19,9 @@ namespace Main
             Console.WriteLine("**********************\n");
 
 
-          //   Alex();
-           // Vlad(); //TODO Uncomment and comment out mine
-            AlexConc();
+             //  Alex();
+            // Vlad(); //TODO Uncomment and comment out mine
+              AlexConc();
         }
 
         static void Vlad()
@@ -61,8 +61,8 @@ namespace Main
 
            Fighter fighter = new Fighter("Benji")
             {
-                Weight = 225,
-                Stamina = A_Skill,
+                Weight = 150,
+                Stamina = 100,
                 HandSpeed = A_Skill,
                 RingGen = A_Skill,
                 Aggression = 50,
@@ -76,7 +76,7 @@ namespace Main
 
             Fighter opponent = new Fighter("Cody")
             {
-                Weight = 225,
+                Weight = 150,
                 Stamina = B_Skill,
                 HandSpeed = B_Skill,
                 RingGen = B_Skill,
@@ -84,7 +84,7 @@ namespace Main
                 FootWork = B_Skill,
                 Reach = 84,
                 Durability = B_Skill,
-                Power = B_Skill,
+                Power = 100,
                 Defense = B_Skill,
                 Accuracy = B_Skill,
             };
@@ -96,7 +96,7 @@ namespace Main
 
             Fight fight = new Fight(fighter, opponent);
 
-            for (int f = 0; f < 7000; ++f)
+            for (int f = 0; f < 10000; ++f)
                 fights.Add(fight);
 
             FightSimulator fs = new FightSimulatorGauss();
@@ -139,9 +139,8 @@ namespace Main
                     block.Play();
                     var distro = block.CreatePunchSchedule();
                     foreach (var punch in distro)
-                        Console.WriteLine(punch.Item2.Name());
+                        Console.WriteLine(punch.Attacker);
                 }
-
 
                 list.Add(x + y);
 
@@ -155,13 +154,11 @@ namespace Main
 
         static void Alex()
         {
-
-
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 90;
-            const int B_Skill = 80;//;
+            const int A_Skill = 95;
+            const int B_Skill = 85;//;
 
             Fighter fighter = new Fighter("Benji")
             {
@@ -203,16 +200,18 @@ namespace Main
                 FightSimulator fs = new FightSimulatorGauss();
                 var result = fs.SimulateFightWithDetails(fight);
 
+               //if(result.outcome.TimeOfStoppage == -1)
                 //    Console.WriteLine(result.outcome);
 
                 outcomes.Add(result.outcome);
                 fightStats.Add(result.Stats.Condense());
+
+               // Console.WriteLine();
                 // Console.WriteLine("DAM {0}",result.Stats.AverageDamage(true));
             }
 
             stopwatch.Stop();
             long elapsed_time = stopwatch.ElapsedMilliseconds;
-
 
             Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
             Console.WriteLine(outcomes.SummaryFightOutcomes());
@@ -220,9 +219,6 @@ namespace Main
             //Console.WriteLine(fightStats.StandardDeviationDamage(false));
 
             Console.WriteLine("elapsed {0}", elapsed_time);
-
-
-            //  TryKO();
         }
 
             void Profile()

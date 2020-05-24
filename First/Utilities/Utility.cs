@@ -25,12 +25,23 @@ namespace Main
     public static class Utility
     {
 
-        //names
-
+        //Names
         static int PlayerNO = 1;
         public static string RandomNameSimple()
         {
             return String.Format("Fighter {0}", PlayerNO++);
+        }
+
+        public static void Print2DArray(int[,] arr)
+        {
+            var rowCount = arr.GetLength(0);
+            var colCount = arr.GetLength(1);
+            for (int row = 0; row < rowCount; row++)
+            {
+                for (int col = 0; col < colCount; col++)
+                    Console.Write(String.Format("{0}\t", arr[row, col]));
+                Console.WriteLine();
+            }
         }
 
         static StrAttDistribution fnames;
@@ -58,9 +69,9 @@ namespace Main
 
         public static StrAttDistribution LoadDistributionFile(string filename)
         {
-            List<string> names    = new List<string>();
+            List<string> names = new List<string>();
             List<double> lowLimit = new List<double>();
-            List<double> hiLimit  = new List<double>();
+            List<double> hiLimit = new List<double>();
             var assembly = Assembly.GetExecutingAssembly();
             //using (var reader = new StreamReader(filename))
 
@@ -112,7 +123,7 @@ namespace Main
             double xx = Math.Pow(attDif, x / 10.0);
             double yy = Math.Pow(attDif, y / 10.0);
 
-            return xx / (yy+xx);
+            return xx / (yy + xx);
 
         }
 
@@ -121,15 +132,15 @@ namespace Main
 
             double xTotal = 1, yTotal = 1;
 
-            if (param.Length == 0 || (param.Length %3 ) != 0)
+            if (param.Length == 0 || (param.Length % 3) != 0)
                 return -1;
 
             int i = 0;
 
             while (i < param.Length)
             {
-                xTotal *= Math.Pow((double)param[i + 2], ((int) param[i])/10.0);
-                yTotal *= Math.Pow((double)param[i + 2], ((int) param[i+1])/10.0);
+                xTotal *= Math.Pow((double)param[i + 2], ((int)param[i]) / 10.0);
+                yTotal *= Math.Pow((double)param[i + 2], ((int)param[i + 1]) / 10.0);
                 i += 3;
             }
 

@@ -47,10 +47,13 @@ namespace FightSim
             List<Main.Fighter> winners = fights.Select(fight => fight.Winner).Distinct().ToList();
 
             foreach(var fighter in winners){
-                sb.AppendLine(fighter.Name)
-                  .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), fights.WinPercent(fighter))
-                  .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
+                if(fighter != null)
+                    sb.AppendFormat($"--{fighter.Name}--" )
+                      .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), fights.WinPercent(fighter))
+                      .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
             }
+
+            sb.AppendFormat("Draws {0} ({1}%)\n", fights.Wins(null), fights.WinPercent(null)); ;
 
             Dictionary<MethodOfResult, int> methodsOfResult = fights.MethodOfResultStats();
 
@@ -74,7 +77,6 @@ namespace FightSim
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Stats for {0} elements\n", list.Count);
-
 
             string[] fighters = new string[] { f1Name, f2Name };
 

@@ -28,18 +28,21 @@ namespace FightSim
         private FightOutcome SimFight(FightState fight)
         {
             int timeOfStoppage = -1; //The second the fight ends
+            int[,] scorecards = new int[3,2];
 
             for (; fight.Round < fight.Fight.RoundsScheduled; fight.Round++)
             {
                 fight.FightStats.Add(new FightStats()); //Add new stat page for the round
+                var punchesThisRound = new List<Block.PunchResult>();
 
                 for (int min = 0; min < Constants.BLOCKS_IN_ROUND; ++min)
                 {
                     Block block = new Block(fight);
-
                     var blockOutcome = block.Play();
-                    FightStats blockStats = new FightStats(blockOutcome.Punches, fight.F1, 0, 0);
+
+                    FightStats blockStats = new FightStats(blockOutcome.Punches, block.Knockdowns[0], block.Knockdowns[1]);
                     fight.FightStats[fight.Round].Append(blockStats);
+                    punchesThisRound.AddRange(blockOutcome.Punches);
 
                     if (blockOutcome.Stoppage != -1)
                     {
@@ -49,33 +52,59 @@ namespace FightSim
 
                     fight.F1.RecoverFor(60);
                     fight.F2.RecoverFor(60);
-
                 }
+
+                int[] roundScore;
+
+                for (int j = 0; j < fight.Fight.Judges.Length; ++j)
+                {
+                    roundScore = fight.Fight.Judges[j].ScoreRound(punchesThisRound, fight.FightStats[fight.Round]);
+                    scorecards[j,0] += roundScore[0];
+                    scorecards[j,1] += roundScore[1];
+                };
 
                 fight.F1.RecoverFor(60);
                 fight.F2.RecoverFor(60);
             }
 
-            FightStopped:
+        FightStopped:
 
-            FightOutcome outcome = DeclareFightResult(fight, timeOfStoppage);
+            FightOutcome outcome = DeclareFightResult(fight, scorecards, timeOfStoppage);
             return outcome;
         }
 
-        private FightOutcome DeclareFightResult(FightState fight, int timeOfStoppage)
+        private FightOutcome DeclareFightResult(FightState fight, int[,] scorecards, int timeOfStoppage)
         {
-            Fighter winner;
+            Fighter winner = null;
             FightOutcome outcome;
+            MethodOfResult method = MethodOfResult.UD;
 
             if (timeOfStoppage != -1)
             {
                 winner = fight.F1.Health <= 0 ? fight.Boxer2() : fight.Boxer1();
-                outcome = new FightOutcome(timeOfStoppage, MethodOfResult.KO, winner);
+                outcome = new FightOutcome(timeOfStoppage, MethodOfResult.KO, winner, scorecards);
             }
             else
             {
-                winner = (fight.FightStats.AverageLanded(true)> fight.FightStats.AverageLanded(false))? fight.Boxer1() : fight.Boxer2();
-                outcome = new FightOutcome(timeOfStoppage, MethodOfResult.UD, winner);
+                int[] cardsWon = { 0, 0 };
+
+                for (int card = 0; card < scorecards.GetLength(0); ++card)
+                {
+                    if (scorecards[card, 0] > scorecards[card, 1])
+                        ++cardsWon[0];
+                    else if (scorecards[card, 0] < scorecards[card, 1])
+                        ++cardsWon[1];
+                }
+
+                if (cardsWon[0] > cardsWon[1])
+                    winner = fight.Boxer1();
+                else if (cardsWon[0] < cardsWon[1])
+                    winner = fight.Boxer2();
+
+                if (Math.Abs(cardsWon[0] - cardsWon[1]) < 3)
+                    method = MethodOfResult.MD;
+
+                outcome = new FightOutcome(-1, method, winner, scorecards);
             }
 
             return outcome;
