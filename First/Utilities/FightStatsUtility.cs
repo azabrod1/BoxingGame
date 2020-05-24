@@ -48,7 +48,7 @@ namespace FightSim
 
             foreach(var fighter in winners){
                 if(fighter != null)
-                    sb.AppendFormat($"--{fighter.Name}--" )
+                    sb.AppendFormat($"--{fighter.Name}--\n" )
                       .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), fights.WinPercent(fighter))
                       .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
             }

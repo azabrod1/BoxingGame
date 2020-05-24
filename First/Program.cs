@@ -19,9 +19,9 @@ namespace Main
             Console.WriteLine("**********************\n");
 
 
-             //  Alex();
+              Alex();
             // Vlad(); //TODO Uncomment and comment out mine
-              AlexConc();
+             // AlexConc();
         }
 
         static void Vlad()
@@ -157,7 +157,7 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 95;
+            const int A_Skill = 85;
             const int B_Skill = 85;//;
 
             Fighter fighter = new Fighter("Benji")
@@ -193,7 +193,7 @@ namespace Main
             List<FightOutcome> outcomes = new List<FightOutcome>();
             List<FightStats> fightStats = new List<FightStats>();
 
-            for (int f = 0; f < 1000; ++f)
+            for (int f = 0; f < 100; ++f)
             {
                 Fight fight = new Fight(fighter, opponent);
 
@@ -201,7 +201,7 @@ namespace Main
                 var result = fs.SimulateFightWithDetails(fight);
 
                //if(result.outcome.TimeOfStoppage == -1)
-                //    Console.WriteLine(result.outcome);
+                Console.WriteLine(result.outcome);
 
                 outcomes.Add(result.outcome);
                 fightStats.Add(result.Stats.Condense());
