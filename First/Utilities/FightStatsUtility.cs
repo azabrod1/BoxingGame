@@ -8,8 +8,6 @@ namespace FightSim
     //This exists to make testing easier and collecting data on simulations
     public static class FightStatsUtility
     {
-
-
         public static bool IsKO(this FightSim.FightOutcome outcome)
         {
             return outcome.Method == FightSim.MethodOfResult.KO || outcome.Method == FightSim.MethodOfResult.TKO;
@@ -18,6 +16,11 @@ namespace FightSim
         public static double WinPercent(this List<FightSim.FightOutcome> fights, Main.Fighter fighter, bool byKo = false)
         {
             return (double) 100 * fights.Wins(fighter, byKo) / fights.Count;
+        }
+
+        public static double DrawPercent(this List<FightSim.FightOutcome> fights)
+        {
+            return WinPercent(fights, null);
         }
 
         public static int Wins(this List<FightSim.FightOutcome> fights, Main.Fighter fighter, bool byKo = false)
@@ -53,7 +56,7 @@ namespace FightSim
                       .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
             }
 
-            sb.AppendFormat("Draws {0} ({1}%)\n", fights.Wins(null), fights.WinPercent(null)); ;
+            sb.AppendFormat($"--Draws--\nCount {fights.Draws() } ({fights.DrawPercent()}%)\n");
 
             Dictionary<MethodOfResult, int> methodsOfResult = fights.MethodOfResultStats();
 

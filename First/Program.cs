@@ -21,7 +21,7 @@ namespace Main
 
               Alex();
             // Vlad(); //TODO Uncomment and comment out mine
-             // AlexConc();
+            //  AlexConc();
         }
 
         static void Vlad()
@@ -61,7 +61,7 @@ namespace Main
 
            Fighter fighter = new Fighter("Benji")
             {
-                Weight = 150,
+                Weight = 147,
                 Stamina = 100,
                 HandSpeed = A_Skill,
                 RingGen = A_Skill,
@@ -76,7 +76,7 @@ namespace Main
 
             Fighter opponent = new Fighter("Cody")
             {
-                Weight = 150,
+                Weight = 140,
                 Stamina = B_Skill,
                 HandSpeed = B_Skill,
                 RingGen = B_Skill,
@@ -96,7 +96,7 @@ namespace Main
 
             Fight fight = new Fight(fighter, opponent);
 
-            for (int f = 0; f < 10000; ++f)
+            for (int f = 0; f < 7000; ++f)
                 fights.Add(fight);
 
             FightSimulator fs = new FightSimulatorGauss();
@@ -110,7 +110,6 @@ namespace Main
 
             stopwatch.Stop();
             long elapsed_time = stopwatch.ElapsedMilliseconds;
-
 
             Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
             Console.WriteLine(outcomes.SummaryFightOutcomes());
@@ -193,7 +192,7 @@ namespace Main
             List<FightOutcome> outcomes = new List<FightOutcome>();
             List<FightStats> fightStats = new List<FightStats>();
 
-            for (int f = 0; f < 100; ++f)
+            for (int f = 0; f < 1000; ++f)
             {
                 Fight fight = new Fight(fighter, opponent);
 
