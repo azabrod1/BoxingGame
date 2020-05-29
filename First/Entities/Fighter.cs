@@ -45,6 +45,36 @@ namespace Main
             Console.WriteLine();
         }
 
+        public double OverallSkill() //Not exact
+        {
+            double skill = 0;
+            skill += MathUtils.WeightedAverage(Accuracy, 10,
+                                               Defense,  10,
+                                               Durability, 7,
+                                               FootWork, 7,
+                                               RingGen, 10,
+                                               HandSpeed, 6,
+                                               Stamina, 7,
+                                               Power, 8
+                 );
+
+            return skill;
+        }
+
+        public void UpdateRecord(FightSim.FightOutcome outcome)
+        {
+            if (outcome.IsDraw())
+                ++Record.Draws;
+            else if (outcome.Winner == this)
+            {
+                ++Record.Wins;
+                if (outcome.IsKO())
+                    ++Record.KOs;
+            }
+            else
+                ++Record.Losses;
+        }
+
         private double ExpectedJabPercent()
         {
             double effectiveWeight = Math.Min(200, Weight);

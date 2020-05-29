@@ -8,6 +8,8 @@ namespace Main
         public int KOs { get; set; }
         public int Draws { get; set; }
 
+
+        //todo: remove all this rank stuff, Elo class should keep track of that
         private double _rank;
 
         public double Rank {
@@ -32,7 +34,7 @@ namespace Main
 
         public override string ToString()
         {
-            return "rank: " + Rank.ToString("0") + " wins: " + Wins + " with KO: " + KOs + " losses: " + Losses;
+            return String.Format("Wins: {0} ({1} KOs), Losses: {2}, Draws {3}", Wins, KOs, Losses, Draws);
         }
     }
 }

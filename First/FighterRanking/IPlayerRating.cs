@@ -74,7 +74,7 @@ namespace Boxing.FighterRating
          */
 
         public double CalculateRatingChange(Fighter f1, Fighter f2, double score);
-        
+
         /**
          * Calculate the rating change for the player with Rating1 and the given score
          * 
@@ -106,5 +106,28 @@ namespace Boxing.FighterRating
             return CalculateRatingChange(f1, f2, score);
         }
 
+        public double CalculateRatingChange(FightSim.FightOutcome outcome)
+        {
+            double score = 0.5;
+
+            //No Contest means no change almost by definition
+            if (outcome.Method == FightSim.MethodOfResult.NC)
+                return 0;
+
+            if (outcome.IsDraw())
+                return score;
+
+            score = (outcome.WinnerNum() == 0) ? 1 : 0;
+
+            if (outcome.IsKO())
+                if (score == 1)
+                    score = 0.9;
+                else
+                    score = 0.1;
+
+            return CalculateRatingChange(outcome.Fighter1(), outcome.Fighter2(), score);
+        }
+
     }
+
 }

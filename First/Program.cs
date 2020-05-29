@@ -35,9 +35,9 @@ namespace Main
         static void Anya()
         {
             FightSimPlayTester game = new FightSimPlayTester();
-            game.AddFighters(1000, 147);
+            game.AddFighters(2500, 147);
 
-            game.SimFights(1);
+            game.SimFights(25);
 
 
             Console.WriteLine(game.Status());

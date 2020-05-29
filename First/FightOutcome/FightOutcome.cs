@@ -93,5 +93,15 @@ namespace FightSim
             return TimeOfStoppage / 180;
         }
 
+        public Fighter Fighter1()
+        {
+            return Fighters[0];
+        }
+
+        public Fighter Fighter2()
+        {
+            return Fighters[1];
+        }
+
     }
 }

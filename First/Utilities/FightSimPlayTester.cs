@@ -27,6 +27,12 @@ namespace Utilities
             {
                 List<Fight> fights = ScheduleFights();
                 var outcomes = FightSim.SimulateManyFights(fights);
+                foreach(var outcome in outcomes)
+                {
+                    outcome.Fighters[0].UpdateRecord(outcome);
+                    outcome.Fighters[1].UpdateRecord(outcome);
+                    Elo.CalculateRatingChange(outcome);
+                }
             }
         }
 
@@ -45,7 +51,9 @@ namespace Utilities
             for(int f = 0; f < top; ++f)
             {
                 Fighter curr = fighters[f];
-                sb.AppendFormat($"{f+1}. {curr.Name} {curr.Record}\n");
+                sb.AppendFormat($"{f+1}. {curr.Name}\n\t{curr.Record} Rating: {Elo.Rating(curr)}\n");
+                sb.AppendFormat($"\tSkill Level {curr.OverallSkill()}");
+                sb.AppendLine();
             }
 
             return sb.ToString();
