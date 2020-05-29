@@ -75,8 +75,8 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 80;
-            const int B_Skill = 80;
+            const int A_Skill = 96;
+            const int B_Skill = 88;
 
            Fighter fighter = new Fighter("Benji")
             {
@@ -95,7 +95,7 @@ namespace Main
 
             Fighter opponent = new Fighter("Cody")
             {
-                Weight = 140,
+                Weight = 147,
                 Stamina = B_Skill,
                 HandSpeed = B_Skill,
                 RingGen = B_Skill,

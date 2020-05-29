@@ -41,6 +41,7 @@ namespace FightSim
         :
         this(timeOfStoppage, method, winner, scorecards, fight.fighters)
         {
+        
         }
 
         public override string ToString()
@@ -78,8 +79,8 @@ namespace FightSim
             {
                 if (value == null)
                     _winner = -1;
-
-                _winner = value == Fighters[0]? 0 : 1;
+                else
+                    _winner = value == Fighters[0]? 0 : 1;
             }
         }
 
