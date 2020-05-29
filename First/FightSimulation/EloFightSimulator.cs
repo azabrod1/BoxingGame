@@ -17,28 +17,28 @@ namespace FightSim
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             Fighter winner;
 
-            int f1 = int.Parse(String.Join("", fight.b1.Name.Where(char.IsDigit)));
-            int f2 = int.Parse(String.Join("", fight.b2.Name.Where(char.IsDigit)));
+            int f1 = int.Parse(String.Join("", fight.Fighter1().Name.Where(char.IsDigit)));
+            int f2 = int.Parse(String.Join("", fight.Fighter2().Name.Where(char.IsDigit)));
            
             if (f1 > f2)
             {
                 // fighter 1 won
-                updateElo(fight.b1, fight.b2);
-                winner = fight.b1;
+                updateElo(fight.Fighter1(), fight.Fighter2());
+                winner = fight.Fighter1();
 
-                fight.b1.Record.Wins++;
-                fight.b2.Record.Losses++;
+                fight.Fighter1().Record.Wins++;
+                fight.Fighter2().Record.Losses++;
 
             }
             else
             {
-                updateElo(fight.b2, fight.b1);
-                winner = fight.b2;
-                fight.b2.Record.Wins++;
-                fight.b1.Record.Losses++;
+                updateElo(fight.Fighter2(), fight.Fighter1());
+                winner = fight.Fighter2();
+                fight.Fighter2().Record.Wins++;
+                fight.Fighter1().Record.Losses++;
             }
-            FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null);
-            fo.Viewership = getNetworkViewers(fight.b1.Record.Rank, fight.b2.Record.Rank);
+            FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null, fight.fighters);
+            fo.Viewership = getNetworkViewers(fight.Fighter1().Record.Rank, fight.Fighter2().Record.Rank);
             fight.Outcome = fo;
             return fo;
         }
@@ -46,9 +46,9 @@ namespace FightSim
 
         private static void updateElo(Fighter winner, Fighter loser)
         {
-            double delta = 0.45 * loser.Record.Rank - 0.05 * winner.Record.Rank;
+            //double delta = 0.45 * loser.Record.Rank - 0.05 * winner.Record.Rank;
 
-                //eloDelta(winner.Record.Rank, loser.Record.Rank);
+            double delta =  eloDelta(winner.Record.Rank, loser.Record.Rank);
             winner.Record.Rank += delta;
             loser.Record.Rank -= delta;
 

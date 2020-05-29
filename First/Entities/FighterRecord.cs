@@ -18,7 +18,7 @@ namespace Main
         public double PreviousRank { get; private set; } // automatically preserved
 
 
-        public double Elo // synonim to Rank
+        public double Elo // synonym to Rank... LOL
         {
             get { return Rank; }
             set { Rank = value; }

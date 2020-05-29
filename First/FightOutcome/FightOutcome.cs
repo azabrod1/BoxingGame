@@ -1,4 +1,6 @@
 ﻿using System;
+using Main;
+
 namespace FightSim
 {
     /*
@@ -17,18 +19,28 @@ namespace FightSim
     {
         public readonly int TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
         public readonly MethodOfResult Method;
-        public readonly Main.Fighter Winner;
+        public readonly Fighter[] Fighters;
+
+        private int _winner = -1;
 
         public readonly int[,] Scorecards = new int[3, 2];
 
         public double Viewership { get; set; } //todo this should prob be on Fight object eventually
 
-        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards)
+        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fighter[] fighters)
         {
             this.TimeOfStoppage = timeOfStoppage; //use double.PositiveInfinity for no KO
             this.Method = method;
-            this.Winner = winner;
             this.Scorecards = scorecards;
+            this.Fighters = fighters;
+            this.Winner = winner;
+
+        }
+
+        public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fight fight)
+        :
+        this(timeOfStoppage, method, winner, scorecards, fight.fighters)
+        {
         }
 
         public override string ToString()
@@ -41,6 +53,39 @@ namespace FightSim
 
             return ret; 
 
+        }
+
+        public bool IsDraw()
+        {
+            return Winner == null;
+        }
+
+        public int WinnerNum()
+        {
+            return _winner;
+        }
+
+        public Fighter Winner
+        {
+            get
+            {
+                if (_winner == -1)
+                    return null;
+                return Fighters[_winner];
+            }
+
+            set
+            {
+                if (value == null)
+                    _winner = -1;
+
+                _winner = value == Fighters[0]? 0 : 1;
+            }
+        }
+
+        public bool IsKO()
+        {
+            return Method == MethodOfResult.KO || Method == MethodOfResult.TKO;
         }
 
         public int RoundOfStoppage()

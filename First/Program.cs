@@ -5,6 +5,12 @@ using System.IO;
 using System.Linq;
 using FightSim;
 
+using System.Configuration;
+using System.ComponentModel;
+using System.Xml.Linq;
+using Boxing.FighterRating;
+using Utilities;
+
 namespace Main
 {
     class Program
@@ -16,12 +22,27 @@ namespace Main
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("**********************\n");
+            Console.WriteLine("**********************\n\n");
 
-
-              Alex();
+            // Alex();
             // Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
+
+            Anya();
+
+        }
+
+        static void Anya()
+        {
+            FightSimPlayTester game = new FightSimPlayTester();
+            game.AddFighters(1000, 147);
+
+            game.SimFights(1);
+
+
+            Console.WriteLine(game.Status());
+
+
         }
 
         static void Vlad()
@@ -113,10 +134,56 @@ namespace Main
 
             Console.WriteLine(fightStats.SummaryStats(fighter.Name, opponent.Name));
             Console.WriteLine(outcomes.SummaryFightOutcomes());
+
             //Console.WriteLine(fightStats.StandardDeviationDamage(true));
             //Console.WriteLine(fightStats.StandardDeviationDamage(false));
 
             Console.WriteLine("elapsed {0}", elapsed_time);
+        }
+
+        static void EloTest()
+        {
+            //Fighter foo = null;
+            //for (int f = 0; f < 1000; ++f)
+            //{
+            //    foo = FighterCache.CreateRandomFighter();
+            //    Console.WriteLine(foo);
+            //};
+
+
+            //     WeightclassConfig();
+            //   WeightClass.LoadAllWeightClasses();
+
+            IPlayerRating elo = new EloFighterRating();
+            FighterCache fc = new FighterCache();
+            Fighter f1 = fc.CreateRandomFighter(147);
+            Fighter f2 = fc.CreateRandomFighter(147);
+
+            elo.AddFighter(f1); //This can be commented out, will auto add players
+            elo.AddFighter(f2);
+
+            //  Console.WriteLine(  elo.Rating(f1) );
+            //  Console.WriteLine( elo.Rating(f2));
+
+            FightSimulatorGauss fs = new FightSimulatorGauss();
+
+            List<FightOutcome> list = new List<FightOutcome>();
+            List<FightStats> stats = new List<FightStats>();
+
+            for (int i = 0; i < 200; ++i)
+            {
+                var s = fs.SimulateFightWithDetails(new Fight(f1, f2));
+                //Console.WriteLine(outcome.Winner);
+
+                elo.CalculateRatingChange(f1, f2, s.outcome);
+                list.Add(s.outcome);
+                stats.Add(s.Stats.Condense());
+                Console.WriteLine($"{elo.Rating(f1)}, {elo.Rating(f2)}, {s.outcome.WinnerNum()}");
+            }
+
+            //   Console.WriteLine(list.SummaryFightOutcomes());
+            //    Console.WriteLine(stats.SummaryStats(f1.Name, f2.Name));
+
         }
 
         static void PunchDistroTest(FightState fs)
@@ -768,8 +835,6 @@ namespace Main
 
         }
 
-
-
         static void MaeeRin(string[] args)
         {
             /*
@@ -818,7 +883,6 @@ namespace Main
                     map[name]++;
             }
 
-
             var myList = map.ToList();
 
             myList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
@@ -827,9 +891,133 @@ namespace Main
             {
                 Console.WriteLine(i);
             }
+        }
+
+        private static void WeightclassConfig()
+        {
+            string filename = "FightConfig.xml";
+            XElement res = new XElement("WeightClasses",
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "LightFlyweight"),
+                                 new XElement("MaxWeight", 108),
+                                 new XElement("Popularity", 10),
+                                 new XElement("Description", "Light Flyweight"),
+                                 new XElement("Size", 500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Flyweight"),
+                                 new XElement("MaxWeight", 112),
+                                 new XElement("Popularity", 10),
+                                 new XElement("Description", "Flyweight"),
+                                 new XElement("Size", 500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "SuperFlyweight"),
+                                 new XElement("MaxWeight", 115),
+                                 new XElement("Popularity", 20),
+                                 new XElement("Description", "Super Flyweight"),
+                                 new XElement("Size", 500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Bantamweight"),
+                                 new XElement("MaxWeight", 118),
+                                 new XElement("Popularity", 20),
+                                 new XElement("Description", "Bantamweight"),
+                                 new XElement("Size", 500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "SuperBantamweight"),
+                                 new XElement("MaxWeight", 122),
+                                 new XElement("Popularity", 25),
+                                 new XElement("Description", "Super Bantamweight"),
+                                 new XElement("Size", 500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Featherweight"),
+                                 new XElement("MaxWeight", 126),
+                                 new XElement("Popularity", 30),
+                                 new XElement("Description", "Featherweight"),
+                                 new XElement("Size", 1000)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "SuperFeatherweight"),
+                                 new XElement("MaxWeight", 130),
+                                 new XElement("Popularity", 35),
+                                 new XElement("Description", "Super Featherweight"),
+                                 new XElement("Size", 1000)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Lightweight"),
+                                 new XElement("MaxWeight", 135),
+                                 new XElement("Popularity", 50),
+                                 new XElement("Description", "Lightweight"),
+                                 new XElement("Size", 1000)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "SuperLightweight"),
+                                 new XElement("MaxWeight", 140),
+                                 new XElement("Popularity", 70),
+                                 new XElement("Description", "Super Lightweight"),
+                                 new XElement("Size", 1500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Weltherweight"),
+                                 new XElement("MaxWeight", 147),
+                                 new XElement("Popularity", 100),
+                                 new XElement("Description", "Weltherweight"),
+                                 new XElement("Size", 2500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "SuperWeltherweight"),
+                                 new XElement("MaxWeight", 154),
+                                 new XElement("Popularity", 85),
+                                 new XElement("Description", "Super Weltherweight"),
+                                 new XElement("Size", 1750)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Middleweight"),
+                                 new XElement("MaxWeight", 160),
+                                 new XElement("Popularity", 90),
+                                 new XElement("Description", "Middleweight"),
+                                 new XElement("Size", 1750)
+                              ),
+                              new XElement("SuperMiddleweight",
+                                 new XAttribute("id", "SuperMiddleweight"),
+                                 new XElement("MaxWeight", 168),
+                                 new XElement("Popularity", 65),
+                                 new XElement("Description", "Super Middleweight"),
+                                 new XElement("Size", 1500)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "LightHeavyweight"),
+                                 new XElement("MaxWeight", 175),
+                                 new XElement("Popularity", 80),
+                                 new XElement("Description", "Light Heavyweight"),
+                                 new XElement("Size", 1000)
+                              ),
+                              new XElement("WeightClass",
+                                new XAttribute("id", "Cruiserweight"),
+                                 new XElement("MaxWeight", 200),
+                                 new XElement("Popularity", 40),
+                                 new XElement("Description", "Cruiserweight"),
+                                 new XElement("Size", 750)
+                              ),
+                              new XElement("WeightClass",
+                                 new XAttribute("id", "Heavyweight"),
+                                 new XElement("MaxWeight", -1),
+                                 new XElement("Popularity", 135),
+                                 new XElement("Description", "Heavyweight"),
+                                 new XElement("Size", 1000)
+                              )
+                            );
+
+            res.Save(filename);
+
 
 
 
         }
+
+
     }
 }

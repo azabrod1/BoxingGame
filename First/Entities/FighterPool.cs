@@ -101,8 +101,6 @@ namespace Main
 
         }
 
-
-
         public void SimulateFights(int epsilon = 16)
         {
             int op;

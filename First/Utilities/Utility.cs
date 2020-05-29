@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,6 @@ namespace Main
             LowLimit = lowLimit;
             HiLimit = hiLimit;
         }
-
     }
 
     public static class Utility
@@ -72,9 +72,8 @@ namespace Main
             List<string> names = new List<string>();
             List<double> lowLimit = new List<double>();
             List<double> hiLimit = new List<double>();
-            var assembly = Assembly.GetExecutingAssembly();
-            //using (var reader = new StreamReader(filename))
 
+            var assembly = Assembly.GetExecutingAssembly();
             string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith(filename));
 
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
@@ -145,6 +144,44 @@ namespace Main
             }
 
             return xTotal / (yTotal + xTotal);
+        }
+
+        public static string UsefulString<T>(this IEnumerable<T> col)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (var item in col)
+                sb.AppendLine(UsefulString(item));
+
+            return sb.ToString();
+        }
+
+        public static string UsefulString(Object obj)
+        {
+            if (obj == null)
+                return "null";
+
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            var _name = obj.GetType().GetProperty("Name");
+
+            string name = (_name != null && _name.GetValue(obj) != null) ? _name.GetValue(obj).ToString() : "";
+
+            if(name.Length == 0)
+            {
+                var _ID = obj.GetType().GetProperty("ID");
+                if (_ID != null && _ID.GetValue(obj) != null)
+                    name = _ID.GetValue(obj).ToString();
+            }
+
+            sb.AppendFormat($"{obj.GetType().Name}: { name } \n");
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+            {
+                string desc = descriptor.Name;
+                object value = descriptor.GetValue(obj);
+                sb.AppendFormat("{0}={1}\n", desc, value.ToString());
+            }
+
+            return sb.ToString();
         }
 
     }

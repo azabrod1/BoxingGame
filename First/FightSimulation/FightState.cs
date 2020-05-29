@@ -20,12 +20,12 @@ namespace FightSim
 
         public Fighter Boxer1()
         {
-            return Fight.b1;
+            return Fight.Fighter1();
         }
 
         public Fighter Boxer2()
         {
-            return Fight.b2;
+            return Fight.Fighter2();
         }
 
         public FightState(Fight fight)
@@ -33,18 +33,18 @@ namespace FightSim
             this.Fight = fight;
             this.FightControl = CalcFightControl();
 
-            this.F1 = new FighterState(fight.b1);
-            this.F2 = new FighterState(fight.b2);
+            this.F1 = new FighterState(fight.Fighter1());
+            this.F2 = new FighterState(fight.Fighter2());
 
             //We should add some randomness here?
             FightDistance = FightControl * F1.PreferredDistance(F2) + (1-FightControl) * F2.PreferredDistance(F1);
             FightStats = new List<FightStats>();
         }
 
-        //Percent of match control that b1 gets
+        //Percent of match control that Fighter1() gets
         public double CalcFightControl()
         {
-            double control = Utility.AttributeRatioCustom(Fight.b1.RingGen, Fight.b2.RingGen, 2d, Fight.b1.FootWork, Fight.b2.FootWork, Constants.SQR_ROOT_TWO);
+            double control = Utility.AttributeRatioCustom(Fight.Fighter1().RingGen, Fight.Fighter2().RingGen, 2d, Fight.Fighter1().FootWork, Fight.Fighter2().FootWork, Constants.SQR_ROOT_TWO);
             return control;
         }
 

@@ -15,7 +15,7 @@ namespace FightSim
 
         public static double WinPercent(this List<FightSim.FightOutcome> fights, Main.Fighter fighter, bool byKo = false)
         {
-            return (double) 100 * fights.Wins(fighter, byKo) / fights.Count;
+            return (double)100 * fights.Wins(fighter, byKo) / fights.Count;
         }
 
         public static double DrawPercent(this List<FightSim.FightOutcome> fights)
@@ -25,7 +25,7 @@ namespace FightSim
 
         public static int Wins(this List<FightSim.FightOutcome> fights, Main.Fighter fighter, bool byKo = false)
         {
-            return fights.Where(outcome => outcome.Winner == fighter && (!byKo || outcome.IsKO() )).Count();
+            return fights.Where(outcome => outcome.Winner == fighter && (!byKo || outcome.IsKO())).Count();
         }
 
         public static int Draws(this List<FightSim.FightOutcome> fights)
@@ -49,9 +49,10 @@ namespace FightSim
 
             List<Main.Fighter> winners = fights.Select(fight => fight.Winner).Distinct().ToList();
 
-            foreach(var fighter in winners){
-                if(fighter != null)
-                    sb.AppendFormat($"--{fighter.Name}--\n" )
+            foreach (var fighter in winners)
+            {
+                if (fighter != null)
+                    sb.AppendFormat($"--{fighter.Name}--\n")
                       .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), fights.WinPercent(fighter))
                       .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
             }

@@ -82,7 +82,7 @@ namespace FightSim
             if (timeOfStoppage != -1)
             {
                 winner = fight.F1.Health <= 0 ? fight.Boxer2() : fight.Boxer1();
-                outcome = new FightOutcome(timeOfStoppage, MethodOfResult.KO, winner, scorecards);
+                outcome = new FightOutcome(timeOfStoppage, MethodOfResult.KO, winner, scorecards, fight.Fight);
             }
             else
             {
@@ -104,7 +104,7 @@ namespace FightSim
                 if (Math.Abs(cardsWon[0] - cardsWon[1]) < 3)
                     method = MethodOfResult.MD;
 
-                outcome = new FightOutcome(-1, method, winner, scorecards);
+                outcome = new FightOutcome(-1, method, winner, scorecards, fight.Fight);
             }
 
             return outcome;

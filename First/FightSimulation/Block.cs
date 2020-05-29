@@ -27,7 +27,7 @@ namespace FightSim
             this.Fight = fight;
             Boxer = new FighterState[] { fight.F1, fight.F2 };
             PunchDistro = new (int Jabs, int PowerPunches)[2];
-;
+
         }
 
         public class PunchResult

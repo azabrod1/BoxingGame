@@ -1,18 +1,19 @@
 using System;
+using System.ComponentModel;
+using System.Text;
 using FightSim;
 
 namespace Main
 {
     public class Fighter
     {
-        public readonly string Name; //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
+        public string Name { get;  } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
         public FighterRecord Record { get; set; } 
 
         //Attributes
         public int Accuracy { get; set; } = 50;
         public int Aggression { get; set; } = 50;
-        public int Chin { get; set; } = 50;
         public int Defense { get; set; } = 50;
         public int Durability { get; set; } = 50;
         public int FootWork { get; set; } = 50;
@@ -40,6 +41,8 @@ namespace Main
                 this.Name = Utility.RandomNameSimple();
             else
                 this.Name = name;
+
+            Console.WriteLine();
         }
 
         private double ExpectedJabPercent()
@@ -52,7 +55,7 @@ namespace Main
 
         public override string ToString()
         {
-            return this.Name + "(rank = " + this.Record.Rank.ToString("0") + ")";
+            return Utility.UsefulString(this);
         }
 
     }

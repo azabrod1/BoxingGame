@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WeightClasses>
+  <WeightClass id="LightFlyweight">
+    <MaxWeight>108</MaxWeight>
+    <Popularity>10</Popularity>
+    <Description>Light Flyweight</Description>
+    <Size>500</Size>
+  </WeightClass>
+  <WeightClass id="Flyweight">
+    <MaxWeight>112</MaxWeight>
+    <Popularity>10</Popularity>
+    <Description>Flyweight</Description>
+    <Size>500</Size>
+  </WeightClass>
+  <WeightClass id="SuperFlyweight">
+    <MaxWeight>115</MaxWeight>
+    <Popularity>20</Popularity>
+    <Description>Super Flyweight</Description>
+    <Size>500</Size>
+  </WeightClass>
+  <WeightClass id="Bantamweight">
+    <MaxWeight>118</MaxWeight>
+    <Popularity>20</Popularity>
+    <Description>Bantamweight</Description>
+    <Size>500</Size>
+  </WeightClass>
+  <WeightClass id="SuperBantamweight">
+    <MaxWeight>122</MaxWeight>
+    <Popularity>25</Popularity>
+    <Description>Super Bantamweight</Description>
+    <Size>500</Size>
+  </WeightClass>
+  <WeightClass id="Featherweight">
+    <MaxWeight>126</MaxWeight>
+    <Popularity>30</Popularity>
+    <Description>Featherweight</Description>
+    <Size>1000</Size>
+  </WeightClass>
+  <WeightClass id="SuperFeatherweight">
+    <MaxWeight>130</MaxWeight>
+    <Popularity>35</Popularity>
+    <Description>Super Featherweight</Description>
+    <Size>1000</Size>
+  </WeightClass>
+  <WeightClass id="Lightweight">
+    <MaxWeight>135</MaxWeight>
+    <Popularity>50</Popularity>
+    <Description>Lightweight</Description>
+    <Size>1000</Size>
+  </WeightClass>
+  <WeightClass id="SuperLightweight">
+    <MaxWeight>140</MaxWeight>
+    <Popularity>70</Popularity>
+    <Description>Super Lightweight</Description>
+    <Size>1500</Size>
+  </WeightClass>
+  <WeightClass id="Weltherweight">
+    <MaxWeight>147</MaxWeight>
+    <Popularity>100</Popularity>
+    <Description>Weltherweight</Description>
+    <Size>2500</Size>
+  </WeightClass>
+  <WeightClass id="SuperWeltherweight">
+    <MaxWeight>154</MaxWeight>
+    <Popularity>85</Popularity>
+    <Description>Super Weltherweight</Description>
+    <Size>1750</Size>
+  </WeightClass>
+  <WeightClass id="Middleweight">
+    <MaxWeight>160</MaxWeight>
+    <Popularity>90</Popularity>
+    <Description>Middleweight</Description>
+    <Size>1750</Size>
+  </WeightClass>
+  <SuperMiddleweight id="SuperMiddleweight">
+    <MaxWeight>168</MaxWeight>
+    <Popularity>65</Popularity>
+    <Description>Super Middleweight</Description>
+    <Size>1500</Size>
+  </SuperMiddleweight>
+  <WeightClass id="LightHeavyweight">
+    <MaxWeight>175</MaxWeight>
+    <Popularity>80</Popularity>
+    <Description>Light Heavyweight</Description>
+    <Size>1000</Size>
+  </WeightClass>
+  <WeightClass id="Cruiserweight">
+    <MaxWeight>200</MaxWeight>
+    <Popularity>40</Popularity>
+    <Description>Cruiserweight</Description>
+    <Size>750</Size>
+  </WeightClass>
+  <WeightClass id="Heavyweight">
+    <MaxWeight>-1</MaxWeight>
+    <Popularity>135</Popularity>
+    <Description>Heavyweight</Description>
+    <Size>1000</Size>
+  </WeightClass>
+</WeightClasses>
