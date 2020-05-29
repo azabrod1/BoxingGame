@@ -45,8 +45,7 @@ namespace Utilities
 
             List<Fighter> fighters = Fighters.AllFighters();
 
-            //Sort in reverse order
-            fighters.Sort((f1, f2) => Elo.Rating(f2).CompareTo(Elo.Rating(f1)));
+            fighters.Sort((f1, f2) => Elo.Rating(f1).CompareTo(Elo.Rating(f2)));
 
             for(int f = 0; f < top; ++f)
             {

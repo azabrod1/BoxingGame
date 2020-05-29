@@ -37,12 +37,10 @@ namespace Main
             FightSimPlayTester game = new FightSimPlayTester();
             game.AddFighters(2500, 147);
 
-            game.SimFights(25);
+            game.SimFights(50);
 
 
             Console.WriteLine(game.Status());
-
-
         }
 
         static void Vlad()
