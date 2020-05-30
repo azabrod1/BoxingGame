@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Boxing.FighterRating;
 using FightSim;
@@ -25,14 +26,18 @@ namespace Utilities
 
             for (int fightNight = 0; fightNight < numFights; ++fightNight)
             {
-                List<Fight> fights = ScheduleFights();
-                var outcomes = FightSim.SimulateManyFights(fights);
-                foreach(var outcome in outcomes)
-                {
-                    outcome.Fighters[0].UpdateRecord(outcome);
-                    outcome.Fighters[1].UpdateRecord(outcome);
-                    Elo.CalculateRatingChange(outcome);
-                }
+                List<Fight> schedule = new List<Fight>();
+                foreach (WeightClass wc in WeightClass.AllWeightClasses())
+                    schedule.AddRange( ScheduleFights(wc));
+
+                    var outcomes = FightSim.SimulateManyFights(schedule);
+                    foreach (var outcome in outcomes)
+                    {
+                        outcome.Fighters[0].UpdateRecord(outcome);
+                        outcome.Fighters[1].UpdateRecord(outcome);
+                        Elo.CalculateRatingChange(outcome);
+                    }
+                
             }
         }
 
@@ -51,22 +56,25 @@ namespace Utilities
             {
                 Fighter curr = fighters[f];
                 sb.AppendFormat($"{f+1}. {curr.Name}\n\t{curr.Record} Rating: {Elo.Rating(curr)}\n");
-                sb.AppendFormat($"\tSkill Level {curr.OverallSkill()}");
+                sb.AppendFormat($"\tSkill Level: {curr.OverallSkill()} Weight: {curr.Weight}");
+                //sb.AppendLine();
+                //sb.AppendLine(curr.ToString());
                 sb.AppendLine();
+
             }
 
             return sb.ToString();
         }
 
-        private List<Fight> ScheduleFights()
+        private List<Fight> ScheduleFights(WeightClass wc)
         {
-            List<Fighter> fighters = Fighters.AllFighters();
+            List<Fighter> fighters = Fighters.AllFighters().Where( fighter => fighter.Weight == wc.Weight).ToList();
             List<Fight> schedule = new List<Fight>();
 
             //Sort in reverse order
             fighters.Sort((f1, f2) => Elo.Rating(f2).CompareTo(Elo.Rating(f1)));
 
-            while (fighters.Count != 0)
+            while (fighters.Count > 1)
             {
                 int f1 = 0, f2 = 1;
                 for (; f2 < fighters.Count - 1; ++f2)
@@ -87,7 +95,6 @@ namespace Utilities
                 added.Add(Fighters.CreateRandomFighter(weight));
 
             Elo.AddFighters(added);
-
 
             return added;
         }

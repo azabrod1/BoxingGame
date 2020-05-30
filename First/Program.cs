@@ -24,7 +24,7 @@ namespace Main
         {
             Console.WriteLine("**********************\n\n");
 
-            // Alex();
+             //Alex();
             // Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
 
@@ -35,10 +35,12 @@ namespace Main
         static void Anya()
         {
             FightSimPlayTester game = new FightSimPlayTester();
-            game.AddFighters(2500, 147);
+            foreach (WeightClass wc in WeightClass.AllWeightClasses())
+            {
+                game.AddFighters(wc.Size, wc.Weight);
+            }
 
-            game.SimFights(50);
-
+            game.SimFights(50);`````
 
             Console.WriteLine(game.Status());
         }
@@ -75,8 +77,8 @@ namespace Main
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const int A_Skill = 96;
-            const int B_Skill = 88;
+            const int A_Skill = 98;
+            const int B_Skill = 93;
 
            Fighter fighter = new Fighter("Benji")
             {

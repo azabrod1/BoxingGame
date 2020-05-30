@@ -87,7 +87,7 @@ namespace Main
         {
             Fighter fighter = null;
 
-            for(int attempt = 0; attempt < 10 && fighter == null; ++attempt)
+            for(int attempt = 0; attempt < 100 && fighter == null; ++attempt)
             {
                 string name = Utility.getRandomFirstName() + " " + Utility.getRandomLastName();
                 fighter = NewFighter(name);

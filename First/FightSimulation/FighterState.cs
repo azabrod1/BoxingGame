@@ -55,7 +55,7 @@ namespace FightSim
 
             //After certain point your skills really scale! 
             if (accuracy > Constants.P4P_BUFF_THRESHOLD)
-                accuracy = 2 * accuracy - Constants.P4P_BUFF_THRESHOLD;
+                accuracy = 2.5 * accuracy - Constants.P4P_BUFF_THRESHOLD;
 
             return accuracy;
         }
@@ -66,7 +66,7 @@ namespace FightSim
 
             //P4P fighters are really hard to challenge 
             if (defense > Constants.P4P_BUFF_THRESHOLD)
-                defense = 2 * defense - Constants.P4P_BUFF_THRESHOLD;
+                defense = 2.5 * defense - Constants.P4P_BUFF_THRESHOLD;
 
             return defense;
         }

@@ -17,7 +17,7 @@ namespace FightSim
 
         /* Concurrency */
 
-        const int FIGHTS_PER_THREAD = 500; //This will one day be a bigger #
+        const int FIGHTS_PER_THREAD = 1000; //This will one day be a bigger #
 
         public  List<FightOutcome> SimulateManyFights(List<Main.Fight> fights)
         {

@@ -48,11 +48,11 @@ namespace Main
         public double OverallSkill() //Not exact
         {
             double skill = 0;
-            skill += MathUtils.WeightedAverage(Accuracy, 10,
-                                               Defense,  10,
+            skill += MathUtils.WeightedAverage(Accuracy, 11,
+                                               Defense,  11,
                                                Durability, 7,
                                                FootWork, 7,
-                                               RingGen, 10,
+                                               RingGen, 7,
                                                HandSpeed, 6,
                                                Stamina, 7,
                                                Power, 8

@@ -11,7 +11,7 @@ namespace Boxing.FighterRating
         readonly int K;
         readonly double InitElo;
 
-        public EloFighterRating(int k = 64, double initElo = 1500)
+        public EloFighterRating(int k = 50, double initElo = 1500)
         {
             Ratings = new ConcurrentDictionary<string, double>();
             K = k;
