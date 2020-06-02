@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Main;
+using static Main.Constants;
 
 namespace FightSim
 {
@@ -12,13 +13,9 @@ namespace FightSim
 
         readonly FightState Fight;
 
-        const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
-        const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
-
         private double BlockIntensity;
         private double BlockDamage;
         public int[]  Knockdowns = { 0, 0 };
-
 
         private (int Jabs, int PowerPunches)[] PunchDistro;
 
@@ -44,7 +41,6 @@ namespace FightSim
                 this.Accuracy = accuracy;
                 this.Punch    = punch;
             }
-
         }
 
         public void SetRandomVariables()
@@ -69,7 +65,7 @@ namespace FightSim
             if(PunchDistro[defender].Jabs != 0 ) //Avoid divide by zero error
                 jabPercent = (double)PunchDistro[defender].Jabs / (PunchDistro[defender].PowerPunches + PunchDistro[defender].Jabs);
 
-            double jabBuff = 0.020 * (jabPercent - Constants.JAB_RATIO_AVG);
+            double jabBuff = 0.020 * (jabPercent - JAB_RATIO_AVG);
 
             //There are some diminishing returns here
             jabBuff = Math.Max(-0.025, Math.Min(0.025, jabBuff));

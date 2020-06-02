@@ -27,7 +27,8 @@ namespace Main
         public const double P4P_BUFF_THRESHOLD  = 89; //Pound for pound fighter skills scale even faster, skills above it scale 2X as fast
         public const double WEIGHT_POWER_BUFF   = 3.5;
         public const double WEIGHT_DURABILITY_BUFF = 2.8;
-
+        public const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
+        public const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
         public const double PREF_DISTANCE_WEIGHT_ON_JAB = 0.70; //Jab mean offseted effected 70% by preferred distance, 30% actual distance
 
 

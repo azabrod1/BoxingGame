@@ -4,21 +4,26 @@ using System.Linq;
 using System.Text;
 using Boxing.FighterRating;
 using FightSim;
+using log4net;
 using Main;
 
 namespace Utilities
 {
     public class FightSimPlayTester
     {
+        static readonly ILog LOGGER =
+        LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public FighterCache Fighters;
         private readonly FightSimulator FightSim = new FightSimulatorGauss();
-        double MatchCoef { get; set; } = 0.1; //Higher values mean more likely fighters someone as good as them
-        IPlayerRating Elo;
+        double MatchCoef { get; set; } = 0.05; //Higher values mean more likely fighters someone as good as them
+        IFighterRating Rating;
+        List<IFighterRating> AllRatings = new List<IFighterRating>();
 
         public FightSimPlayTester()
         {
             this.Fighters = new FighterCache();
-            this.Elo = new EloFighterRating();
+            this.Rating = new EloFighterRating();
         }
 
         public void SimFights(int numFights)
@@ -26,18 +31,19 @@ namespace Utilities
 
             for (int fightNight = 0; fightNight < numFights; ++fightNight)
             {
+                LOGGER.Debug($"Fight Night {fightNight}");
                 List<Fight> schedule = new List<Fight>();
                 foreach (WeightClass wc in WeightClass.AllWeightClasses())
-                    schedule.AddRange( ScheduleFights(wc));
+                    schedule.AddRange(ScheduleFights(wc));
 
-                    var outcomes = FightSim.SimulateManyFights(schedule);
-                    foreach (var outcome in outcomes)
-                    {
-                        outcome.Fighters[0].UpdateRecord(outcome);
-                        outcome.Fighters[1].UpdateRecord(outcome);
-                        Elo.CalculateRatingChange(outcome);
-                    }
-                
+                var outcomes = FightSim.SimulateManyFights(schedule);
+                foreach (var outcome in outcomes)
+                {
+                    outcome.Fighters[0].UpdateRecord(outcome);
+                    outcome.Fighters[1].UpdateRecord(outcome);
+                    Rating.CalculateRatingChange(outcome);
+                }
+
             }
         }
 
@@ -50,12 +56,12 @@ namespace Utilities
 
             List<Fighter> fighters = Fighters.AllFighters();
 
-            fighters.Sort((f1, f2) => Elo.Rating(f1).CompareTo(Elo.Rating(f2)));
+            fighters.Sort((f1, f2) => Rating.Rating(f1).CompareTo(Rating.Rating(f2)));
 
-            for(int f = 0; f < top; ++f)
+            for (int f = 0; f < top; ++f)
             {
                 Fighter curr = fighters[f];
-                sb.AppendFormat($"{f+1}. {curr.Name}\n\t{curr.Record} Rating: {Elo.Rating(curr)}\n");
+                sb.AppendFormat($"{f + 1}. {curr.Name}\n\t{curr.Record} Rating: {Rating.Rating(curr)}\n");
                 sb.AppendFormat($"\tSkill Level: {curr.OverallSkill()} Weight: {curr.Weight}");
                 //sb.AppendLine();
                 ///sb.AppendLine(curr.ToString());
@@ -68,11 +74,11 @@ namespace Utilities
 
         private List<Fight> ScheduleFights(WeightClass wc)
         {
-            List<Fighter> fighters = Fighters.AllFighters().Where( fighter => fighter.Weight == wc.Weight).ToList();
+            List<Fighter> fighters = Fighters.AllFighters().Where(fighter => fighter.Weight == wc.Weight).ToList();
             List<Fight> schedule = new List<Fight>();
 
             //Sort in reverse order
-            fighters.Sort((f1, f2) => Elo.Rating(f2).CompareTo(Elo.Rating(f1)));
+            fighters.Sort((f1, f2) => Rating.Rating(f2).CompareTo(Rating.Rating(f1)));
 
             while (fighters.Count > 1)
             {
@@ -82,7 +88,7 @@ namespace Utilities
                         break;
 
                 schedule.Add(new Fight(fighters[f1], fighters[f2]));
-                fighters.RemoveAt(f1); fighters.RemoveAt(f2-1);
+                fighters.RemoveAt(f1); fighters.RemoveAt(f2 - 1);
             }
 
             return schedule;
@@ -90,16 +96,22 @@ namespace Utilities
 
         public List<Fighter> AddFighters(int numFighters, int weight)
         {
+            var stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+
             List<Fighter> added = new List<Fighter>();
             for (int f = 0; f < numFighters; ++f)
                 added.Add(Fighters.CreateRandomFighter(weight));
 
-            Elo.AddFighters(added);
+            Rating.AddFighters(added);
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+            LOGGER.Info($"Generating {numFighters} fighters took {elapsed_time} ms");
 
             return added;
         }
-
-
 
     }
 }
