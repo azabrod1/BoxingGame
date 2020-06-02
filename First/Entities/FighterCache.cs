@@ -7,14 +7,16 @@ using System.Linq;
 namespace Main
 {
     //Holds all the games fighters
+    [Serializable()]
     public class FighterCache
     {
+        [Newtonsoft.Json.JsonPropertyAttribute]
+        private ConcurrentDictionary<string, Fighter> Cache { get; set; }
+
         public FighterCache()
         {
+            Cache = new ConcurrentDictionary<string, Fighter>();
         }
-
-        //all fighters
-        private ConcurrentDictionary<string, Fighter> Cache = new ConcurrentDictionary<string, Fighter>();
 
         public Fighter Get(string name)
         {
@@ -40,7 +42,7 @@ namespace Main
         {
             Fighter hungryYoungLion = NewFighterWithRandomName();
 
-            string[] normalCombatTraits =
+            string[] ScaledCombatTraits =
             ConfigurationManager.AppSettings["ScaledFighterCombatTraits"].Split(",");
 
             if (weight == -1)
@@ -48,15 +50,15 @@ namespace Main
 
             hungryYoungLion.Weight = weight;
 
-            int totalSkillPoints = RandomSkillLevel() * normalCombatTraits.Count();
+            int totalSkillPoints = RandomSkillLevel() * ScaledCombatTraits.Count();
 
-            foreach(string property in normalCombatTraits)
+            foreach(string property in ScaledCombatTraits)
                 hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, 0, null);
 
             while (totalSkillPoints > 0)
             {
-                int toUpgrade = MathUtils.RangeUniform(0, normalCombatTraits.Count());
-                var property = hungryYoungLion.GetType().GetProperty(normalCombatTraits[toUpgrade]);
+                int toUpgrade = MathUtils.RangeUniform(0, ScaledCombatTraits.Count());
+                var property = hungryYoungLion.GetType().GetProperty(ScaledCombatTraits[toUpgrade]);
                 int currentSkill = (int) property.GetValue(hungryYoungLion);
                 if (currentSkill < 100)
                 {
@@ -64,6 +66,12 @@ namespace Main
                     --totalSkillPoints;
                 }
             }
+
+            string[] UniformCombatTraits =
+                ConfigurationManager.AppSettings["UniformFighterCombatTraits"].Split(",");
+
+            foreach (string property in UniformCombatTraits)
+                hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, MathUtils.RangeUniform(0,100), null);
 
             return hungryYoungLion;
         }
@@ -86,14 +94,15 @@ namespace Main
         public Fighter NewFighterWithRandomName()
         {
             Fighter fighter = null;
+            bool preferCommonNames = Cache.Count < 10000; //Ensure common names proportionally represented
 
-            for(int attempt = 0; attempt < 100 && fighter == null; ++attempt)
+            for(int attempt = 0; attempt < 1000 && fighter == null; ++attempt)
             {
-                string name = Utility.getRandomFirstName() + " " + Utility.getRandomLastName();
+                string name = Utility.GetRandomFirstName(!preferCommonNames) + " " + Utility.GetRandomLastName(!preferCommonNames);
                 fighter = NewFighter(name);
             }
             if (fighter == null)
-                throw new InvalidOperationException("Fighter Unique Name Generation Failed");
+                throw new InvalidOperationException("Fighter unique name generation failed");
 
             return fighter;
         }
@@ -153,9 +162,6 @@ namespace Main
 
             return weights[w];
         }
-
- 
-
 
     }
 }
