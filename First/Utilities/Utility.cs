@@ -45,26 +45,26 @@ namespace Main
         }
 
         static StrAttDistribution fnames;
-        public static string getRandomLastName()
+        public static string GetRandomLastName(bool uniform = false)
         {
             if (fnames.Equals(default(StrAttDistribution)))
                 fnames = LoadDistributionFile("LName.txt");
 
-            return ResultFromDistribution(fnames);
+            return ResultFromDistribution(fnames, uniform);
         }
 
 
-        public static string getRandomFirstName()
+        public static string GetRandomFirstName(bool uniform = false)
         {
             if (fnames.Equals(default(StrAttDistribution)))
                 fnames = LoadDistributionFile("FName.txt");
 
-            return ResultFromDistribution(fnames);
+            return ResultFromDistribution(fnames, uniform);
         }
 
-        public static string getRandomName()
+        public static string GetRandomName(bool uniform)
         {
-            return string.Format("{0} {1}", getRandomFirstName(), getRandomLastName());
+            return string.Format("{0} {1}", GetRandomFirstName(uniform), GetRandomLastName(uniform));
         }
 
         public static StrAttDistribution LoadDistributionFile(string filename)
@@ -93,9 +93,15 @@ namespace Main
             return dist;
         }
 
-        private static string ResultFromDistribution(StrAttDistribution d)
+        private static string ResultFromDistribution(StrAttDistribution d, bool uniform = false)
         {
-            double bound = d.HiLimit[d.HiLimit.Count - 1];
+            if (uniform) //Disregard underlying populatity of names, pretend its uniform
+            {
+                int nIdx = MathUtils.RangeUniform(0, d.Names.Count);
+                return d.Names[nIdx];
+            }
+
+            double bound = d.HiLimit[^1];
             double target = MathUtils.RangeUniform(0d, bound);
 
             int lo = 0, hi = d.Names.Count - 1;

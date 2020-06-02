@@ -10,25 +10,35 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using Boxing.FighterRating;
 using Utilities;
+using Newtonsoft.Json;
+using log4net;
+using log4net.Config;
+using System.Reflection;
+//using System.Text.Json;
 
 namespace Main
 {
     class Program
     {
-        struct X
-        {
-            public List<int> list;
-        }
+        static readonly ILog log =
+        LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("**********************\n\n");
+       
+            log.Warn("Anya russian gold!");
 
-             //Alex();
+            //Alex();
             // Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
 
-            Anya();
+            // Anya();
+
+            //  Json();
+            // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            // XmlConfigurator.Configure(logRepo, new FileInfo("app.config"));
+
+            // XmlConfigurator.Configure();
 
         }
 
@@ -36,11 +46,9 @@ namespace Main
         {
             FightSimPlayTester game = new FightSimPlayTester();
             foreach (WeightClass wc in WeightClass.AllWeightClasses())
-            {
                 game.AddFighters(wc.Size, wc.Weight);
-            }
 
-            game.SimFights(50);`````
+            game.SimFights(50);
 
             Console.WriteLine(game.Status());
         }
@@ -51,7 +59,7 @@ namespace Main
             FighterPool fp1 = new FighterPool();
 
             //Sim many
-            for(int f = 0; f < 20; ++f)
+            for (int f = 0; f < 20; ++f)
                 fp1.SimulateFights();
 
             //Console.WriteLine(fp1.Stats());
@@ -64,9 +72,9 @@ namespace Main
 
             int i = 1;
 
-            foreach ( Fighter f in fp1.Fighters)
+            foreach (Fighter f in fp1.Fighters)
             {
-                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + (f.Record.Rank > 100?f.Record.Rank.ToString("0") : "0"));
+                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + (f.Record.Rank > 100 ? f.Record.Rank.ToString("0") : "0"));
                 i++;
             }
         }
@@ -80,7 +88,7 @@ namespace Main
             const int A_Skill = 98;
             const int B_Skill = 93;
 
-           Fighter fighter = new Fighter("Benji")
+            Fighter fighter = new Fighter("Benji")
             {
                 Weight = 147,
                 Stamina = 100,
@@ -186,6 +194,80 @@ namespace Main
 
         }
 
+
+        //This will be called on startup
+        static Program()
+        {
+
+            Console.WriteLine("**********************\n\n");
+            log4net.Util.LogLog.InternalDebugging = true;
+            var logRepository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
+
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("log4net.config"));
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                XmlConfigurator.Configure(logRepository, stream);
+            }
+        }
+
+        static void Json()
+        {
+            string fileName = "anya3.json";
+
+            FighterCache cache = new FighterCache();
+            for (int s = 0; s < 100; ++s)
+                cache.CreateRandomFighter(147);
+
+            Fighter fighter = cache.CreateRandomFighter(147);
+            cache.CreateRandomFighter(160);
+
+            //var options = new JsonSerializerOptions
+            //{
+            //    WriteIndented = true
+            //};
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            string jsonString = JsonConvert.SerializeObject(cache, Formatting.Indented); //JsonSerializer.Serialize(cache, options);
+            File.WriteAllText(fileName, jsonString);
+
+            FighterCache reconstructed = JsonConvert.DeserializeObject<FighterCache>(jsonString); //JsonSerializer.Deserialize<FighterCache>(jsonString, options) ;
+
+            //using (StreamWriter file = File.CreateText("Anya.json"))
+            //{
+            //    serializer.Serialize(file, movie);
+            //}
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+            // Console.WriteLine(jsonString);
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
+
+            Console.WriteLine("cache size {0}", reconstructed.Count());
+
+            EloFighterRating e = new EloFighterRating(20);
+
+            foreach (var f in cache.AllFighters())
+            {
+                e.AddFighter(f);
+            }
+
+            string se = JsonConvert.SerializeObject(e, Formatting.Indented); //JsonSerializer.Serialize(cache, options);
+
+            Console.WriteLine(se);
+
+            var re = JsonConvert.DeserializeObject<EloFighterRating>(se);
+
+            Console.WriteLine(re.K);
+
+
+
+        }
+
         static void PunchDistroTest(FightState fs)
         {
             Block block = new Block(fs);
@@ -266,13 +348,13 @@ namespace Main
                 FightSimulator fs = new FightSimulatorGauss();
                 var result = fs.SimulateFightWithDetails(fight);
 
-               //if(result.outcome.TimeOfStoppage == -1)
+                //if(result.outcome.TimeOfStoppage == -1)
                 Console.WriteLine(result.outcome);
 
                 outcomes.Add(result.outcome);
                 fightStats.Add(result.Stats.Condense());
 
-               // Console.WriteLine();
+                // Console.WriteLine();
                 // Console.WriteLine("DAM {0}",result.Stats.AverageDamage(true));
             }
 
@@ -287,7 +369,7 @@ namespace Main
             Console.WriteLine("elapsed {0}", elapsed_time);
         }
 
-            void Profile()
+        void Profile()
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -870,13 +952,13 @@ namespace Main
             Array.ForEach(Files, Console.WriteLine);
 
 
-            Console.WriteLine(Utility.getRandomLastName());
+            Console.WriteLine(Utility.GetRandomLastName());
 
             Dictionary<string, int> map = new Dictionary<string, int>();
 
             for (int i = 0; i < 10000; ++i)
             {
-                string name = Utility.getRandomLastName();
+                string name = Utility.GetRandomLastName();
                 if (!map.ContainsKey(name))
                     map[name] = 1;
                 else

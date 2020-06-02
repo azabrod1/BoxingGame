@@ -58,7 +58,7 @@ namespace Utilities
                 sb.AppendFormat($"{f+1}. {curr.Name}\n\t{curr.Record} Rating: {Elo.Rating(curr)}\n");
                 sb.AppendFormat($"\tSkill Level: {curr.OverallSkill()} Weight: {curr.Weight}");
                 //sb.AppendLine();
-                //sb.AppendLine(curr.ToString());
+                ///sb.AppendLine(curr.ToString());
                 sb.AppendLine();
 
             }

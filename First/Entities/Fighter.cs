@@ -5,9 +5,10 @@ using FightSim;
 
 namespace Main
 {
+    [ Serializable]
     public class Fighter
     {
-        public string Name { get;  } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
+        public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
         public FighterRecord Record { get; set; } 
 
@@ -31,6 +32,11 @@ namespace Main
 
         private double _Weight = 150;
 
+        private Fighter()
+        {
+
+        }
+
         public Fighter(string name = "")
         {
             JabPercent = ExpectedJabPercent();
@@ -41,8 +47,6 @@ namespace Main
                 this.Name = Utility.RandomNameSimple();
             else
                 this.Name = name;
-
-            Console.WriteLine();
         }
 
         public double OverallSkill() //Not exact

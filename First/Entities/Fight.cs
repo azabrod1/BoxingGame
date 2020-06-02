@@ -2,7 +2,7 @@
 using FightSim;
 namespace Main
 {
-    //Holds perm vars about the fight - eventually we should split it out in fight boxscore( total bunches) and fight info (like venue) 
+    //Holds perm vars about the fight - eventually we should split it out in fight boxscore( total bunches) and fight info (like venue)
     public class Fight
     {
         public readonly int RoundsScheduled;

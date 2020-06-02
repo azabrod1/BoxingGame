@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Main;
+using Newtonsoft.Json;
 
 namespace Boxing.FighterRating
 {
+    [Serializable()]
     //Thread safe (I hope) Elo Pool
     public class EloFighterRating : IPlayerRating
     {
-        readonly ConcurrentDictionary<string, double> Ratings;
-        readonly int K;
-        readonly double InitElo;
+        [JsonProperty] private readonly ConcurrentDictionary<string, double> Ratings;
+
+        [JsonProperty] public int K { get; }
+
+        [JsonProperty] double InitElo { get; }
 
         public EloFighterRating(int k = 50, double initElo = 1500)
         {
