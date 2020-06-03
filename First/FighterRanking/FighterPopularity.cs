@@ -25,7 +25,7 @@ namespace Boxing.FighterRanking
 
             public double Base
             {
-                get => Fans + Followers;
+                get =>  Fans + Followers;
             }
 
 
