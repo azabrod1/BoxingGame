@@ -3,6 +3,9 @@ namespace Boxing.FighterRanking
 {
     public class FightPopularity
     {
-      
+
+
+
+
     }
 }
