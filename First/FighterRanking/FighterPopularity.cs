@@ -31,7 +31,7 @@ namespace Boxing.FighterRanking
 
 
 
-        [JsonProperty] private readonly ConcurrentDictionary<string, double> Popularity;
+        [JsonProperty] private readonly ConcurrentDictionary<string, PopularityStruct> Popularity;
 
         public bool AddFighter(Fighter fighter)
         {
