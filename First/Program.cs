@@ -41,6 +41,8 @@ namespace Main
             
             Console.WriteLine(w);
 
+            return;
+
         }
 
         static void Anya()

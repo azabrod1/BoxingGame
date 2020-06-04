@@ -8,6 +8,7 @@ namespace Boxing
         public double PopularityBuff { get; }    //Does being from the country make you popular? 
         public double NationalityWeight { get; } //Probability a fighter is from this country
 
+
         //country name -> country object
         public static System.Collections.Generic.Dictionary<string, Country> Countries { get; internal set; }
 
@@ -48,5 +49,6 @@ namespace Boxing
         {
             return Countries[countryName];
         }
+
     }
 }

@@ -16,6 +16,8 @@ namespace Boxing.FighterRanking
             public double Followers;
             public double Coefficient;
 
+
+
             public PopularityStruct(double Fans, double Followers, double Coefficient)
             {
                 this.Fans = Fans;
@@ -55,10 +57,23 @@ namespace Boxing.FighterRanking
 
         public double Base(Fighter f) => Popularity[f.Name].Base;
 
+
+        public bool isEliteFighter(Fighter f)
+        {
+
+            return true;
+        }
+
+
         public double CalculatePopularityChange(Fighter f1, Fighter f2, double score)
         {
+
+
             return 0;
         }
+
+
+
 
 
     }
