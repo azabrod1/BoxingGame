@@ -7,7 +7,7 @@ namespace Boxing.FighterRating
 {
     [Serializable()]
     //Thread safe (I hope) Elo Pool
-    public class EloFighterRating : IPlayerRating
+    public class EloFighterRating : IFighterRating
     {
         [JsonProperty] private readonly ConcurrentDictionary<string, double> Ratings;
 

@@ -4,7 +4,7 @@ using Main;
 namespace Boxing.FighterRating
 {
 
-    public interface IPlayerRating
+    public interface IFighterRating
     {
         /**Get Elo for a player! 
          * IMPLEMENT ME! 

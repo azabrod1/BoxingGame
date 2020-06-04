@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using FightSim;
 
-using System.Configuration;
-using System.ComponentModel;
 using System.Xml.Linq;
 using Boxing.FighterRating;
 using Utilities;
@@ -25,20 +23,23 @@ namespace Main
 
         public static void Main(string[] args)
         {
-       
-            log.Warn("Anya russian gold!");
+            Console.WriteLine("****************************************\n\n");
 
             //Alex();
             // Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
 
-            // Anya();
+            //   Anya();
 
             //  Json();
             // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
             // XmlConfigurator.Configure(logRepo, new FileInfo("app.config"));
 
             // XmlConfigurator.Configure();
+
+            WeightClass w = 147;
+            
+            Console.WriteLine(w);
 
         }
 
@@ -162,7 +163,7 @@ namespace Main
             //     WeightclassConfig();
             //   WeightClass.LoadAllWeightClasses();
 
-            IPlayerRating elo = new EloFighterRating();
+            IFighterRating elo = new EloFighterRating();
             FighterCache fc = new FighterCache();
             Fighter f1 = fc.CreateRandomFighter(147);
             Fighter f2 = fc.CreateRandomFighter(147);
@@ -199,8 +200,7 @@ namespace Main
         static Program()
         {
 
-            Console.WriteLine("**********************\n\n");
-            log4net.Util.LogLog.InternalDebugging = true;
+            //log4net.Util.LogLog.InternalDebugging = true;
             var logRepository = LogManager.GetRepository(Assembly.GetExecutingAssembly());
 
             var assembly = Assembly.GetExecutingAssembly();

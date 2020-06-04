@@ -12,29 +12,44 @@ namespace Main
     {
         public int Weight { get; }          //Weight limit
         public int Size { get; }            //Approx how many fighters we expect in the weight class
-        public string Description { get; }  //How to display the Division Name for UI
-        public string ID { get;}            //ID
+        public string DisplayName { get; }  //How to display the Division Name for GUI
+        public string ID { get; }           //ID
+        public int Popularity { get; }      //How much attention to fighters in this WC get?
 
         public static int WC_SIZE_SUM { get; }
 
         private static Dictionary<string, WeightClass> WeightClasses { get; }
 
-        public WeightClass(int weight, int size, string description, string id)
+        public WeightClass(int weight, int size, string displayName, string id, int Popularity)
         {
-            this.Weight = weight;
-            this.Size = size;
-            this.Description = description;
-            this.ID = id;
+            this.Weight      = weight;
+            this.Size        = size;
+            this.DisplayName = displayName;
+            this.ID          = id;
+            this.Popularity  = Popularity;
         }
 
-        static WeightClass() {
+        static WeightClass()
+        {
             WeightClasses = LoadAllWeightClasses();
             WC_SIZE_SUM = WeightClasses.Select(element => element.Value.Size).Sum();
+        }
+
+        //So that WeightClass w = 147 will work as expected
+        public static implicit operator WeightClass(string weight)
+        {
+            return Get(weight);
         }
 
         public static WeightClass Get(string weight)
         {
             return WeightClasses[weight];
+        }
+
+        // So that WeightClass w = "HeavyWeight" will work as expected
+        public static implicit operator WeightClass(int weight)
+        {
+            return Get(weight);
         }
 
         public static WeightClass Get(int weight)
@@ -70,7 +85,7 @@ namespace Main
                                   {
                                       ID = wcs.Attribute("id").Value,
                                       Weight = int.Parse(wcs.Element("MaxWeight").Value),
-                                      Description = wcs.Element("Description").Value,
+                                      DisplayName = wcs.Element("DisplayName").Value,
                                       Popularity = int.Parse(wcs.Element("Popularity").Value),
                                       Size = int.Parse(wcs.Element("Size").Value),
 
@@ -78,7 +93,7 @@ namespace Main
 
             foreach (var _wc in _WeightClasses)
             {
-                weightClasses.Add(_wc.ID, new WeightClass(_wc.Weight, _wc.Size, _wc.Description, _wc.ID));
+                weightClasses.Add(_wc.ID, new WeightClass(_wc.Weight, _wc.Size, _wc.DisplayName, _wc.ID, _wc.Popularity));
             };
             return weightClasses;
         }
@@ -88,5 +103,20 @@ namespace Main
             return Utility.UsefulString(this);
         }
 
+        public override bool Equals(Object obj)
+        {
+            // Perform an equality check on two rectangles (Point object pairs).
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            WeightClass that = (WeightClass)obj;
+
+            return this.Weight == that.Weight;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Weight);
+        }
     }
 }
