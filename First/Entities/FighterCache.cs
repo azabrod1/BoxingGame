@@ -89,7 +89,7 @@ namespace Main
             return Cache.TryAdd(fighter.Name, fighter) ? fighter : null;
         }
 
-        //Assign the fighter a unique name - must be unique this will
+        //Assign the fighter a unique name - this will
         //be the fighter's ID!! 
         public Fighter NewFighterWithRandomName()
         {
