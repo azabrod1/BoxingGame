@@ -17,14 +17,12 @@ namespace Boxing.FighterRanking
             public double Coefficient;
 
 
-
             public PopularityStruct(double Fans, double Followers, double Coefficient)
             {
                 this.Fans = Fans;
                 this.Followers = Followers;
                 this.Coefficient = Coefficient;
                 //this.Elo = Elo;
-
 
             }
 
@@ -93,6 +91,19 @@ namespace Boxing.FighterRanking
             return 0;
         }
 
+
+        public double FightViewers(Fighter f1, Fighter f2)
+        {
+
+            var popularity1 = PopularityData(f1);
+            var popularity2 = PopularityData(f2);
+
+            Console.WriteLine(popularity1.fans);
+
+
+
+            return 0;
+        }
 
 
 
