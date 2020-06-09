@@ -23,7 +23,13 @@ namespace Boxing.FighterRanking
                 this.Fans = Fans;
                 this.Followers = Followers;
                 this.Coefficient = Coefficient;
+                //this.Elo = Elo;
+
+
             }
+
+             
+
 
             public double Base
             {
@@ -36,6 +42,12 @@ namespace Boxing.FighterRanking
 
 
         [JsonProperty] private readonly ConcurrentDictionary<string, PopularityStruct> Popularity;
+
+        FighterPopularity()
+        {
+
+            Popularity = new ConcurrentDictionary<string, PopularityStruct>();
+        }
 
         public bool AddFighter(Fighter fighter)
         {
@@ -56,6 +68,15 @@ namespace Boxing.FighterRanking
         public double Followers(Fighter f) => Popularity[f.Name].Followers;
 
         public double Base(Fighter f) => Popularity[f.Name].Base;
+
+        public (double fans, double followers, double coefficient) PopularityData(Fighter f)
+        {
+
+            PopularityStruct ps = Popularity[f.Name];
+
+            return (fans: Popularity[f.Name].Fans, followers: Popularity[f.Name].Followers, coefficient: Popularity[f.Name].Coefficient);
+
+        }
 
 
         public bool isEliteFighter(Fighter f)
