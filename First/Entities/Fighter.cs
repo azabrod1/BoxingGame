@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Collections.Generic;
+
 using FightSim;
 
 namespace Main
@@ -10,7 +12,11 @@ namespace Main
     {
         public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
-        public FighterRecord Record { get; set; } 
+        public FighterRecord Record { get; set; }
+
+        // adding performance metrics dictionary - #todo may change it to a proper class later
+        public Dictionary<string, double> Performance{ get; set;}
+
 
         //Attributes
         public int Accuracy { get; set; } = 50;
@@ -42,6 +48,8 @@ namespace Main
             JabPercent = ExpectedJabPercent();
 
             Record = new FighterRecord();
+
+            Performance = new Dictionary<string, double>();
 
             if (string.IsNullOrEmpty(name)) //For testing 
                 this.Name = Utility.RandomNameSimple();

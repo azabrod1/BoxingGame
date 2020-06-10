@@ -3,107 +3,84 @@ using System.Collections.Concurrent;
 using Main;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using FightSim;
 
+
+ 
 
 namespace Boxing.FighterRanking
 {
+  
+
     public class FighterPopularity
     {
-
-        private struct PopularityStruct
+        // example of updating Fighter popularity metics (Fans) outside of a fight
+        public static void UpdateFans(Fighter f)
         {
-            public double Fans;
-            public double Followers;
-            public double Coefficient;
+            double fans = f.Performance["Fans"];
+
+            // do the calculatiuon
+            if (fans == 0)
+                fans = 1000;
 
 
-            public PopularityStruct(double Fans, double Followers, double Coefficient)
+            fans = fans + 1;
+            // end of calculation
+
+
+            f.Performance["Fans"] = fans;
+        }
+
+        // example of updating Fighter popularity metics (Fans) as a result of a fight
+
+        public static void UpdateFans(FightOutcome fo)
+        {
+
+            double fans1 = fo.Fighter1().Performance["Fans"];
+            double fans2 = fo.Fighter2().Performance["Fans"];
+
+
+
+            // do the calculation
+
+            if (fo.Fighter1() == fo.Winner)
             {
-                this.Fans = Fans;
-                this.Followers = Followers;
-                this.Coefficient = Coefficient;
-                //this.Elo = Elo;
+                fans1 *= 1.1;
+                fans2 *= 0.9;
 
             }
-
-             
-
-
-            public double Base
+            else if (fo.Fighter2() == fo.Winner)
             {
-                get =>  Fans + Followers;
+                fans1 *= 0.9;
+                fans2 *= 1.1;
             }
 
 
+            // end of calculation
+
+            fo.Fighter1().Performance["Fans"] = fans1;
+            fo.Fighter2().Performance["Fans"] = fans2;
+
+
         }
 
 
-
-        [JsonProperty] private readonly ConcurrentDictionary<string, PopularityStruct> Popularity;
-
-        FighterPopularity()
+        public static double FightViewers(FightOutcome fo)
         {
+            double viewers;
+            Fighter f1 = fo.Fighter1();
+            Fighter f2 = fo.Fighter2();
 
-            Popularity = new ConcurrentDictionary<string, PopularityStruct>();
-        }
+            viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
+            viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
 
-        public bool AddFighter(Fighter fighter)
-        {
-            PopularityStruct p = new PopularityStruct(100, 100, 1);
-            return Popularity.TryAdd(fighter.Name, p);
-        }
+            return viewers;
 
-        public void AddFighters(IEnumerable<Fighter> fighters)
-        {
-            foreach (var fighter in fighters)
-                AddFighter(fighter);
-        }
 
-        public double Coefficient(Fighter f) => Popularity[f.Name].Coefficient;
-
-        public double Fans(Fighter f) => Popularity[f.Name].Fans;
-
-        public double Followers(Fighter f) => Popularity[f.Name].Followers;
-
-        public double Base(Fighter f) => Popularity[f.Name].Base;
-
-        public (double fans, double followers, double coefficient) PopularityData(Fighter f)
-        {
-
-            PopularityStruct ps = Popularity[f.Name];
-
-            return (fans: Popularity[f.Name].Fans, followers: Popularity[f.Name].Followers, coefficient: Popularity[f.Name].Coefficient);
 
         }
 
 
-        public bool isEliteFighter(Fighter f)
-        {
-
-            return true;
-        }
-
-
-        public double CalculatePopularityChange(Fighter f1, Fighter f2, double score)
-        {
-
-
-            return 0;
-        }
-
-
-        public double FightViewers(Fighter f1, Fighter f2)
-        {
-
-            var popularity1 = PopularityData(f1);
-            var popularity2 = PopularityData(f2);
-
-            Console.WriteLine(popularity1.fans);
-
-
-
-            return 0;
-        }
 
 
 
