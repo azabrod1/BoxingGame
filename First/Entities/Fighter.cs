@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Text;
 using System.Collections.Generic;
+using Boxing;
 
 using FightSim;
 
@@ -32,24 +33,30 @@ namespace Main
         public int Stamina { get; set; } = 50;
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
 
+        public Country Country { get; set; }
+
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
         public double JabPercent;
 
         private double _Weight = 150;
 
-        private Fighter()
-        {
 
-        }
 
-        public Fighter(string name = "")
+        //private Fighter()
+        //{
+        //
+        //}
+
+        public Fighter(string name = "", string country = "US")
         {
             JabPercent = ExpectedJabPercent();
 
             Record = new FighterRecord();
 
             Performance = new Dictionary<string, double>();
+
+            Country = country;
 
             if (string.IsNullOrEmpty(name)) //For testing 
                 this.Name = Utility.RandomNameSimple();
