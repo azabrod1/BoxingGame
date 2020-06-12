@@ -13,6 +13,7 @@ namespace Main
     {
         public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
+
         public FighterRecord Record { get; set; }
 
         // adding performance metrics dictionary - #todo may change it to a proper class later
@@ -35,6 +36,7 @@ namespace Main
 
         public Country Country { get; set; }
 
+             
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
         public double JabPercent;
