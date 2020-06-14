@@ -38,7 +38,7 @@ namespace FightSim
                 fight.Fighter1().Record.Losses++;
             }
             FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null, fight.fighters);
-            fo.Viewership = getNetworkViewers(fight.Fighter1().Record.Rank, fight.Fighter2().Record.Rank);
+            //fo.Viewership = getNetworkViewers(fight.Fighter1().Record.Rank, fight.Fighter2().Record.Rank);
             fight.Outcome = fo;
             return fo;
         }
@@ -68,10 +68,14 @@ namespace FightSim
             return delta;
         }
 
-        private static double getNetworkViewers(double elo1, double elo2)
-        {
-            return MathUtils.Gauss(((elo1 + elo2) / 2), 100);
+        //private static double getNetworkViewers(double elo1, double elo2)
+        //{
+            //double risk1 = 1 / Math.Abs(elo1 - elo2);
+            //double risk2 = 1 - risk1;
+
+            //return interested + (risk1)fighter1.base + (risk2)fighter2.base;
+            //return MathUtils.Gauss(((elo1 + elo2) / 2), 100);
         }
 
     }
-}
+//}

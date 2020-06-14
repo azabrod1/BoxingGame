@@ -36,6 +36,8 @@ namespace Main
 
         public Country Country { get; set; }
 
+        public int Belts { get; set; }
+
              
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
