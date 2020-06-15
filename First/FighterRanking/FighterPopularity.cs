@@ -18,6 +18,9 @@ namespace FighterRanking
 
         private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { {108, 1.0}, { 147, 1.1 }, { 154, 2.0 } };
 
+        //private static Dictionary<double, List<int>> WeightCoefficient = new Dictionary<int, double>() { { 1.0,  }, { 147, 1.1 }, { 154, 2.0 } };
+
+
         // PUBLIC INTERFACE
 
 
@@ -172,6 +175,10 @@ namespace FighterRanking
 
             fo.Fighter1().Performance["Fans"] = fans1;
             fo.Fighter2().Performance["Fans"] = fans2;
+            fo.Fighter1().Performance["Casuals"] = casuals1;
+            fo.Fighter2().Performance["Casuals"] = casuals2;
+            fo.Fighter1().Performance["Followers"] = followers1;
+            fo.Fighter2().Performance["Followers"] = followers2;
 
             fo.Viewership = FightViewers(fo);
 
