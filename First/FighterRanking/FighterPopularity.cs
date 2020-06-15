@@ -132,14 +132,39 @@ namespace FighterRanking
 
 
 
-                //fans1 *= 1.1;
-                //fans2 *= 0.9;
+                
 
             }
             else if (fo.Fighter2() == fo.Winner)
             {
-                //fans1 *= 0.9;
-                //fans2 *= 1.1;
+
+                double delta = 0.18 * casuals1 * (PWin(fo));
+                fans1 =- delta;
+                casuals1 =+ delta;
+
+                delta = 0.18 * fo.Interested * (PWin(fo));
+                casuals1 =- delta;
+                fo.Interested =+ delta;
+
+                delta = 0.18 * casuals1 * (PWin(fo));
+                followers1 =- delta;
+                casuals1 =+ 0.18 * casuals1;
+
+                //winner
+
+                delta = 0.1 * fans2 * (PWin(fo));
+                fans2 =+ delta;
+                casuals2 =- delta;
+
+                delta = 0.1 * casuals2 * (PWin(fo));
+                casuals2 =+ delta;
+                fo.Interested =- delta;
+
+                delta = 0.1 * followers2 * (PWin(fo));
+                followers2 =+ delta;
+                casuals2 =- delta;
+
+
             }
 
 
