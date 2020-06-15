@@ -59,27 +59,7 @@ namespace Main
         static void Vlad()
         {
 
-            FighterPool fp1 = new FighterPool();
-
-            //Sim many
-            for (int f = 0; f < 20; ++f)
-                fp1.SimulateFights();
-
-            //Console.WriteLine(fp1.Stats());
-
-            //Console.WriteLine(fp1.Index("Fighter 594"));
-
-            //fp1.SimulateFight(1, 2);
-
-            Console.WriteLine("\n Fighter list: \n");
-
-            int i = 1;
-
-            foreach (Fighter f in fp1.Fighters)
-            {
-                Console.WriteLine(i + ". " + f.Name + ", wins = " + f.Record.Wins + ", losses = " + f.Record.Losses + ", elo = " + (f.Record.Rank > 100 ? f.Record.Rank.ToString("0") : "0"));
-                i++;
-            }
+            
         }
 
         static void AlexConc()

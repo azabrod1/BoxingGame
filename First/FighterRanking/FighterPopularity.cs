@@ -16,7 +16,7 @@ namespace FighterRanking
 
         private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
 
-        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 147, 1.1 }, { 154, 2.0 } };
+        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { {108, 1.0}, { 147, 1.1 }, { 154, 2.0 } };
 
         // PUBLIC INTERFACE
 
@@ -33,20 +33,42 @@ namespace FighterRanking
         /// </summary>
         public static void UpdatePopularity(Fighter f)
         {
-            double fans = f.Performance["Fans"];
-            double casuals = f.Performance["Casuals"];
-            double followers = f.Performance["followers"];
-
-            // do the calculatiuon
-            if (fans == 0)
-                fans = 1000;
+            double fans;
+            double casuals;
+            double followers;
 
 
-            fans = fans + 1;
-            // end of calculation
+            if (!f.Performance.ContainsKey("Fans"))
+            {
+                // first time the method is called for a new fighter
+                // need to populate initial values
+                // N.B. this assumes that Fans/Casuals/Followes are populated
+                //  at the same time, so we only need to check for Fans existance
+
+                f.Performance["Fans"] = 1000;
+                f.Performance["Casuals"] = 1000;
+                f.Performance["Followers"] = 1000;
+                f.Performance["Elo"] = 500;
+
+            }
+            else
+            {
+
+                fans = f.Performance["Fans"];
+                casuals = f.Performance["Casuals"];
+                followers = f.Performance["followers"];
+
+                // do the calculatiuon
+                if (fans == 0)
+                    fans = 1000;
 
 
-            f.Performance["Fans"] = fans;
+                fans = fans + 1;
+                // end of calculation
+
+
+                f.Performance["Fans"] = fans;
+            }
         }
 
 
@@ -69,6 +91,10 @@ namespace FighterRanking
 
             double followers1 = fo.Fighter1().Performance["Followers"];
             double followers2 = fo.Fighter2().Performance["Followers"];
+
+
+            Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
+            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
 
 
             // do the calculation
@@ -124,18 +150,19 @@ namespace FighterRanking
 
             fo.Viewership = FightViewers(fo);
 
+            Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
+            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
+
 
         }
 
-       
+
         // PRIVATE METHODS
 
         private static double FightViewers(FightOutcome fo)
         {
             double viewers;
 
-
-            
 
             Fighter f1 = fo.Fighter1();
             Fighter f2 = fo.Fighter2();
@@ -157,7 +184,7 @@ namespace FighterRanking
             //double risk1 = 1 / Math.Abs(f1.Performance["Elo"] - f2.Performance["Elo"]);
             //double risk2 = 1 - risk1;
 
-            viewers = fo.Interested + (PWin(fo))*f1.Performance["Base"] + (1-PWin(fo)*f2.Performance["Base"]);
+            viewers = fo.Interested + (PWin(fo))*f1.Performance["Followers"] + (1-PWin(fo)*f2.Performance["Followers"]);
             
 
             return viewers;
@@ -167,13 +194,20 @@ namespace FighterRanking
         }
 
 
-
-
-        public static double PWin(FightOutcome fo)
+        private static double PWin(FightOutcome fo)
         {
             return 1 / (1 + Math.Pow(10, fo.Fighter2().Performance["Elo"] - fo.Fighter1().Performance["Elo"] / 400));
         }
 
+
+        public static string ToString(Fighter f)
+        {
+
+            var p = f.Performance;
+            string s = $"Fighter {f.Name}: Fans = {p["Fans"]}, Followers = {p["Followers"]}, Casuals = {p["Casuals"]}, Elo = {p["Elo"]}  ";
+
+            return s;
+        }
 
     }
 
