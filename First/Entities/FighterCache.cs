@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using FighterRanking;
 
 namespace Main
 {
@@ -72,6 +73,10 @@ namespace Main
 
             foreach (string property in UniformCombatTraits)
                 hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, MathUtils.RangeUniform(0,100), null);
+
+            // set Popularity metrics (initiate)
+            // #todo refactor
+            FighterPopularity.UpdatePopularity(hungryYoungLion);
 
             return hungryYoungLion;
         }
