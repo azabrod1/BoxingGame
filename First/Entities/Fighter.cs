@@ -34,7 +34,7 @@ namespace Main
         public int Stamina { get; set; } = 50;
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
 
-        public Country Country { get; set; }
+        public string Country { get; set; }
 
         public int Belts { get; set; }
 
@@ -44,7 +44,6 @@ namespace Main
         public double JabPercent;
 
         private double _Weight = 150;
-
 
 
         //private Fighter()

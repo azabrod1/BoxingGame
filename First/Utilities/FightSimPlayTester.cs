@@ -24,6 +24,8 @@ namespace Utilities
         {
             this.Fighters = new FighterCache();
             this.Rating = new EloFighterRating();
+
+            
         }
 
         public void SimFights(int numFights)

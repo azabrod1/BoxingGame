@@ -5,17 +5,33 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using FightSim;
 
-
- 
-
-namespace Boxing.FighterRanking
+namespace FighterRanking
 {
 
 
-    public class FighterPopularity
+    public static class FighterPopularity
     {
-        // example of updating Fighter popularity metics (Fans) outside of a fight
-        public static void UpdateFans(Fighter f)
+        // simple dictionaries to hold country and weight popularity coefficients
+        // #todo: integrate with the rest of the program and persist the coefficients in XLM
+
+        private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
+
+        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 147, 1.1 }, { 154, 2.0 } };
+
+        // PUBLIC INTERFACE
+
+
+        /// <summary>
+        //  This method initializes Popularity metrics for a fighter f and updates it 
+        //  between the fights. Thus the only input is the fighter object itself
+        //
+        //  NB: to update popularity as a result of a fight, use UpdatePopularity(FighterOutcome method)
+        //
+        //  NB: Please note that Elo metrics is being set by EloFighterRanking.CalculateRatingChange() method
+        //  #todo: make sure the implementation is consistent between Elo and other metrics
+        //
+        /// </summary>
+        public static void UpdatePopularity(Fighter f)
         {
             double fans = f.Performance["Fans"];
             double casuals = f.Performance["Casuals"];
@@ -33,9 +49,16 @@ namespace Boxing.FighterRanking
             f.Performance["Fans"] = fans;
         }
 
-        // example of updating Fighter popularity metics (Fans) as a result of a fight
 
-        public static void UpdateFans(FightOutcome fo)
+        /// <summary>
+        //  The method update fighter popularity of both fighters as a result
+        //  of FightOutcome object
+        //
+        //  at the end of the method, FighterOutcome viewership is set by the 
+        //  result of a private FightViewers(FighterOutcome) method. No need to 
+        //  to call FightViewers outside of this class.
+        /// </summary>
+        public static void UpdatePopularity(FightOutcome fo)
         {
 
             double fans1 = fo.Fighter1().Performance["Fans"];
@@ -93,16 +116,15 @@ namespace Boxing.FighterRanking
             fo.Fighter1().Performance["Fans"] = fans1;
             fo.Fighter2().Performance["Fans"] = fans2;
 
+            fo.Viewership = FightViewers(fo);
+
 
         }
 
-        private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>(){ {"US", 1.1}, {"Mexico", 2.0}};
+       
+        // PRIVATE METHODS
 
-        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 147, 1.1 }, { 154, 2.0 } };
-
-
-
-        public static double FightViewers(FightOutcome fo)
+        private static double FightViewers(FightOutcome fo)
         {
             double viewers;
 
@@ -116,11 +138,12 @@ namespace Boxing.FighterRanking
             WeightClass w1 = (WeightClass)f1.Weight;
 
 
-            fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) * (CountryCoefficient[f1.Country.Name] * CountryCoefficient[f2.Country.Name] * WeightCoefficient[w1.Weight] + f1.Belts + f2.Belts);
+            fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
+                (CountryCoefficient[f1.Country] * CountryCoefficient[f2.Country] * WeightCoefficient[w1.Weight] + f1.Belts + f2.Belts);
 
 
 
-viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
+            viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
             viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
 
 
