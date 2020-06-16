@@ -27,7 +27,9 @@ namespace Main
         public int Reach { get; set; } = 72;
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
         public int Height { get; set; }
-        public string Nationality { get; set; }
+        public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
+        public string _Nationality = "United States";
+
 
 
         //Strategy variables - different fighters will have different stats

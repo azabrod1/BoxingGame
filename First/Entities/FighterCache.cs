@@ -49,7 +49,7 @@ namespace Main
                 weight = AssignWeightClass().Weight;
 
             hungryYoungLion.Weight = weight;
-            hungryYoungLion.Nationality = Country.RandomNationality().ToString();
+            hungryYoungLion.Nationality = Country.RandomNationality().Name;
 
             int totalSkillPoints = RandomSkillLevel() * ScaledCombatTraits.Count();
 

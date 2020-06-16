@@ -46,8 +46,6 @@ namespace Main
         }
 
 
-   
-
         static void Anya()
         {
             FightSimPlayTester game = new FightSimPlayTester();
