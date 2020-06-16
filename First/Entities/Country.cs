@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -85,13 +85,14 @@ namespace Main
             }
 
             Dictionary<string, Country> _countries = (from nation in config.Descendants("Country")
-                                                      select new
-                                                      {
-                                                          Name = nation.Element("Name").Value,
-                                                          ShortName = nation.Element("ShortName").Value,
-                                                          Frequency = double.Parse(nation.Element("Frequency").Value),
-                                                          Popularity = double.Parse(nation.Element("Popularity").Value),
-                                                      })
+
+                                  select new
+                                  {
+                                      Name = nation.Element("Name").Value,
+                                      ShortName = nation.Element("ShortName").Value,
+                                      Frequency = double.Parse(nation.Element("Frequency").Value),
+                                      Popularity = double.Parse(nation.Element("Popularity").Value),
+                                  })
                                   .ToDictionary(
                                         structure => structure.Name,
                                         structure => new Country(structure.Name, structure.ShortName, structure.Popularity, structure.Frequency)

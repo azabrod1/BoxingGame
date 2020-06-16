@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
 using System.Reflection;
+using Boxing;
 //using System.Text.Json;
 
 namespace Main
@@ -23,7 +24,7 @@ namespace Main
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("****************************************\n\n");
+            //Console.WriteLine("****************************************\n\n");
 
             //Alex();
           //  Vlad(); //TODO Uncomment and comment out mine
@@ -37,13 +38,21 @@ namespace Main
 
             // XmlConfigurator.Configure();
 
-            WeightClass w = 147;
-            
-            Console.WriteLine(w);
+            // WeightClass w = 147;
+
+             LoadCountries();
+
+            var x = Country.AllCountries();
+
+            Console.WriteLine(x[1]);
+
 
             return;
 
         }
+
+
+   
 
         static void Anya()
         {
@@ -111,7 +120,7 @@ namespace Main
             for (int f = 0; f < 7000; ++f)
                 fights.Add(fight);
 
-            FightSimulator fs = new FightSimulatorGauss();
+            IFightSimulator fs = new FightSimulatorGauss();
             var results = fs.SimulateManyFightsWithDetails(fights);
 
             foreach (var result in results)
@@ -327,7 +336,7 @@ namespace Main
             {
                 Fight fight = new Fight(fighter, opponent);
 
-                FightSimulator fs = new FightSimulatorGauss();
+                IFightSimulator fs = new FightSimulatorGauss();
                 var result = fs.SimulateFightWithDetails(fight);
 
                 //if(result.outcome.TimeOfStoppage == -1)
@@ -1079,6 +1088,41 @@ namespace Main
 
 
 
+
+        }
+
+        public static void LoadCountries()
+        {
+            const string filename = "Countries.txt";
+            HashSet<string> shorts = new HashSet<string>();
+            Dictionary<string, Country> countries = new Dictionary<string, Country>();
+
+
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith(filename));
+
+            XElement head = new XElement("Countries");
+            using Stream stream = assembly.GetManifestResourceStream(resourceName);
+            using StreamReader reader = new StreamReader(stream);
+            while (!reader.EndOfStream)
+            {
+                string _line = reader.ReadLine();
+                string[] line = _line.Split(',');
+                string country = line[0].Trim();
+                string shortName = line[1].Trim();
+                double freq = line.Length > 2 ? double.Parse(line[2]) : 30d;
+
+                head.Add(new XElement("Country",
+                                 new XAttribute("ID", country.Replace(" ", "")),
+                                 new XElement("Name", country),
+                                 new XElement("ShortName", shortName),
+                                 new XElement("Popularity", 10),
+                                 new XElement("Frequency", freq)
+                 ));
+
+            }
+
+            head.Save("Countries.xml");
 
         }
 

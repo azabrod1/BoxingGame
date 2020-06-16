@@ -1,99 +1,1225 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WeightClasses>
-  <WeightClass id="LightFlyweight">
-    <MaxWeight>108</MaxWeight>
-    <Popularity>10</Popularity>
-    <DisplayName>Light Flyweight</DisplayName>
-    <Size>500</Size>
-  </WeightClass>
-  <WeightClass id="Flyweight">
-    <MaxWeight>112</MaxWeight>
-    <Popularity>10</Popularity>
-    <DisplayName>Flyweight</DisplayName>
-    <Size>500</Size>
-  </WeightClass>
-  <WeightClass id="SuperFlyweight">
-    <MaxWeight>115</MaxWeight>
-    <Popularity>20</Popularity>
-    <DisplayName>Super Flyweight</DisplayName>
-    <Size>500</Size>
-  </WeightClass>
-  <WeightClass id="Bantamweight">
-    <MaxWeight>118</MaxWeight>
-    <Popularity>20</Popularity>
-    <DisplayName>Bantamweight</DisplayName>
-    <Size>500</Size>
-  </WeightClass>
-  <WeightClass id="SuperBantamweight">
-    <MaxWeight>122</MaxWeight>
-    <Popularity>25</Popularity>
-    <DisplayName>Super Bantamweight</DisplayName>
-    <Size>500</Size>
-  </WeightClass>
-  <WeightClass id="Featherweight">
-    <MaxWeight>126</MaxWeight>
-    <Popularity>30</Popularity>
-    <DisplayName>Featherweight</DisplayName>
-    <Size>1000</Size>
-  </WeightClass>
-  <WeightClass id="SuperFeatherweight">
-    <MaxWeight>130</MaxWeight>
-    <Popularity>35</Popularity>
-    <DisplayName>Super Featherweight</DisplayName>
-    <Size>1000</Size>
-  </WeightClass>
-  <WeightClass id="Lightweight">
-    <MaxWeight>135</MaxWeight>
-    <Popularity>50</Popularity>
-    <DisplayName>Lightweight</DisplayName>
-    <Size>1000</Size>
-  </WeightClass>
-  <WeightClass id="SuperLightweight">
-    <MaxWeight>140</MaxWeight>
-    <Popularity>70</Popularity>
-    <DisplayName>Super Lightweight</DisplayName>
-    <Size>1500</Size>
-  </WeightClass>
-  <WeightClass id="Weltherweight">
-    <MaxWeight>147</MaxWeight>
-    <Popularity>100</Popularity>
-    <DisplayName>Weltherweight</DisplayName>
-    <Size>2500</Size>
-  </WeightClass>
-  <WeightClass id="SuperWeltherweight">
-    <MaxWeight>154</MaxWeight>
-    <Popularity>85</Popularity>
-    <DisplayName>Super Weltherweight</DisplayName>
-    <Size>1750</Size>
-  </WeightClass>
-  <WeightClass id="Middleweight">
-    <MaxWeight>160</MaxWeight>
-    <Popularity>90</Popularity>
-    <DisplayName>Middleweight</DisplayName>
-    <Size>1750</Size>
-  </WeightClass>
-  <SuperMiddleweight id="SuperMiddleweight">
-    <MaxWeight>168</MaxWeight>
-    <Popularity>65</Popularity>
-    <DisplayName>Super Middleweight</DisplayName>
-    <Size>1500</Size>
-  </SuperMiddleweight>
-  <WeightClass id="LightHeavyweight">
-    <MaxWeight>175</MaxWeight>
-    <Popularity>80</Popularity>
-    <DisplayName>Light Heavyweight</DisplayName>
-    <Size>1000</Size>
-  </WeightClass>
-  <WeightClass id="Cruiserweight">
-    <MaxWeight>200</MaxWeight>
-    <Popularity>40</Popularity>
-    <DisplayName>Cruiserweight</DisplayName>
-    <Size>750</Size>
-  </WeightClass>
-  <WeightClass id="Heavyweight">
-    <MaxWeight>-1</MaxWeight>
-    <Popularity>135</Popularity>
-    <DisplayName>Heavyweight</DisplayName>
-    <Size>1000</Size>
-  </WeightClass>
-</WeightClasses>
+<FightConfig>
+    <WeightClasses>
+        <WeightClass id="LightFlyweight">
+            <MaxWeight>108</MaxWeight>
+            <Popularity>10</Popularity>
+            <DisplayName>Light Flyweight</DisplayName>
+            <Size>500</Size>
+        </WeightClass>
+        <WeightClass id="Flyweight">
+            <MaxWeight>112</MaxWeight>
+            <Popularity>10</Popularity>
+            <DisplayName>Flyweight</DisplayName>
+            <Size>500</Size>
+        </WeightClass>
+        <WeightClass id="SuperFlyweight">
+            <MaxWeight>115</MaxWeight>
+            <Popularity>20</Popularity>
+            <DisplayName>Super Flyweight</DisplayName>
+            <Size>500</Size>
+        </WeightClass>
+        <WeightClass id="Bantamweight">
+            <MaxWeight>118</MaxWeight>
+            <Popularity>20</Popularity>
+            <DisplayName>Bantamweight</DisplayName>
+            <Size>500</Size>
+        </WeightClass>
+        <WeightClass id="SuperBantamweight">
+            <MaxWeight>122</MaxWeight>
+            <Popularity>25</Popularity>
+            <DisplayName>Super Bantamweight</DisplayName>
+            <Size>500</Size>
+        </WeightClass>
+        <WeightClass id="Featherweight">
+            <MaxWeight>126</MaxWeight>
+            <Popularity>30</Popularity>
+            <DisplayName>Featherweight</DisplayName>
+            <Size>1000</Size>
+        </WeightClass>
+        <WeightClass id="SuperFeatherweight">
+            <MaxWeight>130</MaxWeight>
+            <Popularity>35</Popularity>
+            <DisplayName>Super Featherweight</DisplayName>
+            <Size>1000</Size>
+        </WeightClass>
+        <WeightClass id="Lightweight">
+            <MaxWeight>135</MaxWeight>
+            <Popularity>50</Popularity>
+            <DisplayName>Lightweight</DisplayName>
+            <Size>1000</Size>
+        </WeightClass>
+        <WeightClass id="SuperLightweight">
+            <MaxWeight>140</MaxWeight>
+            <Popularity>70</Popularity>
+            <DisplayName>Super Lightweight</DisplayName>
+            <Size>1500</Size>
+        </WeightClass>
+        <WeightClass id="Weltherweight">
+            <MaxWeight>147</MaxWeight>
+            <Popularity>100</Popularity>
+            <DisplayName>Weltherweight</DisplayName>
+            <Size>2500</Size>
+        </WeightClass>
+        <WeightClass id="SuperWeltherweight">
+            <MaxWeight>154</MaxWeight>
+            <Popularity>85</Popularity>
+            <DisplayName>Super Weltherweight</DisplayName>
+            <Size>1750</Size>
+        </WeightClass>
+        <WeightClass id="Middleweight">
+            <MaxWeight>160</MaxWeight>
+            <Popularity>90</Popularity>
+            <DisplayName>Middleweight</DisplayName>
+            <Size>1750</Size>
+        </WeightClass>
+        <SuperMiddleweight id="SuperMiddleweight">
+            <MaxWeight>168</MaxWeight>
+            <Popularity>65</Popularity>
+            <DisplayName>Super Middleweight</DisplayName>
+            <Size>1500</Size>
+        </SuperMiddleweight>
+        <WeightClass id="LightHeavyweight">
+            <MaxWeight>175</MaxWeight>
+            <Popularity>80</Popularity>
+            <DisplayName>Light Heavyweight</DisplayName>
+            <Size>1000</Size>
+        </WeightClass>
+        <WeightClass id="Cruiserweight">
+            <MaxWeight>200</MaxWeight>
+            <Popularity>40</Popularity>
+            <DisplayName>Cruiserweight</DisplayName>
+            <Size>750</Size>
+        </WeightClass>
+        <WeightClass id="Heavyweight">
+            <MaxWeight>-1</MaxWeight>
+            <Popularity>135</Popularity>
+            <DisplayName>Heavyweight</DisplayName>
+            <Size>1000</Size>
+        </WeightClass>
+    </WeightClasses>
+    <Countries>
+        <Country ID="UnitedStates">
+            <Name>United States</Name>
+            <ShortName>USA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>13058.9</Frequency>
+        </Country>
+        <Country ID="Mexico">
+            <Name>Mexico</Name>
+            <ShortName>MEX</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>9301</Frequency>
+        </Country>
+        <Country ID="UnitedKingdom">
+            <Name>United Kingdom</Name>
+            <ShortName>GBR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>8522.5</Frequency>
+        </Country>
+        <Country ID="Russia">
+            <Name>Russia</Name>
+            <ShortName>RUS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>3743.4</Frequency>
+        </Country>
+        <Country ID="Japan">
+            <Name>Japan</Name>
+            <ShortName>JPN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>4678.9</Frequency>
+        </Country>
+        <Country ID="Ukraine">
+            <Name>Ukraine</Name>
+            <ShortName>UKR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>4545.75</Frequency>
+        </Country>
+        <Country ID="Philippines">
+            <Name>Philippines</Name>
+            <ShortName>PHL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>3681.8</Frequency>
+        </Country>
+        <Country ID="Cuba">
+            <Name>Cuba</Name>
+            <ShortName>CUB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2000.21</Frequency>
+        </Country>
+        <Country ID="SouthAfrica">
+            <Name>South Africa</Name>
+            <ShortName>ZAF</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2619.7</Frequency>
+        </Country>
+        <Country ID="Argentina">
+            <Name>Argentina</Name>
+            <ShortName>ARG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2515.69</Frequency>
+        </Country>
+        <Country ID="Germany">
+            <Name>Germany</Name>
+            <ShortName>DEU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2481.19</Frequency>
+        </Country>
+        <Country ID="France">
+            <Name>France</Name>
+            <ShortName>FRA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2435.28</Frequency>
+        </Country>
+        <Country ID="Australia">
+            <Name>Australia</Name>
+            <ShortName>AUS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2393.01</Frequency>
+        </Country>
+        <Country ID="Kazakhstan">
+            <Name>Kazakhstan</Name>
+            <ShortName>KAZ</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2349.24</Frequency>
+        </Country>
+        <Country ID="PuertoRico">
+            <Name>Puerto Rico</Name>
+            <ShortName>PRI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2296.67</Frequency>
+        </Country>
+        <Country ID="Canada">
+            <Name>Canada</Name>
+            <ShortName>CAN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>2150.39</Frequency>
+        </Country>
+        <Country ID="Poland">
+            <Name>Poland</Name>
+            <ShortName>POL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1915.87</Frequency>
+        </Country>
+        <Country ID="DominicanRepublic">
+            <Name>Dominican Republic</Name>
+            <ShortName>DOM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1881.06</Frequency>
+        </Country>
+        <Country ID="Thailand">
+            <Name>Thailand</Name>
+            <ShortName>THA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1551.24</Frequency>
+        </Country>
+        <Country ID="Venezuela">
+            <Name>Venezuela</Name>
+            <ShortName>VEN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1494.09</Frequency>
+        </Country>
+        <Country ID="Nicaragua">
+            <Name>Nicaragua</Name>
+            <ShortName>NIC</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1332.85</Frequency>
+        </Country>
+        <Country ID="Colombia">
+            <Name>Colombia</Name>
+            <ShortName>COL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1210.759</Frequency>
+        </Country>
+        <Country ID="Spain">
+            <Name>Spain</Name>
+            <ShortName>ESP</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1199.83</Frequency>
+        </Country>
+        <Country ID="Uzbekistan">
+            <Name>Uzbekistan</Name>
+            <ShortName>UZB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1138.805</Frequency>
+        </Country>
+        <Country ID="Ghana">
+            <Name>Ghana</Name>
+            <ShortName>GHA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1111.389</Frequency>
+        </Country>
+        <Country ID="China">
+            <Name>China</Name>
+            <ShortName>CHN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>1011.61</Frequency>
+        </Country>
+        <Country ID="Ireland">
+            <Name>Ireland</Name>
+            <ShortName>IRL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>895.866</Frequency>
+        </Country>
+        <Country ID="Namibia">
+            <Name>Namibia</Name>
+            <ShortName>NAM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>742.856</Frequency>
+        </Country>
+        <Country ID="Sweden">
+            <Name>Sweden</Name>
+            <ShortName>SWE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>739.243</Frequency>
+        </Country>
+        <Country ID="Italy">
+            <Name>Italy</Name>
+            <ShortName>ITA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>731.04</Frequency>
+        </Country>
+        <Country ID="Latvia">
+            <Name>Latvia</Name>
+            <ShortName>LVA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>721.587</Frequency>
+        </Country>
+        <Country ID="Panama">
+            <Name>Panama</Name>
+            <ShortName>PAN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>706.953</Frequency>
+        </Country>
+        <Country ID="Belarus">
+            <Name>Belarus</Name>
+            <ShortName>BLR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>583.314</Frequency>
+        </Country>
+        <Country ID="Belgium">
+            <Name>Belgium</Name>
+            <ShortName>BEL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>540.981</Frequency>
+        </Country>
+        <Country ID="Brazil">
+            <Name>Brazil</Name>
+            <ShortName>BRA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>469.548</Frequency>
+        </Country>
+        <Country ID="Armenia">
+            <Name>Armenia</Name>
+            <ShortName>ARM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>459.784</Frequency>
+        </Country>
+        <Country ID="Denmark">
+            <Name>Denmark</Name>
+            <ShortName>DNK</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>431.82</Frequency>
+        </Country>
+        <Country ID="NewZealand">
+            <Name>New Zealand</Name>
+            <ShortName>NZL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>421.074</Frequency>
+        </Country>
+        <Country ID="Romania">
+            <Name>Romania</Name>
+            <ShortName>ROU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>400.682</Frequency>
+        </Country>
+        <Country ID="Turkey">
+            <Name>Turkey</Name>
+            <ShortName>TUR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>376.507</Frequency>
+        </Country>
+        <Country ID="Bulgaria">
+            <Name>Bulgaria</Name>
+            <ShortName>BGR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>372.374</Frequency>
+        </Country>
+        <Country ID="Congo">
+            <Name>Congo</Name>
+            <ShortName>COD</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>365.306</Frequency>
+        </Country>
+        <Country ID="Lithuania">
+            <Name>Lithuania</Name>
+            <ShortName>LTU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>363.428</Frequency>
+        </Country>
+        <Country ID="Nigeria">
+            <Name>Nigeria</Name>
+            <ShortName>NGA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>346.644</Frequency>
+        </Country>
+        <Country ID="Tanzania">
+            <Name>Tanzania</Name>
+            <ShortName>TZA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>346.644</Frequency>
+        </Country>
+        <Country ID="Indonesia">
+            <Name>Indonesia</Name>
+            <ShortName>IDN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>323.974</Frequency>
+        </Country>
+        <Country ID="Croatia">
+            <Name>Croatia</Name>
+            <ShortName>HRV</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>298.083</Frequency>
+        </Country>
+        <Country ID="Hungary">
+            <Name>Hungary</Name>
+            <ShortName>HUN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>290.135</Frequency>
+        </Country>
+        <Country ID="SouthKorea">
+            <Name>South Korea</Name>
+            <ShortName>KOR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>252.425</Frequency>
+        </Country>
+        <Country ID="Switzerland">
+            <Name>Switzerland</Name>
+            <ShortName>CHE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>247.148</Frequency>
+        </Country>
+        <Country ID="Afghanistan">
+            <Name>Afghanistan</Name>
+            <ShortName>AFG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Albania">
+            <Name>Albania</Name>
+            <ShortName>ALB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Algeria">
+            <Name>Algeria</Name>
+            <ShortName>ALG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Andorra">
+            <Name>Andorra</Name>
+            <ShortName>AND</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Angola">
+            <Name>Angola</Name>
+            <ShortName>ANG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Antigua">
+            <Name>Antigua</Name>
+            <ShortName>ANT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Austria">
+            <Name>Austria</Name>
+            <ShortName>AUS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Azerbaijan">
+            <Name>Azerbaijan</Name>
+            <ShortName>AZE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bahamas">
+            <Name>Bahamas</Name>
+            <ShortName>BAH</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bahrain">
+            <Name>Bahrain</Name>
+            <ShortName>BAR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bangladesh">
+            <Name>Bangladesh</Name>
+            <ShortName>BAN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Barbados">
+            <Name>Barbados</Name>
+            <ShortName>BAB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Belize">
+            <Name>Belize</Name>
+            <ShortName>BEL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Benin">
+            <Name>Benin</Name>
+            <ShortName>BEN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bhutan">
+            <Name>Bhutan</Name>
+            <ShortName>BHU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bolivia">
+            <Name>Bolivia</Name>
+            <ShortName>BOL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Bosnia">
+            <Name>Bosnia</Name>
+            <ShortName>BOS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Botswana">
+            <Name>Botswana</Name>
+            <ShortName>BOT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Brunei">
+            <Name>Brunei</Name>
+            <ShortName>BRU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Burkina">
+            <Name>Burkina</Name>
+            <ShortName>BUR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Burundi">
+            <Name>Burundi</Name>
+            <ShortName>BUU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Cambodia">
+            <Name>Cambodia</Name>
+            <ShortName>CAM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Cameroon">
+            <Name>Cameroon</Name>
+            <ShortName>CAE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="CapeVerde">
+            <Name>Cape Verde</Name>
+            <ShortName>CAP</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="CentralAfricanRep">
+            <Name>Central African Rep</Name>
+            <ShortName>CEN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Chad">
+            <Name>Chad</Name>
+            <ShortName>CHA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Chile">
+            <Name>Chile</Name>
+            <ShortName>CHI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Comoros">
+            <Name>Comoros</Name>
+            <ShortName>COM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="CostaRica">
+            <Name>Costa Rica</Name>
+            <ShortName>COS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Cyprus">
+            <Name>Cyprus</Name>
+            <ShortName>CYP</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="CzechRepublic">
+            <Name>Czech Republic</Name>
+            <ShortName>CZE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Djibouti">
+            <Name>Djibouti</Name>
+            <ShortName>DJI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Dominica">
+            <Name>Dominica</Name>
+            <ShortName>DOM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="EastTimor">
+            <Name>East Timor</Name>
+            <ShortName>EAS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Ecuador">
+            <Name>Ecuador</Name>
+            <ShortName>ECU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Egypt">
+            <Name>Egypt</Name>
+            <ShortName>EGY</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="ElSalvador">
+            <Name>El Salvador</Name>
+            <ShortName>ELS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="EquatorialGuinea">
+            <Name>Equatorial Guinea</Name>
+            <ShortName>EQU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Eritrea">
+            <Name>Eritrea</Name>
+            <ShortName>ERI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Estonia">
+            <Name>Estonia</Name>
+            <ShortName>EST</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Ethiopia">
+            <Name>Ethiopia</Name>
+            <ShortName>ETH</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Fiji">
+            <Name>Fiji</Name>
+            <ShortName>FIJ</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Finland">
+            <Name>Finland</Name>
+            <ShortName>FIN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Gabon">
+            <Name>Gabon</Name>
+            <ShortName>GAB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Gambia">
+            <Name>Gambia</Name>
+            <ShortName>GAM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Georgia">
+            <Name>Georgia</Name>
+            <ShortName>GEO</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Greece">
+            <Name>Greece</Name>
+            <ShortName>GRE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Grenada">
+            <Name>Grenada</Name>
+            <ShortName>GRN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Guatemala">
+            <Name>Guatemala</Name>
+            <ShortName>GUA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Guinea">
+            <Name>Guinea</Name>
+            <ShortName>GUI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Guinea-Bissau">
+            <Name>Guinea-Bissau</Name>
+            <ShortName>GUN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Guyana">
+            <Name>Guyana</Name>
+            <ShortName>GUY</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Haiti">
+            <Name>Haiti</Name>
+            <ShortName>HAI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Honduras">
+            <Name>Honduras</Name>
+            <ShortName>HON</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Iceland">
+            <Name>Iceland</Name>
+            <ShortName>ICE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="India">
+            <Name>India</Name>
+            <ShortName>IND</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Iran">
+            <Name>Iran</Name>
+            <ShortName>IRA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Iraq">
+            <Name>Iraq</Name>
+            <ShortName>IRQ</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Israel">
+            <Name>Israel</Name>
+            <ShortName>ISR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="IvoryCoast">
+            <Name>Ivory Coast</Name>
+            <ShortName>IVO</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Jamaica">
+            <Name>Jamaica</Name>
+            <ShortName>JAM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Jordan">
+            <Name>Jordan</Name>
+            <ShortName>JOR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Kenya">
+            <Name>Kenya</Name>
+            <ShortName>KEN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Kiribati">
+            <Name>Kiribati</Name>
+            <ShortName>KIR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="KoreaNorth">
+            <Name>Korea North</Name>
+            <ShortName>NKR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Kosovo">
+            <Name>Kosovo</Name>
+            <ShortName>KOS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Kuwait">
+            <Name>Kuwait</Name>
+            <ShortName>KUW</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Kyrgyzstan">
+            <Name>Kyrgyzstan</Name>
+            <ShortName>KYR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Laos">
+            <Name>Laos</Name>
+            <ShortName>LAO</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Lebanon">
+            <Name>Lebanon</Name>
+            <ShortName>LEB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Lesotho">
+            <Name>Lesotho</Name>
+            <ShortName>LES</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Liberia">
+            <Name>Liberia</Name>
+            <ShortName>LIB</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Libya">
+            <Name>Libya</Name>
+            <ShortName>LIY</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Liechtenstein">
+            <Name>Liechtenstein</Name>
+            <ShortName>LIE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Luxembourg">
+            <Name>Luxembourg</Name>
+            <ShortName>LUX</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Macedonia">
+            <Name>Macedonia</Name>
+            <ShortName>MAC</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Madagascar">
+            <Name>Madagascar</Name>
+            <ShortName>MAD</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Malawi">
+            <Name>Malawi</Name>
+            <ShortName>MAL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Malaysia">
+            <Name>Malaysia</Name>
+            <ShortName>MAA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Maldives">
+            <Name>Maldives</Name>
+            <ShortName>MAI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Malta">
+            <Name>Malta</Name>
+            <ShortName>MAT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Micronesia">
+            <Name>Micronesia</Name>
+            <ShortName>MIC</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Moldova">
+            <Name>Moldova</Name>
+            <ShortName>MOL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Monaco">
+            <Name>Monaco</Name>
+            <ShortName>MON</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Mongolia">
+            <Name>Mongolia</Name>
+            <ShortName>MOG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Montenegro">
+            <Name>Montenegro</Name>
+            <ShortName>MOT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Morocco">
+            <Name>Morocco</Name>
+            <ShortName>MOR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Mozambique">
+            <Name>Mozambique</Name>
+            <ShortName>MOZ</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Myanmar">
+            <Name>Myanmar</Name>
+            <ShortName>MYA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Nauru">
+            <Name>Nauru</Name>
+            <ShortName>NAU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Nepal">
+            <Name>Nepal</Name>
+            <ShortName>NEP</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Netherlands">
+            <Name>Netherlands</Name>
+            <ShortName>NET</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Niger">
+            <Name>Niger</Name>
+            <ShortName>NIG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Norway">
+            <Name>Norway</Name>
+            <ShortName>NOR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Oman">
+            <Name>Oman</Name>
+            <ShortName>OMA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Pakistan">
+            <Name>Pakistan</Name>
+            <ShortName>PAK</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Palau">
+            <Name>Palau</Name>
+            <ShortName>PAL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="PapuaNewGuinea">
+            <Name>Papua New Guinea</Name>
+            <ShortName>PAP</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Paraguay">
+            <Name>Paraguay</Name>
+            <ShortName>PAR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Peru">
+            <Name>Peru</Name>
+            <ShortName>PER</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Portugal">
+            <Name>Portugal</Name>
+            <ShortName>POR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Qatar">
+            <Name>Qatar</Name>
+            <ShortName>QAT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="RussianFederation">
+            <Name>Russian Federation</Name>
+            <ShortName>RUS</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Rwanda">
+            <Name>Rwanda</Name>
+            <ShortName>RWA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SanMarino">
+            <Name>San Marino</Name>
+            <ShortName>SAN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SaudiArabia">
+            <Name>Saudi Arabia</Name>
+            <ShortName>SAU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Senegal">
+            <Name>Senegal</Name>
+            <ShortName>SEN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Serbia">
+            <Name>Serbia</Name>
+            <ShortName>SER</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Seychelles">
+            <Name>Seychelles</Name>
+            <ShortName>SEY</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SierraLeone">
+            <Name>Sierra Leone</Name>
+            <ShortName>SIE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Singapore">
+            <Name>Singapore</Name>
+            <ShortName>SIN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Slovakia">
+            <Name>Slovakia</Name>
+            <ShortName>SLO</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Slovenia">
+            <Name>Slovenia</Name>
+            <ShortName>SLV</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SolomonIslands">
+            <Name>Solomon Islands</Name>
+            <ShortName>SOL</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Somalia">
+            <Name>Somalia</Name>
+            <ShortName>SOM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SouthSudan">
+            <Name>South Sudan</Name>
+            <ShortName>SOU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="SriLanka">
+            <Name>Sri Lanka</Name>
+            <ShortName>SRI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Sudan">
+            <Name>Sudan</Name>
+            <ShortName>SUD</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Suriname">
+            <Name>Suriname</Name>
+            <ShortName>SUR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Swaziland">
+            <Name>Swaziland</Name>
+            <ShortName>SWA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Syria">
+            <Name>Syria</Name>
+            <ShortName>SYR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Taiwan">
+            <Name>Taiwan</Name>
+            <ShortName>TAI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Tajikistan">
+            <Name>Tajikistan</Name>
+            <ShortName>TAJ</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Togo">
+            <Name>Togo</Name>
+            <ShortName>TOG</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Tonga">
+            <Name>Tonga</Name>
+            <ShortName>TON</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Tunisia">
+            <Name>Tunisia</Name>
+            <ShortName>TUN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Turkmenistan">
+            <Name>Turkmenistan</Name>
+            <ShortName>TUR</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Tuvalu">
+            <Name>Tuvalu</Name>
+            <ShortName>TUV</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Uganda">
+            <Name>Uganda</Name>
+            <ShortName>UGA</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="UnitedArabEmirates">
+            <Name>United Arab Emirates</Name>
+            <ShortName>UNI</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Uruguay">
+            <Name>Uruguay</Name>
+            <ShortName>URU</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Vanuatu">
+            <Name>Vanuatu</Name>
+            <ShortName>VAN</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="VaticanCity">
+            <Name>Vatican City</Name>
+            <ShortName>VAT</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Vietnam">
+            <Name>Vietnam</Name>
+            <ShortName>VIE</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Yemen">
+            <Name>Yemen</Name>
+            <ShortName>YEM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Zambia">
+            <Name>Zambia</Name>
+            <ShortName>ZAM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+        <Country ID="Zimbabwe">
+            <Name>Zimbabwe</Name>
+            <ShortName>ZIM</ShortName>
+            <Popularity>10</Popularity>
+            <Frequency>30</Frequency>
+        </Country>
+    </Countries>
+</FightConfig>
