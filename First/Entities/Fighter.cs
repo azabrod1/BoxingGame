@@ -1,65 +1,55 @@
 using System;
 using System.ComponentModel;
 using System.Text;
-using System.Collections.Generic;
-using Boxing;
-
 using FightSim;
+using System.Collections.Generic;
 
 namespace Main
 {
-    [ Serializable]
+    [Serializable]
     public class Fighter
     {
         public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
-
         public FighterRecord Record { get; set; }
 
-        // adding performance metrics dictionary - #todo may change it to a proper class later
-        public Dictionary<string, double> Performance{ get; set;}
-
-
-        //Attributes
+        //Combat Attributes
         public int Accuracy { get; set; } = 50;
         public int Aggression { get; set; } = 50;
         public int Defense { get; set; } = 50;
         public int Durability { get; set; } = 50;
         public int FootWork { get; set; } = 50;
-        public int Height { get; set; }
         public int Power { get; set; } = 50;
-        public int Reach { get; set; } = 72;
         public int RingGen { get; set; } = 50;
         public int HandSpeed { get; set; } = 50;
         public int Stamina { get; set; } = 50;
-        public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
 
-        public string Country { get; set; }
+        //Physical/Personal Attributes
+        public int Reach { get; set; } = 72;
+        public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent(); } }
+        public int Height { get; set; }
+        public string Nationality { get; set; } = "US";
 
-        public int Belts { get; set; }
+        public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
+        public int Belts;
 
-             
+
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
         public double JabPercent;
 
         private double _Weight = 150;
 
+        private Fighter()
+        {
 
-        //private Fighter()
-        //{
-        //
-        //}
+        }
 
-        public Fighter(string name = "", string country = "US")
+        public Fighter(string name = "")
         {
             JabPercent = ExpectedJabPercent();
 
             Record = new FighterRecord();
-
-            Performance = new Dictionary<string, double>();
-
-            Country = country;
 
             if (string.IsNullOrEmpty(name)) //For testing 
                 this.Name = Utility.RandomNameSimple();
@@ -71,7 +61,7 @@ namespace Main
         {
             double skill = 0;
             skill += MathUtils.WeightedAverage(Accuracy, 11,
-                                               Defense,  11,
+                                               Defense, 11,
                                                Durability, 7,
                                                FootWork, 7,
                                                RingGen, 7,
@@ -112,5 +102,3 @@ namespace Main
 
     }
 }
-
-
