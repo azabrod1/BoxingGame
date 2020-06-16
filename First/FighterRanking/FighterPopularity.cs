@@ -182,8 +182,10 @@ namespace FighterRanking
 
             fo.Viewership = FightViewers(fo);
 
+            Console.WriteLine(ToString(fo));
             Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
-            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
+            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()) + "\n");
+            
 
 
         }
@@ -202,21 +204,19 @@ namespace FighterRanking
 
             WeightClass w1 = (WeightClass)f1.Weight;
 
+            //WeightCoefficient[w1.Weight]
+
 
             fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
-                (CountryCoefficient[f1.Country] * CountryCoefficient[f2.Country] * WeightCoefficient[w1.Weight] + f1.Belts + f2.Belts);
+                (CountryCoefficient[f1.Country] * CountryCoefficient[f2.Country] * w1.Popularity + f1.Belts + f2.Belts);
 
 
 
-            viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
-            viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
+            //viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
+            //viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
 
 
-
-            //double risk1 = 1 / Math.Abs(f1.Performance["Elo"] - f2.Performance["Elo"]);
-            //double risk2 = 1 - risk1;
-
-            viewers = fo.Interested + (PWin(fo))*f1.Performance["Followers"] + (1-PWin(fo)*f2.Performance["Followers"]);
+            viewers = fo.Interested + (PWin(fo))*f1.Performance["Followers"] + (1-PWin(fo)*f2.Performance["Followers"]) + (PWin(fo)) * f1.Performance["Fans"] + (1 - PWin(fo) * f2.Performance["Fans"]);
             
 
             return viewers;
@@ -237,6 +237,13 @@ namespace FighterRanking
 
             var p = f.Performance;
             string s = $"Fighter {f.Name}: Fans = {p["Fans"]}, Followers = {p["Followers"]}, Casuals = {p["Casuals"]}, Elo = {p["Elo"]}  ";
+
+            return s;
+        }
+
+        public static string ToString(FightOutcome fo)
+        {
+            string s = ("Viewership: " + fo.Viewership);
 
             return s;
         }
