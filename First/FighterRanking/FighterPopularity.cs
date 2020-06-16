@@ -208,7 +208,7 @@ namespace FighterRanking
 
 
             fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
-                (CountryCoefficient[f1.Nationality] * CountryCoefficient[f2.Nationality] * w1.Popularity + f1.Belts + f2.Belts);
+                (f1.Nationality.PopularityBuff * f2.Nationality.PopularityBuff * w1.Popularity + f1.Belts + f2.Belts);
 
 
 

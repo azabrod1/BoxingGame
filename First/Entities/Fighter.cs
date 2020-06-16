@@ -1,8 +1,10 @@
+
+using System.Collections.Generic;
+
 using System;
 using System.ComponentModel;
 using System.Text;
 using FightSim;
-using System.Collections.Generic;
 
 namespace Main
 {
@@ -28,7 +30,9 @@ namespace Main
         public int Reach { get; set; } = 72;
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent(); } }
         public int Height { get; set; }
-        public string Nationality { get; set; } = "US";
+        public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
+        public string _Nationality = "United States";
+
 
         public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
         public int Belts;
