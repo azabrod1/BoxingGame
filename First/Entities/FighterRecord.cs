@@ -9,30 +9,30 @@ namespace Main
         public int KOs { get; set; }
         public int Draws { get; set; }
 
-        //[Obsolete]
+        [Obsolete]
         //todo: remove all this rank stuff, Elo class should keep track of that
-        //private double _rank;
+        private double _rank;
 
-        //[Obsolete]
-        //public double Rank {
-        //    get { return _rank; }
-        //    set { PreviousRank = _rank; _rank = value; }
-        //    }
+        [Obsolete]
+        public double Rank {
+            get { return _rank; }
+            set { PreviousRank = _rank; _rank = value; }
+            }
 
-        //[Obsolete]
-        //public double PreviousRank { get; private set; } // automatically preserved
+        [Obsolete]
+        public double PreviousRank { get; private set; } // automatically preserved
 
-        //public double Elo // synonym to Rank... LOL
-        //{
-        //    get { return Rank; }
-        //    set { Rank = value; }
-        //}
+        public double Elo // synonym to Rank... LOL
+        {
+            get { return Rank; }
+            set { Rank = value; }
+        }
 
-        //public FighterRecord()
-        //{
-        //    Wins = Losses = KOs = Draws = 0;
-        //    Rank = PreviousRank = 0;
-        //}
+        public FighterRecord()
+        {
+            Wins = Losses = KOs = Draws = 0;
+           Rank = PreviousRank = 0;
+        }
 
         public override string ToString()
         {
