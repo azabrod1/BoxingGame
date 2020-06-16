@@ -1,0 +1,189 @@
+﻿United States, USA, 13058.9
+Mexico, MEX, 9301
+United Kingdom, GBR, 8522.5
+Russia, RUS, 3743.4
+Japan, JPN, 4678.9
+Ukraine, UKR, 4545.75
+Philippines, PHL, 3681.8
+Cuba, CUB, 2000.21
+South Africa, ZAF, 2619.7
+Argentina, ARG, 2515.69
+Germany, DEU, 2481.19
+France, FRA, 2435.28
+Australia, AUS, 2393.01
+Kazakhstan, KAZ, 2349.24
+Puerto Rico, PRI, 2296.67
+Canada, CAN, 2150.39
+Poland, POL, 1915.87
+Dominican Republic, DOM, 1881.06
+Thailand, THA, 1551.24
+Venezuela, VEN, 1494.09
+Nicaragua, NIC, 1332.85
+Colombia, COL, 1210.759
+Spain, ESP, 1199.83
+Uzbekistan, UZB, 1138.805
+Ghana, GHA, 1111.389
+China, CHN, 1011.61
+Ireland, IRL, 895.866
+Namibia, NAM, 742.856
+Sweden, SWE, 739.243
+Italy, ITA, 731.04
+Latvia, LVA, 721.587
+Panama, PAN, 706.953
+Belarus, BLR, 583.314
+Belgium, BEL, 540.981
+Brazil, BRA, 469.548
+Armenia, ARM, 459.784
+Denmark, DNK, 431.82
+New Zealand, NZL, 421.074
+Romania, ROU, 400.682
+Turkey, TUR, 376.507
+Bulgaria, BGR, 372.374
+Congo, COD, 365.306
+Lithuania, LTU, 363.428
+Nigeria, NGA, 346.644
+Tanzania, TZA, 346.644
+Indonesia, IDN, 323.974
+Croatia, HRV, 298.083
+Hungary, HUN, 290.135
+South Korea, KOR, 252.425
+Switzerland, CHE, 247.148
+Afghanistan, AFG
+Albania, ALB
+Algeria, ALG
+Andorra, AND
+Angola, ANG
+Antigua, ANT
+Austria, AUS
+Azerbaijan, AZE
+Bahamas, BAH
+Bahrain, BAR
+Bangladesh, BAN
+Barbados, BAB
+Belize, BEL
+Benin, BEN
+Bhutan, BHU
+Bolivia, BOL
+Bosnia, BOS
+Botswana, BOT
+Brunei, BRU
+Burkina, BUR
+Burundi, BUU
+Cambodia, CAM
+Cameroon, CAE
+Cape Verde, CAP
+Central African Rep, CEN
+Chad, CHA
+Chile, CHI
+Comoros, COM
+Costa Rica, COS
+Cyprus, CYP
+Czech Republic, CZE
+Djibouti, DJI
+Dominica, DOM
+East Timor, EAS
+Ecuador, ECU
+Egypt, EGY
+El Salvador, ELS 
+Equatorial Guinea, EQU
+Eritrea, ERI
+Estonia, EST
+Ethiopia, ETH
+Fiji, FIJ
+Finland, FIN
+Gabon, GAB
+Gambia, GAM
+Georgia, GEO
+Greece, GRE
+Grenada, GRN
+Guatemala, GUA
+Guinea, GUI
+Guinea-Bissau, GUN
+Guyana, GUY
+Haiti, HAI
+Honduras, HON
+Iceland, ICE
+India, IND
+Iran, IRA
+Iraq, IRQ
+Israel, ISR
+Ivory Coast, IVO
+Jamaica, JAM
+Jordan, JOR
+Kenya, KEN
+Kiribati, KIR
+Korea North, NKR
+Kosovo, KOS
+Kuwait, KUW
+Kyrgyzstan, KYR
+Laos, LAO
+Lebanon, LEB
+Lesotho, LES
+Liberia, LIB
+Libya, LIY
+Liechtenstein, LIE
+Luxembourg, LUX
+Macedonia, MAC
+Madagascar, MAD
+Malawi, MAL
+Malaysia, MAA
+Maldives, MAI
+Malta, MAT
+Micronesia, MIC
+Moldova, MOL
+Monaco, MON
+Mongolia, MOG
+Montenegro, MOT
+Morocco, MOR
+Mozambique, MOZ
+Myanmar, MYA
+Nauru, NAU
+Nepal, NEP
+Netherlands, NET
+Niger, NIG
+Norway, NOR
+Oman, OMA
+Pakistan, PAK
+Palau, PAL
+Papua New Guinea, PAP
+Paraguay, PAR
+Peru, PER
+Portugal, POR
+Qatar, QAT
+Russian Federation, RUS
+Rwanda, RWA
+San Marino, SAN
+Sao Tome & Principe, SAO
+Saudi Arabia, SAU
+Senegal, SEN
+Serbia, SER
+Seychelles, SEY
+Sierra Leone, SIE
+Singapore, SIN
+Slovakia, SLO
+Slovenia, SLV
+Solomon Islands, SOL
+Somalia, SOM
+South Sudan, SOU
+Sri Lanka, SRI
+Sudan, SUD
+Suriname, SUR
+Swaziland, SWA
+Syria, SYR
+Taiwan, TAI
+Tajikistan, TAJ
+Togo, TOG
+Tonga, TON
+Trinidad & Tobago, TRI
+Tunisia, TUN
+Turkmenistan, TUR
+Tuvalu, TUV
+Uganda, UGA
+United Arab Emirates, UNI
+Uruguay, URU
+Vanuatu, VAN
+Vatican City, VAT
+Vietnam, VIE
+Yemen, YEM
+Zambia, ZAM
+Zimbabwe, ZIM

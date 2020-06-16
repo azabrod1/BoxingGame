@@ -3,7 +3,7 @@ using System.Linq;
 using Main;
 namespace FightSim
 {
-    public class EloFightSimulator : FightSimulator
+    public class EloFightSimulator : IFightSimulator
     {
 
         //public static double ELO_MAX_INIT = 1000.0;

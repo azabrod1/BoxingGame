@@ -74,7 +74,7 @@ namespace Main
             Fighter f1 = Fighters[index1];
             Fighter f2 = Fighters[index2];
             Fight ff = new Fight(f1, f2);
-            FightSimulator fs = new EloFightSimulator();
+            IFightSimulator fs = new EloFightSimulator();
             FightOutcome fo = fs.SimulateFight(ff);
 
             if (printResult && (this.IsTopFighter(index1) || this.IsTopFighter(index2)))
@@ -105,7 +105,7 @@ namespace Main
         {
             int op;
             int coeff;
-            FightSimulator fs = new EloFightSimulator();
+            IFightSimulator fs = new EloFightSimulator();
             for (int i = 0; i < Fighters.Count(); i++)
             {
                 coeff = (rand.Next(0, 2) > 0) ? 1 : -1;

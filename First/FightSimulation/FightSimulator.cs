@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FightSim
 {
-    public interface FightSimulator
+    public interface IFightSimulator
     {
         public FightOutcome SimulateFight(Main.Fight fight);
 

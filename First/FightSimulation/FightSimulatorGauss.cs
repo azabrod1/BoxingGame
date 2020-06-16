@@ -5,7 +5,7 @@ using Main;
 namespace FightSim
 {
     //Fight simulator with randomness simulated via normal distibution
-    public class FightSimulatorGauss : FightSimulator
+    public class FightSimulatorGauss : IFightSimulator
     {
         
         public FightSimulatorGauss()

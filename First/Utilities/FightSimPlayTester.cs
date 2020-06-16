@@ -15,7 +15,7 @@ namespace Utilities
         LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public FighterCache Fighters;
-        private readonly FightSimulator FightSim = new FightSimulatorGauss();
+        private readonly IFightSimulator FightSim = new FightSimulatorGauss();
         double MatchCoef { get; set; } = 0.05; //Higher values mean more likely fighters someone as good as them
         IFighterRating Rating;
         List<IFighterRating> AllRatings = new List<IFighterRating>();

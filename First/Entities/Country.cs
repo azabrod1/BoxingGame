@@ -1,25 +1,38 @@
 ﻿using System;
-namespace Boxing
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
+
+namespace Main
 {
     public class Country
     {
+
         public string Name { get; }              //Country Full Name - the identifier
-        public string DisplayName { get; }       //GUI Friendly Short Name <= 10 characters
+        public string ShortName { get; }         //GUI Friendly Short Name <= 3 characters
         public double PopularityBuff { get; }    //Does being from the country make you popular? 
-        public double NationalityWeight { get; } //Probability a fighter is from this country
+        public double Frequency { get; }         //Probability a fighter is from this country
 
         //country name -> country object
-        public static System.Collections.Generic.Dictionary<string, Country> Countries { get; internal set; }
+        public static Dictionary<string, Country> Countries { get; internal set; }
+        public static double COUNTRY_FREQ_SUM;
 
-        public Country(string name, string displayName, double popularityBuff, double nationalityWeight)
+        public Country(string name, string displayName, double popularityBuff, double nationalityFreq)
         {
             this.Name = name;
-            this.DisplayName = displayName;
+            this.ShortName = displayName;
             this.PopularityBuff = popularityBuff;
-            this.NationalityWeight = nationalityWeight;
+            this.Frequency = nationalityFreq;
 
-            if (displayName.Length > 10)
-                throw new Exception("Display name for a country should not over 10 characters");
+            if (displayName.Length > 3)
+                throw new Exception("Display name for a country should not over 3 characters");
+        }
+
+        static Country()
+        {
+            Countries = LoadCountriesOfTheWorld();
+            COUNTRY_FREQ_SUM = Countries.Select(element => element.Value.Frequency).Sum();
         }
 
         public override bool Equals(Object obj)
@@ -35,7 +48,12 @@ namespace Boxing
 
         public override int GetHashCode()
         {
-            return this.Name.GetHashCode();
+            return HashCode.Combine(Name);
+        }
+
+        public override string ToString()
+        {
+            return Utility.UsefulString(this);
         }
 
         //So that Country w = "United States Of America" will work as expected
@@ -48,5 +66,38 @@ namespace Boxing
         {
             return Countries[countryName];
         }
+
+        public static List<Country> AllCountries()
+        {
+            return new List<Country>(Countries.Values);
+        }
+
+        private static Dictionary<string, Country> LoadCountriesOfTheWorld()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("FightConfig.xml"));
+            XElement config = null;
+
+            using (System.IO.Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (null == (config = XElement.Load(stream)))
+                    throw new NullReferenceException("Unable to load FightConfig.xml");
+            }
+
+            Dictionary<string, Country> _countries = (from nation in config.Descendants("Country")
+                                  select new
+                                  {
+                                      Name = nation.Element("Name").Value,
+                                      ShortName = nation.Element("ShortName").Value,
+                                      Frequency = double.Parse(nation.Element("Frequency").Value),
+                                      Popularity = double.Parse(nation.Element("Popularity").Value),
+                                  })
+                                  .ToDictionary(
+                                        structure => structure.Name,
+                                        structure => new Country(structure.Name, structure.ShortName, structure.Popularity, structure.Frequency)
+                                  );
+            return _countries;
+        }
+
     }
 }
