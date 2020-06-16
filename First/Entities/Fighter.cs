@@ -12,19 +12,23 @@ namespace Main
 
         public FighterRecord Record { get; set; } 
 
-        //Attributes
+        //Combat Attributes
         public int Accuracy { get; set; } = 50;
         public int Aggression { get; set; } = 50;
         public int Defense { get; set; } = 50;
         public int Durability { get; set; } = 50;
         public int FootWork { get; set; } = 50;
-        public int Height { get; set; }
         public int Power { get; set; } = 50;
-        public int Reach { get; set; } = 72;
         public int RingGen { get; set; } = 50;
         public int HandSpeed { get; set; } = 50;
         public int Stamina { get; set; } = 50;
+
+        //Physical/Personal Attributes
+        public int Reach { get; set; } = 72;
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
+        public int Height { get; set; }
+        public string Nationality { get; set; }
+
 
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;

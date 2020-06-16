@@ -99,5 +99,24 @@ namespace Main
             return _countries;
         }
 
+        //According to the expected size of the weight class
+        public static Country RandomNationality()
+        {
+            List<Country> countries = Country.AllCountries();
+            double totalFreq = Country.COUNTRY_FREQ_SUM;
+
+            double target = MathUtils.RangeUniform(0, totalFreq);
+            double sum = 0;
+            int c = -1;
+
+            do
+            {
+                sum += countries[++c].Frequency;
+            }
+            while (sum < target);
+
+            return countries[c];
+        }
+
     }
 }

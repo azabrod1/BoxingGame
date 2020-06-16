@@ -49,6 +49,7 @@ namespace Main
                 weight = AssignWeightClass().Weight;
 
             hungryYoungLion.Weight = weight;
+            hungryYoungLion.Nationality = Country.RandomNationality().ToString();
 
             int totalSkillPoints = RandomSkillLevel() * ScaledCombatTraits.Count();
 
@@ -151,7 +152,7 @@ namespace Main
             int sizeSum = WeightClass.WC_SIZE_SUM;
 
             double target = MathUtils.RangeUniform(0, sizeSum);
-            double sum = -1;
+            double sum = 0;
             int w = -1;
 
             do
