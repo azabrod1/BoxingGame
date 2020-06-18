@@ -107,31 +107,39 @@ namespace FighterRanking
 
                 //winner
 
-                double delta = 0.18 * casuals1 * (1 - PWin(fo));
-                fans1 =+ delta;
-                casuals1 =- delta;
+                //MathUtils.Gauss
 
-                delta = 0.18 * fo.Interested * (1 - PWin(fo));
-                casuals1 =+ delta;
-                fo.Interested =- delta;
+                double delta = 0.09 * casuals1 * (1 - PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
+                fans1 += delta;
+                casuals1 -= delta;
 
-                delta = 0.18 * casuals1 * (1 - PWin(fo));
-                followers1 =+ delta;
-                casuals1 =- 0.18 * casuals1;
+                delta = 0.4 * fo.Interested * (1 - PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
+                casuals1 += delta;
+                //fo.Interested =- delta;
+
+                delta = 0.09 * casuals1 * (1 - PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
+                followers1 += delta;
+                casuals1 -= 0.18 * casuals1;
 
                 //loser
 
                 delta = 0.1 * fans2 * (1-PWin(fo));
-                fans2 =- delta;
-                casuals2 = +delta;
+                delta = MathUtils.Gauss(delta, 0.5);
+                fans2 -= delta;
+                casuals2 += delta;
 
                 delta = 0.1 * casuals2 * (1 - PWin(fo));
-                casuals2 =- delta;
-                fo.Interested = +delta;
+                delta = MathUtils.Gauss(delta, 0.5);
+                casuals2 -= delta;
+                //fo.Interested = +delta;
 
                 delta = 0.1 * followers2 * (1 - PWin(fo));
-                followers2 =- delta;
-                casuals2 =+ delta;
+                delta = MathUtils.Gauss(delta, 0.5);
+                followers2 -= delta;
+                casuals2 += delta;
 
 
 
@@ -141,29 +149,35 @@ namespace FighterRanking
             else if (fo.Fighter2() == fo.Winner)
             {
 
-                double delta = 0.18 * casuals1 * (PWin(fo));
+                double delta = 0.09 * casuals1 * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 fans1 =- delta;
                 casuals1 =+ delta;
 
-                delta = 0.18 * fo.Interested * (PWin(fo));
+                delta = 0.4 * fo.Interested * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 casuals1 =- delta;
-                fo.Interested =+ delta;
+                //fo.Interested =+ delta;
 
-                delta = 0.18 * casuals1 * (PWin(fo));
+                delta = 0.09 * casuals1 * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 followers1 =- delta;
                 casuals1 =+ 0.18 * casuals1;
 
                 //winner
 
                 delta = 0.1 * fans2 * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 fans2 =+ delta;
                 casuals2 =- delta;
 
                 delta = 0.1 * casuals2 * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 casuals2 =+ delta;
-                fo.Interested =- delta;
+                //fo.Interested =- delta;
 
                 delta = 0.1 * followers2 * (PWin(fo));
+                delta = MathUtils.Gauss(delta, 0.5);
                 followers2 =+ delta;
                 casuals2 =- delta;
 
@@ -202,10 +216,14 @@ namespace FighterRanking
             Fighter f2 = fo.Fighter2();
 
 
+            //Country country = f1.Nationality;
+            //Console.WriteLine(f1.Nationality + "'s buff is " + country.PopularityBuff);
+
             WeightClass w1 = (WeightClass)f1.Weight;
 
             //WeightCoefficient[w1.Weight]
 
+         
 
             fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
                 (f1.Nationality.PopularityBuff * f2.Nationality.PopularityBuff * w1.Popularity + f1.Belts + f2.Belts);
@@ -228,7 +246,8 @@ namespace FighterRanking
 
         private static double PWin(FightOutcome fo)
         {
-            return 1 / (1 + Math.Pow(10, fo.Fighter2().Performance["Elo"] - fo.Fighter1().Performance["Elo"] / 400));
+            return 1 / (1 + Math.Pow(10, (fo.Fighter2().Performance["Elo"] - fo.Fighter1().Performance["Elo"]) / 400));
+
         }
 
 

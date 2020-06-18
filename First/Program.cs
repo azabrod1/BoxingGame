@@ -40,12 +40,6 @@ namespace Main
 
             // WeightClass w = 147;
 
-             LoadCountries();
-
-            var x = Country.AllCountries();
-
-            Console.WriteLine(x[1]);
-
 
             return;
 
