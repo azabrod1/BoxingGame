@@ -16,7 +16,7 @@ namespace FighterRanking
 
         private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
 
-        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { {108, 1.0}, { 147, 1.1 }, { 154, 2.0 } };
+        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 108, 1.0 }, { 147, 1.1 }, { 154, 2.0 } };
 
         //private static Dictionary<double, List<int>> WeightCoefficient = new Dictionary<int, double>() { { 1.0,  }, { 147, 1.1 }, { 154, 2.0 } };
 
@@ -126,7 +126,7 @@ namespace FighterRanking
 
                 //loser
 
-                delta = 0.1 * fans2 * (1-PWin(fo));
+                delta = 0.1 * fans2 * (1 - PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans2 -= delta;
                 casuals2 += delta;
@@ -143,7 +143,7 @@ namespace FighterRanking
 
 
 
-                
+
 
             }
             else if (fo.Fighter2() == fo.Winner)
@@ -151,35 +151,35 @@ namespace FighterRanking
 
                 double delta = 0.09 * casuals1 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans1 =- delta;
-                casuals1 =+ delta;
+                fans1 = -delta;
+                casuals1 = +delta;
 
                 delta = 0.4 * fo.Interested * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals1 =- delta;
+                casuals1 = -delta;
                 //fo.Interested =+ delta;
 
                 delta = 0.09 * casuals1 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers1 =- delta;
-                casuals1 =+ 0.18 * casuals1;
+                followers1 = -delta;
+                casuals1 = +0.18 * casuals1;
 
                 //winner
 
                 delta = 0.1 * fans2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans2 =+ delta;
-                casuals2 =- delta;
+                fans2 = +delta;
+                casuals2 = -delta;
 
                 delta = 0.1 * casuals2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals2 =+ delta;
+                casuals2 = +delta;
                 //fo.Interested =- delta;
 
                 delta = 0.1 * followers2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers2 =+ delta;
-                casuals2 =- delta;
+                followers2 = +delta;
+                casuals2 = -delta;
 
 
             }
@@ -199,7 +199,7 @@ namespace FighterRanking
             Console.WriteLine(ToString(fo));
             Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
             Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()) + "\n");
-            
+
 
 
         }
@@ -223,7 +223,7 @@ namespace FighterRanking
 
             //WeightCoefficient[w1.Weight]
 
-         
+
 
             fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
                 (f1.Nationality.PopularityBuff * f2.Nationality.PopularityBuff * w1.Popularity + f1.Belts + f2.Belts);
@@ -234,8 +234,8 @@ namespace FighterRanking
             //viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
 
 
-            viewers = fo.Interested + (PWin(fo))*f1.Performance["Followers"] + (1-PWin(fo)*f2.Performance["Followers"]) + (PWin(fo)) * f1.Performance["Fans"] + (1 - PWin(fo) * f2.Performance["Fans"]);
-            
+            viewers = fo.Interested + (PWin(fo)) * f1.Performance["Followers"] + (1 - PWin(fo) * f2.Performance["Followers"]) + (PWin(fo)) * f1.Performance["Fans"] + (1 - PWin(fo) * f2.Performance["Fans"]);
+
 
             return viewers;
 
@@ -267,10 +267,10 @@ namespace FighterRanking
             return s;
         }
 
-        
+
 
 
     }
 
-    
+
 }
