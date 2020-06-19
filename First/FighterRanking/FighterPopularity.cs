@@ -14,9 +14,9 @@ namespace FighterRanking
         // simple dictionaries to hold country and weight popularity coefficients
         // #todo: integrate with the rest of the program and persist the coefficients in XLM
 
-        private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
+        //private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
 
-        private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 108, 1.0 }, { 147, 1.1 }, { 154, 2.0 } };
+        //private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 108, 1.0 }, { 147, 1.1 }, { 154, 2.0 } };
 
         //private static Dictionary<double, List<int>> WeightCoefficient = new Dictionary<int, double>() { { 1.0,  }, { 147, 1.1 }, { 154, 2.0 } };
 
@@ -41,12 +41,14 @@ namespace FighterRanking
             double followers;
 
 
-            if (!f.Performance.ContainsKey("Fans"))
+            if (!f.Performance.ContainsKey("Active"))
             {
                 // first time the method is called for a new fighter
                 // need to populate initial values
-                // N.B. this assumes that Fans/Casuals/Followes are populated
-                //  at the same time, so we only need to check for Fans existance
+                //(Active is an indicator the fighter is initialized)
+                f.Performance["Active"] = 1;
+
+                // todo need to make proper values
 
                 f.Performance["Fans"] = 1000;
                 f.Performance["Casuals"] = 1000;
@@ -107,7 +109,6 @@ namespace FighterRanking
 
                 //winner
 
-                //MathUtils.Gauss
 
                 double delta = 0.09 * casuals1 * (1 - PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
@@ -141,45 +142,41 @@ namespace FighterRanking
                 followers2 -= delta;
                 casuals2 += delta;
 
-
-
-
-
             }
             else if (fo.Fighter2() == fo.Winner)
             {
 
                 double delta = 0.09 * casuals1 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans1 = -delta;
-                casuals1 = +delta;
+                fans1 -= delta;
+                casuals1 += delta;
 
                 delta = 0.4 * fo.Interested * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals1 = -delta;
+                casuals1 -= delta;
                 //fo.Interested =+ delta;
 
                 delta = 0.09 * casuals1 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers1 = -delta;
-                casuals1 = +0.18 * casuals1;
+                followers1 -= delta;
+                casuals1 += 0.18 * casuals1;
 
                 //winner
 
                 delta = 0.1 * fans2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans2 = +delta;
-                casuals2 = -delta;
+                fans2 += delta;
+                casuals2 -= -delta;
 
                 delta = 0.1 * casuals2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals2 = +delta;
+                casuals2 += delta;
                 //fo.Interested =- delta;
 
                 delta = 0.1 * followers2 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers2 = +delta;
-                casuals2 = -delta;
+                followers2 += delta;
+                casuals2 -= delta;
 
 
             }
@@ -202,6 +199,23 @@ namespace FighterRanking
 
 
 
+        }
+
+        public static string ToString(Fighter f)
+        {
+
+            var p = f.Performance;
+            string s = $"Fighter {f.Name}:Fans={p["Fans"]:N0},Followers={p["Followers"]:N0}," +
+                $"Casuals={p["Casuals"]:N0},Elo={p["Elo"]:N0}";
+
+            return s;
+        }
+
+        public static string ToString(FightOutcome fo)
+        {
+            string s = ($"Viewership:{fo.Viewership:N0}");
+
+            return s;
         }
 
 
@@ -251,22 +265,7 @@ namespace FighterRanking
         }
 
 
-        public static string ToString(Fighter f)
-        {
-
-            var p = f.Performance;
-            string s = $"Fighter {f.Name}: Fans = {p["Fans"]}, Followers = {p["Followers"]}, Casuals = {p["Casuals"]}, Elo = {p["Elo"]}  ";
-
-            return s;
-        }
-
-        public static string ToString(FightOutcome fo)
-        {
-            string s = ("Viewership: " + fo.Viewership);
-
-            return s;
-        }
-
+        
 
 
 
