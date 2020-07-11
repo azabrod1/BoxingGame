@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Main;
 
 
 
-namespace Entities
+namespace Main
 {
     public class Venue
     {

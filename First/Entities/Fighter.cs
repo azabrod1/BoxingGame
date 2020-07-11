@@ -34,8 +34,7 @@ namespace Main
         public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
         public string _Nationality = "United States";
 
-
-
+        public Dictionary<string, string> PersonalInfo { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
         public int Belts;
 
