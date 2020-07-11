@@ -41,12 +41,9 @@ namespace Main
             // WeightClass w = 147;
 
 
-            return;
-
         }
 
 
-   
 
         static void Anya()
         {

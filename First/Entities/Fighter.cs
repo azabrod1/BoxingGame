@@ -28,14 +28,17 @@ namespace Main
 
         //Physical/Personal Attributes
         public int Reach { get; set; } = 72;
-        public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent(); } }
+
+        public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
         public int Height { get; set; }
         public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
         public string _Nationality = "United States";
 
 
+
         public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
         public int Belts;
+
 
 
         //Strategy variables - different fighters will have different stats

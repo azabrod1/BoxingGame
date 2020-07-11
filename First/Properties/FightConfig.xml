@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <FightConfig>
     <WeightClasses>
         <WeightClass id="LightFlyweight">
@@ -103,7 +103,8 @@
             <Name>United States</Name>
             <ShortName>USA</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>13058.9</Frequency>
+
+            <Frequency>13058</Frequency>
         </Country>
         <Country ID="Mexico">
             <Name>Mexico</Name>
@@ -115,55 +116,65 @@
             <Name>United Kingdom</Name>
             <ShortName>GBR</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>8522.5</Frequency>
+
+            <Frequency>8522</Frequency>
         </Country>
         <Country ID="Russia">
             <Name>Russia</Name>
             <ShortName>RUS</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>3743.4</Frequency>
+
+            <Frequency>3743</Frequency>
         </Country>
         <Country ID="Japan">
             <Name>Japan</Name>
             <ShortName>JPN</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>4678.9</Frequency>
+
+            <Frequency>4678</Frequency>
         </Country>
         <Country ID="Ukraine">
             <Name>Ukraine</Name>
             <ShortName>UKR</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>4545.75</Frequency>
+
+            <Frequency>4545</Frequency>
         </Country>
         <Country ID="Philippines">
             <Name>Philippines</Name>
             <ShortName>PHL</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>3681.8</Frequency>
+
+            <Frequency>3681</Frequency>
         </Country>
         <Country ID="Cuba">
             <Name>Cuba</Name>
             <ShortName>CUB</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>2000.21</Frequency>
+
+            <Frequency>2000</Frequency>
         </Country>
         <Country ID="SouthAfrica">
             <Name>South Africa</Name>
             <ShortName>ZAF</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>2619.7</Frequency>
+
+            <Frequency>2619</Frequency>
+
         </Country>
         <Country ID="Argentina">
             <Name>Argentina</Name>
             <ShortName>ARG</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>2515.69</Frequency>
+
+            <Frequency>2515</Frequency>
         </Country>
         <Country ID="Germany">
             <Name>Germany</Name>
             <ShortName>DEU</ShortName>
             <Popularity>10</Popularity>
-            <Frequency>2481.19</Frequency>
+
+            <Frequency>2481</Frequency>
         </Country>
         <Country ID="France">
             <Name>France</Name>
@@ -1483,4 +1494,5 @@
             <Capacity>30</Capacity>
            </Venue>
     </Venues>
+
 </FightConfig>
