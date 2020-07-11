@@ -1314,8 +1314,8 @@
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="WinnaVegas Casino & Resort"> <!--Iowa-->
-            <Name>WinnaVegas Casino & Resort</Name>
+        <Venue ID="WinnaVegas Casino and Resort"> <!--Iowa-->
+            <Name>WinnaVegas Casino and Resort</Name>
             <City>Sloan</City>
             <State>Iowa</State>
             <Elasticity>5</Elasticity>
@@ -1335,8 +1335,8 @@
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="Mark G. Etess Arena, Hard Rock Hotel & Casino"> <!--New Jersey-->
-            <Name>Mark G. Etess Arena, Hard Rock Hotel & Casino</Name>
+        <Venue ID="Mark G. Etess Arena, Hard Rock Hotel and Casino"> <!--New Jersey-->
+            <Name>Mark G. Etess Arena, Hard Rock Hotel and Casino</Name>
             <City>Atlantic City</City>
             <State>New Jersey</State>
             <Elasticity>5</Elasticity>
@@ -1349,8 +1349,8 @@
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="Showboat Hotel & Casino">
-            <Name>Prudential Center</Name>
+        <Venue ID="Showboat Hotel and Casino">
+            <Name>Showboat Hotel and Casino</Name>
             <City>Atlantic City</City>
             <State>New Jersey</State>
             <Elasticity>5</Elasticity>
@@ -1370,8 +1370,8 @@
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="Sam's Town Hall & Gambling Hall"> 
-            <Name>Sam's Town Hall & Gambling Hall</Name>
+        <Venue ID="Sam's Town Hall and Gambling Hall"> 
+            <Name>Sam's Town Hall and Gambling Hall</Name>
             <City>Las Vegas</City>
             <State>Nevada</State>
             <Elasticity>2</Elasticity>
@@ -1391,22 +1391,22 @@
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="Thomas & Mack Center"> 
-            <Name>Reno-Sparks Convention Center</Name>
+        <Venue ID="Thomas and Mack Center"> 
+            <Name>Thomas and Mack Center</Name>
             <City>Las Vegas</City>
             <State>Nevada</State>
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-         <Venue ID="Mandalay Bay Resort & Casino"> 
-            <Name>Mandalay Bay Resort & Casino</Name>
+         <Venue ID="Mandalay Bay Resort and Casino"> 
+            <Name>Mandalay Bay Resort and Casino</Name>
             <City>Las Vegas</City>
             <State>Nevada</State>
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-         <Venue ID="Hard Rock Hotel & Casino"> 
-            <Name>Hard Rock Hotel & Casino</Name>
+         <Venue ID="Hard Rock Hotel and Casino"> 
+            <Name>Hard Rock Hotel and Casino</Name>
             <City>Las Vegas</City>
             <State>Nevada</State>
             <Elasticity>2</Elasticity>
@@ -1433,15 +1433,15 @@
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-         <Venue ID="Turning Stone Resort & Casino"> 
-            <Name>Turning Stone Resort & Casino</Name>
+         <Venue ID="Turning Stone Resort and Casino"> 
+            <Name>Turning Stone Resort and Casino</Name>
             <City>Verona</City>
             <State>New York</State>
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-         <Venue ID="AT&T Stadium"> <!--Texas-->
-            <Name>Turning Stone Resort & Casino</Name>
+         <Venue ID="ATT Stadium"> <!--Texas-->
+            <Name>ATT Stadium</Name>
             <City>Arlington</City>
             <State>Texas</State>
             <Elasticity>2</Elasticity>
@@ -1482,7 +1482,5 @@
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-       
-        
     </Venues>
 </FightConfig>

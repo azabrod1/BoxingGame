@@ -462,7 +462,7 @@ namespace FighterRanking
 
         private static double DrawingPower(Fight Outcome, Fighter F)
         {
-            double DrawingPower;
+            double DrawingPower = 0;
 
             double DrawingCoefficient = 0.15;
 
