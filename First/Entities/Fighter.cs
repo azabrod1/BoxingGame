@@ -104,5 +104,9 @@ namespace Main
             return Utility.UsefulString(this);
         }
 
+        internal double fans()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

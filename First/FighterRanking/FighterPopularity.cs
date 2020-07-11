@@ -4,6 +4,8 @@ using Main;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using FightSim;
+using System.Text;
+using System.Xml;
 
 namespace FighterRanking
 {
@@ -50,9 +52,9 @@ namespace FighterRanking
 
                 // todo need to make proper values
 
-                f.Performance["Fans"] = 1000;
-                f.Performance["Casuals"] = 1000;
-                f.Performance["Followers"] = 1000;
+                f.Performance["Fans"] = 20;
+                f.Performance["Casuals"] = 5;
+                f.Performance["Followers"] = 5;
                 f.Performance["Elo"] = 500;
 
             }
@@ -101,6 +103,10 @@ namespace FighterRanking
             Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
             Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
 
+            double CountryCoeff1 = fo.Fighter1().Nationality.PopularityBuff;
+            double CountryCoeff2 = fo.Fighter2().Nationality.PopularityBuff;
+            double WeightCoeff = ((WeightClass)fo.Fighter1().Weight).Popularity;
+
 
             // do the calculation
 
@@ -110,17 +116,17 @@ namespace FighterRanking
                 //winner
 
 
-                double delta = 0.09 * casuals1 * (1 - PWin(fo));
+                double delta = 0.09 * casuals1 * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans1 += delta;
                 casuals1 -= delta;
 
-                delta = 0.4 * fo.Interested * (1 - PWin(fo));
+                delta = 0.4 * fo.Interested * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals1 += delta;
                 //fo.Interested =- delta;
 
-                delta = 0.09 * casuals1 * (1 - PWin(fo));
+                delta = 0.09 * casuals1 * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers1 += delta;
                 casuals1 -= 0.18 * casuals1;
@@ -146,6 +152,8 @@ namespace FighterRanking
             else if (fo.Fighter2() == fo.Winner)
             {
 
+                //loser
+
                 double delta = 0.09 * casuals1 * (PWin(fo));
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans1 -= delta;
@@ -163,17 +171,17 @@ namespace FighterRanking
 
                 //winner
 
-                delta = 0.1 * fans2 * (PWin(fo));
+                delta = 0.1 * fans2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans2 += delta;
                 casuals2 -= -delta;
 
-                delta = 0.1 * casuals2 * (PWin(fo));
+                delta = 0.1 * casuals2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals2 += delta;
                 //fo.Interested =- delta;
 
-                delta = 0.1 * followers2 * (PWin(fo));
+                delta = 0.1 * followers2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers2 += delta;
                 casuals2 -= delta;
@@ -254,6 +262,238 @@ namespace FighterRanking
             return viewers;
 
 
+
+        }
+
+        private static double getBase(Fighter F)
+        {
+            return F.Performance["Followers"] + F.Performance["Fans"];
+        }
+
+        private static double fightAttendance(FightOutcome fo, Fighter A, Fighter B)
+        {
+
+            
+            double elasticity = 0;
+
+
+
+            using (XmlReader reader = XmlReader.Create(@"venues.xml"))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        switch (reader.Name.ToString())
+                        {
+
+                            case "Alabama":
+                                elasticity = -6;
+                                break;
+                            case "Alaska":
+                                elasticity = -6;
+                                break;
+                            case "Arizona":
+                                elasticity = -6;
+                                break;
+                            case "Arkansas":
+                                elasticity = -6;
+                                break;
+                            case "California":
+                                elasticity = -3;
+                                break;
+                            case "Colorado":
+                                elasticity = -6;
+                                break;
+                            case "Connecticut":
+                                elasticity = -6;
+                                break;
+                            case "Delaware":
+                                elasticity = -6;
+                                break;
+                            case "Florida":
+                                elasticity = -5;
+                                break;
+                            case "Georgia":
+                                elasticity = -5;
+                                break;
+                            case "Hawaii":
+                                elasticity = -6;
+                                break;
+                            case "Idaho":
+                                elasticity = -6;
+                                break;
+                            case "Illinois":
+                                elasticity = -6;
+                                break;
+                            case "Indiana":
+                                elasticity = -6;
+                                break;
+                            case "Iowa":
+                                elasticity = -6;
+                                break;
+                            case "Kansas":
+                                elasticity = -6;
+                                break;
+                            case "Kentucky":
+                                elasticity = -6;
+                                break;
+                            case "Louisiana":
+                                elasticity = -6;
+                                break;
+                            case "Maine":
+                                elasticity = -6;
+                                break;
+                            case "Maryland":
+                                elasticity = -6;
+                                break;
+                            case "Massachusetts":
+                                elasticity = -3;
+                                break;
+                            case "Michigan":
+                                elasticity = -6;
+                                break;
+                            case "Minnesota":
+                                elasticity = -6;
+                                break;
+                            case "Mississippi":
+                                elasticity = -6;
+                                break;
+                            case "Missouri":
+                                elasticity = -6;
+                                break;
+                            case "Montana":
+                                elasticity = -6;
+                                break;
+                            case "Nebraska":
+                                elasticity = -6;
+                                break;
+                            case "Nevada":
+                                elasticity = -2;
+                                break;
+                            case "New Hampshire":
+                                elasticity = -6;
+                                break;
+                            case "New Jersey":
+                                elasticity = -3;
+                                break;
+                            case "New Mexico":
+                                elasticity = -6;
+                                break;
+                            case "New York":
+                                elasticity = -3;
+                                break;
+                            case "North Carolina":
+                                elasticity = -6;
+                                break;
+                            case "North Dakota":
+                                elasticity = -6;
+                                break;
+                            case "Ohio":
+                                elasticity = -6;
+                                break;
+                            case "Oklahoma":
+                                elasticity = -6;
+                                break;
+                            case "Oregon":
+                                elasticity = -6;
+                                break;
+                            case "Pennsylvania":
+                                elasticity = -3;
+                                break;
+                            case "Rhode Island":
+                                elasticity = -6;
+                                break;
+                            case "South Carolina":
+                                elasticity = -6;
+                                break;
+                            case "South Dakota":
+                                elasticity = -6;
+                                break;
+                            case "Tennessee":
+                                elasticity = -6;
+                                break;
+                            case "Texas":
+                                elasticity = -6;
+                                break;
+                            case "Utah":
+                                elasticity = -6;
+                                break;
+                            case "Vermont":
+                                elasticity = -6;
+                                break;
+                            case "Virginia":
+                                elasticity = -6;
+                                break;
+                            case "Washington":
+                                elasticity = -6;
+                                break;
+                            case "Washington DC":
+                                elasticity = -6;
+                                break;
+                            case "West Virginia":
+                                elasticity = -6;
+                                break;
+                            case "Wisconsin":
+                                elasticity = -6;
+                                break;
+                            case "Wyoming":
+                                elasticity = -6;
+                                break;
+
+
+
+                        }
+                    }
+                }
+                Console.ReadKey();
+            }
+
+                Random random = new Random();
+            double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
+
+
+            double demand = mathResult * (getBase(A) * (1 - PWin(fo)) + getBase(B) * (1 - PWin(fo)));
+
+            double price = 0; // up to user
+
+            return elasticity * price + demand;
+        }
+
+        private static double DrawingPower(Fight Outcome, Fighter F)
+        {
+            double DrawingPower;
+
+            double DrawingCoefficient = 0.15;
+
+            //DrawingPower = F.fans * DrawingCoefficient;
+
+            return DrawingPower;
+        }
+
+        private static double RegionalPopularities()
+        {
+
+            //hometown
+
+            //nationality
+
+            //knockout wins
+
+            
+            
+            double west;
+
+            double midwest;
+
+            double southwest;
+
+            double southeast;
+
+            double northeast;
+
+            return 0;
+        
 
         }
 
