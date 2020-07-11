@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <FightConfig>
     <WeightClasses>
         <WeightClass id="LightFlyweight">
@@ -103,6 +103,7 @@
             <Name>United States</Name>
             <ShortName>USA</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>13058</Frequency>
         </Country>
         <Country ID="Mexico">
@@ -115,54 +116,64 @@
             <Name>United Kingdom</Name>
             <ShortName>GBR</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>8522</Frequency>
         </Country>
         <Country ID="Russia">
             <Name>Russia</Name>
             <ShortName>RUS</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>3743</Frequency>
         </Country>
         <Country ID="Japan">
             <Name>Japan</Name>
             <ShortName>JPN</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>4678</Frequency>
         </Country>
         <Country ID="Ukraine">
             <Name>Ukraine</Name>
             <ShortName>UKR</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>4545</Frequency>
         </Country>
         <Country ID="Philippines">
             <Name>Philippines</Name>
             <ShortName>PHL</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>3681</Frequency>
         </Country>
         <Country ID="Cuba">
             <Name>Cuba</Name>
             <ShortName>CUB</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>2000</Frequency>
         </Country>
         <Country ID="SouthAfrica">
             <Name>South Africa</Name>
             <ShortName>ZAF</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>2619</Frequency>
+
         </Country>
         <Country ID="Argentina">
             <Name>Argentina</Name>
             <ShortName>ARG</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>2515</Frequency>
         </Country>
         <Country ID="Germany">
             <Name>Germany</Name>
             <ShortName>DEU</ShortName>
             <Popularity>10</Popularity>
+
             <Frequency>2481</Frequency>
         </Country>
         <Country ID="France">
@@ -1222,4 +1233,266 @@
             <Frequency>30</Frequency>
         </Country>
     </Countries>
+    <Venues>
+        <Venue ID="The Forum"> <!--California-->
+            <Name>The Forum</Name>
+            <City>Los Angeles</City>
+            <State>California</State>
+            <Elasticity>3</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Staples Center">
+            <Name>Staples Center</Name>
+            <City>Los Angeles</City>
+            <State>California</State>
+            <Elasticity>3</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Microsoft Theater">
+            <Name>Microsoft Theater</Name>
+            <City>Los Angeles</City>
+            <State>California</State>
+            <Elasticity>4</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="The Hanger">
+            <Name>The Hanger</Name>
+            <City>Costa Mesa</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Honda Center">
+            <Name>Honda Center</Name>
+            <City>Anaheim</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="DoubleTree Hotel">
+            <Name>DoubleTree Hotel</Name>
+            <City>Los Angeles</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Fantasy Springs Casino">
+            <Name>The Forum</Name>
+            <City>Los Angeles</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="The Avalon">
+            <Name>The Avalon</Name>
+            <City>Hollywood</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Dignity Health Sports Park">
+            <Name>Dignity Health Sports Park</Name>
+            <City>Carson</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="The Avalon">
+            <Name>The Avalon</Name>
+            <City>Hollywood</City>
+            <State>California</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="American Airlines Arena"> <!--Florida-->
+            <Name>American Airlines Arena</Name>
+            <City>Miama</City>
+            <State>Florida</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="State Farm Arena"> <!--Georgia-->
+            <Name>State Farm Arena</Name>
+            <City>Atlanta</City>
+            <State>Georgia</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Shrine Temple">
+            <Name>Shrine Temple</Name>
+            <City>Macon</City>
+            <State>Georgia</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="WinnaVegas Casino and Resort"> <!--Iowa-->
+            <Name>WinnaVegas Casino and Resort</Name>
+            <City>Sloan</City>
+            <State>Iowa</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="TD Garden"> <!--Massachusetts-->
+            <Name>TD Garden</Name>
+            <City>Boston</City>
+            <State>Massachusetts</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Lowell Memorial Auditorium">
+            <Name>Lowell Memorial Auditorium</Name>
+            <City>Lowell</City>
+            <State>Massachusetts</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Mark G. Etess Arena, Hard Rock Hotel and Casino"> <!--New Jersey-->
+            <Name>Mark G. Etess Arena, Hard Rock Hotel and Casino</Name>
+            <City>Atlantic City</City>
+            <State>New Jersey</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Prudential Center">
+            <Name>Prudential Center</Name>
+            <City>Newark</City>
+            <State>New Jersey</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Showboat Hotel and Casino">
+            <Name>Showboat Hotel and Casino</Name>
+            <City>Atlantic City</City>
+            <State>New Jersey</State>
+            <Elasticity>5</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="MGM Grand Garden Arena"> <!--Las Vegas-->
+            <Name>MGM Grand Garden Arena</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="T-Mobile Arena"> 
+            <Name>T-Mobile Arena</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Sam's Town Hall and Gambling Hall"> 
+            <Name>Sam's Town Hall and Gambling Hall</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Cosmopolitan of Las Vegas"> 
+            <Name>Cosmopolitan of Las Vegas</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Reno-Sparks Convention Center"> 
+            <Name>Reno-Sparks Convention Center</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Thomas and Mack Center"> 
+            <Name>Thomas and Mack Center</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Mandalay Bay Resort and Casino"> 
+            <Name>Mandalay Bay Resort and Casino</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Hard Rock Hotel and Casino"> 
+            <Name>Hard Rock Hotel and Casino</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Rio All Suite Hotel and Casino"> 
+            <Name>Rio All Suite Hotel and Casino</Name>
+            <City>Las Vegas</City>
+            <State>Nevada</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Madison Square Garden"> <!--New York-->
+            <Name>Madison Square Garden</Name>
+            <City>New York City</City>
+            <State>New York</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Barclays Center">
+            <Name>Barclays Center</Name>
+            <City>Brooklyn</City>
+            <State>New York</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="Turning Stone Resort and Casino"> 
+            <Name>Turning Stone Resort and Casino</Name>
+            <City>Verona</City>
+            <State>New York</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+         <Venue ID="ATT Stadium"> <!--Texas-->
+            <Name>ATT Stadium</Name>
+            <City>Arlington</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Ford Center at The Star"> 
+            <Name>Ford Center at The Star</Name>
+            <City>Frisco</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Alamodome"> 
+            <Name>Alamodome</Name>
+            <City>San Antonio</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="NRG Arena"> 
+            <Name>NRG Arena</Name>
+            <City>Houston</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Verizon Theater"> 
+            <Name>Verizon Theater</Name>
+            <City>Grand Prairie</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+        <Venue ID="Toyota Center"> 
+            <Name>Toyota Center</Name>
+            <City>Houston</City>
+            <State>Texas</State>
+            <Elasticity>2</Elasticity>
+            <Capacity>30</Capacity>
+           </Venue>
+    </Venues>
+
 </FightConfig>

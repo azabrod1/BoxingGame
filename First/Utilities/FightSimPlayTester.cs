@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boxing.FighterRating;
+using FighterRanking;
 using FightSim;
 using log4net;
 using Main;
@@ -24,6 +25,8 @@ namespace Utilities
         {
             this.Fighters = new FighterCache();
             this.Rating = new EloFighterRating();
+
+            
         }
 
         public void SimFights(int numFights)
@@ -42,6 +45,7 @@ namespace Utilities
                     outcome.Fighters[0].UpdateRecord(outcome);
                     outcome.Fighters[1].UpdateRecord(outcome);
                     Rating.CalculateRatingChange(outcome);
+                    FighterPopularity.UpdatePopularity(outcome);
                 }
 
             }

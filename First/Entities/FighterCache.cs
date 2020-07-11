@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using FighterRanking;
 
 namespace Main
 {
@@ -53,14 +54,14 @@ namespace Main
 
             int totalSkillPoints = RandomSkillLevel() * ScaledCombatTraits.Count();
 
-            foreach(string property in ScaledCombatTraits)
+            foreach (string property in ScaledCombatTraits)
                 hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, 0, null);
 
             while (totalSkillPoints > 0)
             {
                 int toUpgrade = MathUtils.RangeUniform(0, ScaledCombatTraits.Count());
                 var property = hungryYoungLion.GetType().GetProperty(ScaledCombatTraits[toUpgrade]);
-                int currentSkill = (int) property.GetValue(hungryYoungLion);
+                int currentSkill = (int)property.GetValue(hungryYoungLion);
                 if (currentSkill < 100)
                 {
                     property.SetValue(hungryYoungLion, currentSkill + 1, null);
@@ -72,7 +73,9 @@ namespace Main
                 ConfigurationManager.AppSettings["UniformFighterCombatTraits"].Split(",");
 
             foreach (string property in UniformCombatTraits)
-                hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, MathUtils.RangeUniform(0,100), null);
+                hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, MathUtils.RangeUniform(0, 100), null);
+
+            FighterPopularity.UpdatePopularity(hungryYoungLion);
 
             return hungryYoungLion;
         }
@@ -97,7 +100,7 @@ namespace Main
             Fighter fighter = null;
             bool preferCommonNames = Cache.Count < 10000; //Ensure common names proportionally represented
 
-            for(int attempt = 0; attempt < 1000 && fighter == null; ++attempt)
+            for (int attempt = 0; attempt < 1000 && fighter == null; ++attempt)
             {
                 string name = Utility.GetRandomFirstName(!preferCommonNames) + " " + Utility.GetRandomLastName(!preferCommonNames);
                 fighter = NewFighter(name);
@@ -135,14 +138,14 @@ namespace Main
             double sum = 0;
             int lo = -1;
             int hi = -1;
-            for(int i = 0; sum < target; ++i)
+            for (int i = 0; sum < target; ++i)
             {
                 lo = hi + 1;
                 hi = SKILL_DISTRIBUTION[i].hi;
                 sum += SKILL_DISTRIBUTION[i].numFighters;
             }
 
-            return MathUtils.RangeUniform(lo, hi); 
+            return MathUtils.RangeUniform(lo, hi);
         }
 
         //According to the expected size of the weight class
@@ -166,4 +169,3 @@ namespace Main
 
     }
 }
-

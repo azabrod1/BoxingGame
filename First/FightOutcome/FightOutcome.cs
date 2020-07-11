@@ -17,6 +17,7 @@ namespace FightSim
 
     public class FightOutcome
     {
+        public double Interested { get; set; }
         public readonly int TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
         public readonly MethodOfResult Method;
         public readonly Fighter[] Fighters;

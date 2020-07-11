@@ -31,7 +31,7 @@ namespace Main
         public FighterRecord()
         {
             Wins = Losses = KOs = Draws = 0;
-            Rank = PreviousRank = 0;
+           Rank = PreviousRank = 0;
         }
 
         public override string ToString()

@@ -1,3 +1,6 @@
+
+using System.Collections.Generic;
+
 using System;
 using System.ComponentModel;
 using System.Text;
@@ -5,12 +8,12 @@ using FightSim;
 
 namespace Main
 {
-    [ Serializable]
+    [Serializable]
     public class Fighter
     {
         public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
-        public FighterRecord Record { get; set; } 
+        public FighterRecord Record { get; set; }
 
         //Combat Attributes
         public int Accuracy { get; set; } = 50;
@@ -25,10 +28,16 @@ namespace Main
 
         //Physical/Personal Attributes
         public int Reach { get; set; } = 72;
+
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
         public int Height { get; set; }
         public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
         public string _Nationality = "United States";
+
+
+
+        public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
+        public int Belts;
 
 
 
@@ -59,7 +68,7 @@ namespace Main
         {
             double skill = 0;
             skill += MathUtils.WeightedAverage(Accuracy, 11,
-                                               Defense,  11,
+                                               Defense, 11,
                                                Durability, 7,
                                                FootWork, 7,
                                                RingGen, 7,
@@ -98,7 +107,9 @@ namespace Main
             return Utility.UsefulString(this);
         }
 
+        internal double fans()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-
-
