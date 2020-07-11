@@ -1277,7 +1277,7 @@
             <Capacity>30</Capacity>
            </Venue>
          <Venue ID="Fantasy Springs Casino">
-            <Name>The Forum</Name>
+            <Name>Fantasy Springs Casino</Name>
             <City>Los Angeles</City>
             <State>California</State>
             <Elasticity>5</Elasticity>
@@ -1297,16 +1297,9 @@
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
            </Venue>
-        <Venue ID="The Avalon">
-            <Name>The Avalon</Name>
-            <City>Hollywood</City>
-            <State>California</State>
-            <Elasticity>5</Elasticity>
-            <Capacity>30</Capacity>
-           </Venue>
         <Venue ID="American Airlines Arena"> <!--Florida-->
             <Name>American Airlines Arena</Name>
-            <City>Miama</City>
+            <City>Miami</City>
             <State>Florida</State>
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
