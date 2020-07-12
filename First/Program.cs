@@ -27,18 +27,10 @@ namespace Main
             //Console.WriteLine("****************************************\n\n");
 
             //Alex();
-            //  Vlad(); //TODO Uncomment and comment out mine
+          //  Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
-            var venues = Venue.AllVenues();
 
-            Console.WriteLine("In main");
-
-            foreach (var s in venues)
-            {
-                Console.WriteLine(s);
-            }
-
-            //Anya();
+               Anya();
 
             //  Json();
             // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -48,7 +40,7 @@ namespace Main
 
             // WeightClass w = 147;
 
-          
+
         }
 
 

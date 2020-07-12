@@ -270,15 +270,10 @@ namespace FighterRanking
             return F.Performance["Followers"] + F.Performance["Fans"];
         }
 
-        private static double FightAttendance(Fight fight, Venue v, double ticketPrice)
+        private static double fightAttendance(FightOutcome fo, Fighter A, Fighter B)
         {
 
-            Fighter A = fight.Fighter1();
-            Fighter B = fight.Fighter2();
-            FightOutcome fo = fight.Outcome;
-
-
-
+            
             double elasticity = 0;
 
 
