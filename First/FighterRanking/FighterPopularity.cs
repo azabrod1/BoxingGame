@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using FightSim;
 using System.Text;
 using System.Xml;
+using Entities;
 
 namespace FighterRanking
 {
@@ -270,15 +271,19 @@ namespace FighterRanking
             return F.Performance["Followers"] + F.Performance["Fans"];
         }
 
-        private static double fightAttendance(FightOutcome fo, Fighter A, Fighter B)
+        private static double fightAttendance(Fight fight, Venue venue, double ticketPrice)
         {
 
-            
-            double elasticity = 0;
+            Fighter A = fight.Fighter1();
+            Fighter B = fight.Fighter2();
+
+            double elasticity = venue.Elasticity;
+
+            FightOutcome fo = fight.Outcome;
 
 
 
-            using (XmlReader reader = XmlReader.Create(@"venues.xml"))
+            /*using (XmlReader reader = XmlReader.Create(@"venues.xml"))
             {
                 while (reader.Read())
                 {
@@ -447,55 +452,42 @@ namespace FighterRanking
                     }
                 }
                 Console.ReadKey();
-            }
+            }*/
 
                 Random random = new Random();
             double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
 
-
+            // maybe can replace mathResult with two drawing coefficients used respectively on each individual fan-base
             double demand = mathResult * (getBase(A) * (1 - PWin(fo)) + getBase(B) * (1 - PWin(fo)));
 
-            double price = 0; // up to user
+            double price = 0; // average ticket price, up to user
 
-            return elasticity * price + demand;
+            double attendance = -elasticity * price + demand;
+            if (attendance > venue.Capacity) {
+                attendance = venue.Capacity;
+            }
+
+            double revenue = attendance * price;
+            Console.WriteLine(attendance + " tickets were sold of " + venue.Capacity + " available at an average price of " + price + " and for revenue of " + revenue + ".");
+
+            // need to add hometown, nationality effects from both fighters + drawing power
+            return attendance;
         }
 
         private static double DrawingPower(Fight Outcome, Fighter F)
         {
             double DrawingPower = 0;
 
-            double DrawingCoefficient = 0.15;
+            double DrawingCoefficient = 0.05;
 
             //DrawingPower = F.fans * DrawingCoefficient;
+
+            // fighter drawing power should help determine the % of fans of a fighter that GO to fights. could be based on excitement (workrate/KO's) in ring + randomness. 
 
             return DrawingPower;
         }
 
-        private static double RegionalPopularities()
-        {
-
-            //hometown
-
-            //nationality
-
-            //knockout wins
-
-            
-            
-            double west;
-
-            double midwest;
-
-            double southwest;
-
-            double southeast;
-
-            double northeast;
-
-            return 0;
         
-
-        }
 
 
         private static double PWin(FightOutcome fo)
