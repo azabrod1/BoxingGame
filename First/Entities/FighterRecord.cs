@@ -28,11 +28,10 @@ namespace Main
         //    set { Rank = value; }
         //}
 
-        //public FighterRecord()
-        //{
-        //    Wins = Losses = KOs = Draws = 0;
-        //   Rank = PreviousRank = 0;
-        //}
+        public FighterRecord()
+        {
+            Wins = Losses = KOs = Draws = 0;
+        }
 
         public override string ToString()
         {

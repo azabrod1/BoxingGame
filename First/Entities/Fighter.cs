@@ -14,6 +14,8 @@ namespace Main
         public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
         public FighterRecord Record { get; set; }
+        
+        
 
         //Combat Attributes
         public int Accuracy { get; set; } = 50;
@@ -32,7 +34,10 @@ namespace Main
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
         public int Height { get; set; }
         public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
-        public string _Nationality = "United States";
+        private string _Nationality = "United States";
+        public City HomeTown { get; set; } = "New York";
+
+        
 
         public Dictionary<string, string> PersonalInfo { get; set; } = new Dictionary<string, string>();
         public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();

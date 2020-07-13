@@ -109,16 +109,26 @@ namespace Main
 
         
 
-        public static City GetRandomCity(string country)
+        public static City RandomCity(string country)
         {
 
 
             List<City> cities;
 
-            if (!CountryCities.TryGetValue(country, out cities))
-                return Get("Zurich");
-            if (cities == null)
-                return Get("Zurich");
+            if (!CountryCities.TryGetValue(country, out cities) || cities == null)
+            {
+                //todo just create a fake city
+                City newCity = new City("Anytown", 0, 0, country, country.Substring(0, 3), "", 1000);
+                AllCities.Add(newCity.Name, newCity);
+                cities = new List<City>();
+                cities.Add(newCity);
+                CountryCities[country] = cities;
+                CountryPopulation[country] = 1000;
+
+                return newCity;
+            }
+                
+            
 
             double random = MathUtils.RangeUniform(0.0, CountryPopulation[country]);
             double pop = 0;

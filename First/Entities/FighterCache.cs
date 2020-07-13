@@ -51,6 +51,7 @@ namespace Main
 
             hungryYoungLion.Weight = weight;
             hungryYoungLion.Nationality = Country.RandomNationality().Name;
+            hungryYoungLion.HomeTown = City.RandomCity(hungryYoungLion.Nationality.Name);
 
             int totalSkillPoints = RandomSkillLevel() * ScaledCombatTraits.Count();
 
