@@ -118,7 +118,7 @@ namespace Main
             if (!CountryCities.TryGetValue(country, out cities) || cities == null)
             {
                 //todo just create a fake city
-                City newCity = new City("Anytown", 0, 0, country, country.Substring(0, 3), "", 1000);
+                City newCity = new City("Anytown_" +country , 0, 0, country, country.Substring(0, 3), "", 1000);
                 AllCities.Add(newCity.Name, newCity);
                 cities = new List<City>();
                 cities.Add(newCity);
@@ -135,6 +135,7 @@ namespace Main
             int idx = 0;
             while (random > pop)
             {
+                
                 pop += cities[idx++].Population;
             }
 
