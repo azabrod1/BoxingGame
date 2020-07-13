@@ -68,7 +68,7 @@ namespace Main
                     string _countryCode = v[6];
 
                     string _muni = v[7];
-                    double _pop = v[9].Equals("")?0.0: double.Parse(v[9]);
+                    double _pop = v[9].Equals("")?1000.0: double.Parse(v[9]);
                     _city = new City(_name,_long, _lat ,_country, _countryCode, _muni, _pop);
 
                     //only add a city if it does not exist, or if existing city has less people
