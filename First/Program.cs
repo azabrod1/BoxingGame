@@ -27,10 +27,11 @@ namespace Main
             //Console.WriteLine("****************************************\n\n");
 
             //Alex();
-          //  Vlad(); //TODO Uncomment and comment out mine
+            Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
+            
 
-               Anya();
+            //Anya();
 
             //  Json();
             // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -40,7 +41,7 @@ namespace Main
 
             // WeightClass w = 147;
 
-
+          
         }
 
 
@@ -58,8 +59,19 @@ namespace Main
 
         static void Vlad()
         {
+            Country country = Country.RandomNationality();
+            City city = City.RandomCity(country.Name);
+            Console.WriteLine($"Random town in {country.Name}: {city.Name} {city.State}");
 
-            
+            Console.WriteLine($"Distance between London and {city.Name} is {City.GetDistance("London", city.Name):0} km");
+
+            var cities = City.GetCities("United States");
+
+            Console.WriteLine($"United States has {cities.Count} cities");
+
+            Venue v = Venue.Get("Madison Square Garden");
+
+
         }
 
         static void AlexConc()

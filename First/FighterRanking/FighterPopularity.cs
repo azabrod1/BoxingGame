@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using FightSim;
 using System.Text;
 using System.Xml;
-using Entities;
 
 namespace FighterRanking
 {
@@ -272,14 +271,15 @@ namespace FighterRanking
         }
 
         private static double fightAttendance(Fight fight, Venue venue, double ticketPrice)
+
         {
 
             Fighter A = fight.Fighter1();
             Fighter B = fight.Fighter2();
+            FightOutcome fo = fight.Outcome;
 
             double elasticity = venue.Elasticity;
 
-            FightOutcome fo = fight.Outcome;
 
 
 

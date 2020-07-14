@@ -16,22 +16,20 @@ namespace Main
         public double Elasticity { get; }
         public double Capacity { get; }
         public string City { get; }
-        public string State { get; }
+        public string State { get => ((City)this.City).State; }
 
         public static Dictionary<string, Venue> Venues { get; internal set; }
-        //public static double VENUE_FREQ_SUM;
 
-        public Venue(string name, double elasticity, double capacity, string city, string state)
+        public Venue(string name, double elasticity, double capacity, string city)
         {
 
             this.Name = name;
             this.Elasticity = elasticity;
             this.Capacity = capacity;
             this.City = city;
-            this.State = state;
+            //this.State = state;
             //this.ShortName = displayName;
 
-            
         }
 
         static Venue()
@@ -45,7 +43,6 @@ namespace Main
         private static Dictionary<string, Venue> LoadVenues()
 
         {
-
 
             var assembly = Assembly.GetExecutingAssembly();
             string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith("FightConfig.xml"));
@@ -65,15 +62,22 @@ namespace Main
                                                           Name = v.Element("Name").Value,
                                                           Elasticity = double.Parse(v.Element("Elasticity").Value),
                                                           Capacity = double.Parse(v.Element("Capacity").Value),
-                                                          City = v.Element("City").Value,
-                                                          State = v.Element("State").Value
+                                                          City = v.Element("City").Value
                                                       })
                                   .ToDictionary(
                                         structure => structure.Name,
                                         structure => new Venue(structure.Name, structure.Elasticity, structure.Capacity,
-                                                structure.City, structure.State)
+                                                structure.City)
                                   );
             //Console.WriteLine("Number of venues = " + _venues.Count);
+
+            foreach (Venue v in _venues.Values)
+            {
+                City c = v.City;
+                Console.WriteLine($"{v.Name}, {c.Name} {c.State}");
+
+
+            }
 
             return _venues;
         }
@@ -99,6 +103,7 @@ namespace Main
 
             return Venues[venueName];
         }
+
 
 
         public static List<Venue> AllVenues()

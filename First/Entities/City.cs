@@ -181,6 +181,69 @@ namespace Main
 
         }
 
+
+        public static double LocationBuff(Fighter f, Venue v)
+        {
+            City vcity = (City)v.City;
+            double buff = 1.0;
+
+            double distance = GetDistance(f.HomeTown.Name, v.City);
+
+            if (distance <= 120.0)
+                buff = 1.2;
+
+            if (PreferredCity(vcity, f.Nationality))
+                buff *= 1.2;
+
+
+            
+            return buff;
+
+        }
+
+        public static bool PreferredCity(City city, Country country)
+        {
+            string cname = country.Name;
+
+
+            if (city.Country == cname)
+                return true;
+
+            // currently only supported for the US
+            if (city.Country != "United States")
+                return false;
+
+            string state = city.State;
+
+            // by the US state
+            switch (state)
+            {
+                case "New York":
+                    return ((cname == "Puerto Rico") || (cname == "Poland"));
+                        
+                case "Nevada":
+                case "Texas":
+                case "California":
+                case "Arizona":
+                    return (cname == "Mexico");
+                case "Illinois":
+                    return (cname == "Poland");
+                case "Florida":
+                    return (cname == "Cuba");
+                case "Pennsylvania":
+                    return (cname == "Ireland");
+                default:
+                    return false;
+
+            }
+
+            
+
+
+
+
+        }
+
         private static double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
         {
             var d1 = latitude * (Math.PI / 180.0);

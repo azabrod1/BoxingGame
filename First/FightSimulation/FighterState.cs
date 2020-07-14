@@ -166,7 +166,8 @@ namespace FightSim
             return Self.JabPercent;
         }
 
-        public string Name()
+        public string
+            Name()
         {
             return Self.Name;
         }

@@ -11,6 +11,11 @@ namespace Main
         public Judge[] Judges;
         public FightOutcome Outcome;
 
+        public Fighter FighterRed{ get=> fighters[0];}
+        public Fighter FighterBlue { get => fighters[1]; }
+
+        public Venue Venue { get; set; } 
+
         public Fight()
         {
         }
@@ -21,7 +26,7 @@ namespace Main
             this.RoundsScheduled = roundsScheduled;
             this.Judges = new Judge[] { Judge.RandomJudge(), Judge.RandomJudge(), Judge.RandomJudge() };
         }  
-
+        
         public Fighter Fighter1()
         {
             return fighters[0];
@@ -31,5 +36,6 @@ namespace Main
         {
             return fighters[1];
         }
+        
     }
 }

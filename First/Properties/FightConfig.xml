@@ -1320,7 +1320,7 @@
            </Venue>
         <Venue ID="WinnaVegas Casino and Resort"> <!--Iowa-->
             <Name>WinnaVegas Casino and Resort</Name>
-            <City>Sloan</City>
+            <City>Sioux City</City>
             <State>Iowa</State>
             <Elasticity>5</Elasticity>
             <Capacity>30</Capacity>
@@ -1425,7 +1425,7 @@
            </Venue>
         <Venue ID="Madison Square Garden"> <!--New York-->
             <Name>Madison Square Garden</Name>
-            <City>New York City</City>
+            <City>New York</City>
             <State>New York</State>
             <Elasticity>2</Elasticity>
             <Capacity>30</Capacity>
