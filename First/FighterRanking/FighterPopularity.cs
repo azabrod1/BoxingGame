@@ -99,6 +99,8 @@ namespace FighterRanking
             double followers1 = fo.Fighter1().Performance["Followers"];
             double followers2 = fo.Fighter2().Performance["Followers"];
 
+            double drawingPower1 = fo.Fighter1().Performance["Drawing Power"];
+            double drawingPower2 = fo.Fighter1().Performance["Drawing Power"];
 
             Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
             Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
@@ -454,16 +456,35 @@ namespace FighterRanking
                 Console.ReadKey();
             }*/
 
-                Random random = new Random();
+            Random random = new Random();
             double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
 
             // maybe can replace mathResult with two drawing coefficients used respectively on each individual fan-base
-            double demand = mathResult * (getBase(A) * (1 - PWin(fo)) + getBase(B) * (1 - PWin(fo)));
+
+
+            double locationBuff1 = City.LocationBuff(A, venue);
+            double locationBuff2 = City.LocationBuff(B, venue);
+
+
+            double demand = mathResult * (getBase(A) * fo.Fighter1().Performance["Drawing Power"] * (1 - PWin(fo)) * locationBuff1 + getBase(B) * fo.Fighter2().Performance["Drawing Power"] * (1 - PWin(fo)) * locationBuff2);
+
+            // elasticity also gets better if your hometown is near where you're fighting or if you have a conducive nationality to where you're fighting
+            // puerto ricans sell well in new york
+            // mexicans sell well in vegas, texas, california, arizona
+            // polish people sell well in new york, florida
+            // ukrainians sell well in chicago
+            // hispanics and americans and latinos and puerto ricans sell well everywhere really
+            // cubans sell well in florida
+            // pennsylvania
+            // irish fighters
 
             double price = 0; // average ticket price, up to user
 
+            
+
             double attendance = -elasticity * price + demand;
-            if (attendance > venue.Capacity) {
+            if (attendance > venue.Capacity)
+            {
                 attendance = venue.Capacity;
             }
 
@@ -474,20 +495,39 @@ namespace FighterRanking
             return attendance;
         }
 
-        private static double DrawingPower(Fight Outcome, Fighter F)
+        private static void AdjustDrawingPower(FightOutcome fo)
         {
-            double DrawingPower = 0;
+            Random random = new Random();
+            double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
+            if (fo.IsKO())
+            {
+                mathResult = mathResult * 3;
+            }
 
-            double DrawingCoefficient = 0.05;
+            if (fo.Fighter1() == fo.Winner)
+            {
+                fo.Fighter1().Performance["Drawing Power"] += fo.Fighter1().Performance["Drawing Power"] * mathResult * (1 - PWin(fo));
+
+                fo.Fighter2().Performance["Drawing Power"] -= fo.Fighter2().Performance["Drawing Power"] * mathResult * (PWin(fo));
+            } else if (fo.Fighter2() == fo.Winner)
+            {
+                fo.Fighter1().Performance["Drawing Power"] -= fo.Fighter1().Performance["Drawing Power"] * mathResult * (1 - PWin(fo));
+
+                fo.Fighter2().Performance["Drawing Power"] += fo.Fighter2().Performance["Drawing Power"] * mathResult * (PWin(fo));
+            }
+
+            
+
+            
+
 
             //DrawingPower = F.fans * DrawingCoefficient;
 
             // fighter drawing power should help determine the % of fans of a fighter that GO to fights. could be based on excitement (workrate/KO's) in ring + randomness. 
 
-            return DrawingPower;
         }
 
-        
+
 
 
         private static double PWin(FightOutcome fo)
@@ -497,11 +537,10 @@ namespace FighterRanking
         }
 
 
-        
+
 
 
 
     }
-
 
 }
