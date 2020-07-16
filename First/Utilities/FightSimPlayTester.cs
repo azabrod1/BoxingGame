@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boxing.FighterRating;
-using FighterRanking;
+using Main;
 using FightSim;
 using log4net;
-using Main;
 
 namespace Utilities
 {
@@ -40,12 +39,13 @@ namespace Utilities
                     schedule.AddRange(ScheduleFights(wc));
 
                 var outcomes = FightSim.SimulateManyFights(schedule);
-                foreach (var outcome in outcomes)
+                foreach (var fight in schedule)
                 {
-                    outcome.Fighters[0].UpdateRecord(outcome);
-                    outcome.Fighters[1].UpdateRecord(outcome);
-                    Rating.CalculateRatingChange(outcome);
-                    FighterPopularity.UpdatePopularity(outcome);
+                    fight.FighterRed.UpdateRecord(fight.Outcome);
+                    fight.FighterBlue.UpdateRecord(fight.Outcome);
+
+                    Rating.CalculateRatingChange(fight.Outcome);
+                    FighterPopularity.UpdatePopularity(fight);
                 }
 
             }

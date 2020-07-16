@@ -17,7 +17,6 @@ namespace FightSim
 
     public class FightOutcome
     {
-        public double Interested { get; set; }
         public readonly int TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
         public readonly MethodOfResult Method;
         public readonly Fighter[] Fighters;
@@ -26,7 +25,6 @@ namespace FightSim
 
         public readonly int[,] Scorecards = new int[3, 2];
 
-        public double Viewership { get; set; } //todo this should prob be on Fight object eventually
 
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fighter[] fighters)
         {

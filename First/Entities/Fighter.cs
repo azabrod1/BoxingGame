@@ -40,7 +40,7 @@ namespace Main
         
 
         public Dictionary<string, string> PersonalInfo { get; set; } = new Dictionary<string, string>();
-        public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
+        public Dictionary<FPType, double> Performance { get; set; } = new Dictionary<FPType, double>();
         public int Belts;
 
 

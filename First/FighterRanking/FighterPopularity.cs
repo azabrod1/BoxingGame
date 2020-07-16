@@ -6,22 +6,26 @@ using System.Collections.Generic;
 using FightSim;
 using System.Text;
 using System.Xml;
+ 
 
-namespace FighterRanking
+namespace Main
 {
 
+    public enum FPType 
+    {
+        ACTIVE,
+        FANS,
+        CASUALS,
+        FOLLOWERS,
+        INTERESTED,
+        ELO,
+        DRAWING_POWER
+    }
 
     public static class FighterPopularity
     {
         // simple dictionaries to hold country and weight popularity coefficients
         // #todo: integrate with the rest of the program and persist the coefficients in XLM
-
-        //private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
-
-        //private static Dictionary<int, double> WeightCoefficient = new Dictionary<int, double>() { { 108, 1.0 }, { 147, 1.1 }, { 154, 2.0 } };
-
-        //private static Dictionary<double, List<int>> WeightCoefficient = new Dictionary<int, double>() { { 1.0,  }, { 147, 1.1 }, { 154, 2.0 } };
-
 
         // PUBLIC INTERFACE
 
@@ -43,27 +47,28 @@ namespace FighterRanking
             double followers;
 
 
-            if (!f.Performance.ContainsKey("Active"))
+            if (!f.Performance.ContainsKey(FPType.ACTIVE))
             {
                 // first time the method is called for a new fighter
                 // need to populate initial values
                 //(Active is an indicator the fighter is initialized)
-                f.Performance["Active"] = 1;
+                f.Performance[FPType.ACTIVE] = 1;
 
                 // todo need to make proper values
 
-                f.Performance["Fans"] = 20;
-                f.Performance["Casuals"] = 5;
-                f.Performance["Followers"] = 5;
-                f.Performance["Elo"] = 500;
+                f.Performance[FPType.FANS] = 20;
+                f.Performance[FPType.CASUALS] = 5;
+                f.Performance[FPType.FOLLOWERS] = 5;
+                f.Performance[FPType.ELO] = 500;
+                f.Performance[FPType.DRAWING_POWER] = 100;
 
             }
             else
             {
 
-                fans = f.Performance["Fans"];
-                casuals = f.Performance["Casuals"];
-                followers = f.Performance["followers"];
+                fans = f.Performance[FPType.FANS];
+                casuals = f.Performance[FPType.CASUALS];
+                followers = f.Performance[FPType.FOLLOWERS];
 
                 // do the calculatiuon
                 if (fans == 0)
@@ -74,7 +79,7 @@ namespace FighterRanking
                 // end of calculation
 
 
-                f.Performance["Fans"] = fans;
+                f.Performance[FPType.FANS] = fans;
             }
         }
 
@@ -87,125 +92,138 @@ namespace FighterRanking
         //  result of a private FightViewers(FighterOutcome) method. No need to 
         //  to call FightViewers outside of this class.
         /// </summary>
-        public static void UpdatePopularity(FightOutcome fo)
+        public static void UpdatePopularity(Fight f)
         {
 
-            double fans1 = fo.Fighter1().Performance["Fans"];
-            double fans2 = fo.Fighter2().Performance["Fans"];
+            Fighter A = f.FighterRed;
+            Fighter B = f.FighterBlue;
 
-            double casuals1 = fo.Fighter1().Performance["Casuals"];
-            double casuals2 = fo.Fighter2().Performance["Casuals"];
+            // in case popularity has never been set up
+            // set the initial values
+            // (should not happen)
+            if (!A.Performance.ContainsKey(FPType.ACTIVE)){
+                UpdatePopularity(A);
+            }
+            if (!B.Performance.ContainsKey(FPType.ACTIVE)){
+                UpdatePopularity(B);
+            }
 
-            double followers1 = fo.Fighter1().Performance["Followers"];
-            double followers2 = fo.Fighter2().Performance["Followers"];
 
-            double drawingPower1 = fo.Fighter1().Performance["Drawing Power"];
-            double drawingPower2 = fo.Fighter1().Performance["Drawing Power"];
 
-            Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
-            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()));
+            double fans1 = A.Performance[FPType.FANS];
+            double fans2 = B.Performance[FPType.FANS];
 
-            double CountryCoeff1 = fo.Fighter1().Nationality.PopularityBuff;
-            double CountryCoeff2 = fo.Fighter2().Nationality.PopularityBuff;
-            double WeightCoeff = ((WeightClass)fo.Fighter1().Weight).Popularity;
+            double casuals1 = A.Performance[FPType.CASUALS];
+            double casuals2 = B.Performance[FPType.CASUALS];
+
+            double followers1 = A.Performance[FPType.FOLLOWERS];
+            double followers2 = B.Performance[FPType.FOLLOWERS];
+
+            double drawingPower1 = A.Performance[FPType.DRAWING_POWER];
+            double drawingPower2 = B.Performance[FPType.DRAWING_POWER];
+
+            Console.WriteLine("Fighter1: " + ToString(A));
+            Console.WriteLine("Fighter2: " + ToString(B));
+
+            double CountryCoeff1 = A.Nationality.PopularityBuff;
+            double CountryCoeff2 = B.Nationality.PopularityBuff;
+            double WeightCoeff = ((WeightClass)A.Weight).Popularity;
 
 
             // do the calculation
 
-            if (fo.Fighter1() == fo.Winner)
+            if (A == f.Outcome.Winner)
             {
-
                 //winner
-
-
-                double delta = 0.09 * casuals1 * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
+                double delta = 0.09 * casuals1 * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans1 += delta;
                 casuals1 -= delta;
 
-                delta = 0.4 * fo.Interested * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
+                delta = 0.4 * f.Interested * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals1 += delta;
                 //fo.Interested =- delta;
 
-                delta = 0.09 * casuals1 * (1 - PWin(fo)) * WeightCoeff * CountryCoeff1;
+                delta = 0.09 * casuals1 * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers1 += delta;
                 casuals1 -= 0.18 * casuals1;
 
                 //loser
 
-                delta = 0.1 * fans2 * (1 - PWin(fo));
+                delta = 0.1 * fans2 * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans2 -= delta;
                 casuals2 += delta;
 
-                delta = 0.1 * casuals2 * (1 - PWin(fo));
+                delta = 0.1 * casuals2 * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals2 -= delta;
                 //fo.Interested = +delta;
 
-                delta = 0.1 * followers2 * (1 - PWin(fo));
+                delta = 0.1 * followers2 * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers2 -= delta;
                 casuals2 += delta;
 
             }
-            else if (fo.Fighter2() == fo.Winner)
+            else if (B == f.Outcome.Winner)
             {
 
                 //loser
 
-                double delta = 0.09 * casuals1 * (PWin(fo));
+                double delta = 0.09 * casuals1 * (PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans1 -= delta;
                 casuals1 += delta;
 
-                delta = 0.4 * fo.Interested * (PWin(fo));
+                delta = 0.4 * f.Interested * (PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals1 -= delta;
                 //fo.Interested =+ delta;
 
-                delta = 0.09 * casuals1 * (PWin(fo));
+                delta = 0.09 * casuals1 * (PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers1 -= delta;
                 casuals1 += 0.18 * casuals1;
 
                 //winner
 
-                delta = 0.1 * fans2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
+                delta = 0.1 * fans2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 fans2 += delta;
                 casuals2 -= -delta;
 
-                delta = 0.1 * casuals2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
+                delta = 0.1 * casuals2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 casuals2 += delta;
                 //fo.Interested =- delta;
 
-                delta = 0.1 * followers2 * (PWin(fo)) * WeightCoeff * CountryCoeff2;
+                delta = 0.1 * followers2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
                 delta = MathUtils.Gauss(delta, 0.5);
                 followers2 += delta;
                 casuals2 -= delta;
-
 
             }
 
 
             // end of calculation
 
-            fo.Fighter1().Performance["Fans"] = fans1;
-            fo.Fighter2().Performance["Fans"] = fans2;
-            fo.Fighter1().Performance["Casuals"] = casuals1;
-            fo.Fighter2().Performance["Casuals"] = casuals2;
-            fo.Fighter1().Performance["Followers"] = followers1;
-            fo.Fighter2().Performance["Followers"] = followers2;
+            A.Performance[FPType.FANS] = fans1;
+            B.Performance[FPType.FANS] = fans2;
+            A.Performance[FPType.CASUALS] = casuals1;
+            B.Performance[FPType.CASUALS] = casuals2;
+            A.Performance[FPType.FOLLOWERS] = followers1;
+            B.Performance[FPType.FOLLOWERS] = followers2;
 
-            fo.Viewership = FightViewers(fo);
+            
+            f.Viewership = FightViewers(f);
+            //f.Attendance = 
 
-            Console.WriteLine(ToString(fo));
-            Console.WriteLine("Fighter1: " + ToString(fo.Fighter1()));
-            Console.WriteLine("Fighter2: " + ToString(fo.Fighter2()) + "\n");
+            //Console.WriteLine(ToString(f.Outcome));
+            Console.WriteLine("Fighter1: " + ToString(A));
+            Console.WriteLine("Fighter2: " + ToString(B) + "\n");
 
 
 
@@ -215,50 +233,39 @@ namespace FighterRanking
         {
 
             var p = f.Performance;
-            string s = $"Fighter {f.Name}:Fans={p["Fans"]:N0},Followers={p["Followers"]:N0}," +
-                $"Casuals={p["Casuals"]:N0},Elo={p["Elo"]:N0}";
+            string s = $"Fighter {f.Name}:Fans={p[FPType.FANS]:N0},Followers={p[FPType.FOLLOWERS]:N0}," +
+                $"Casuals={p[FPType.CASUALS]:N0},Elo={p[FPType.ELO]:N0}";
 
             return s;
         }
 
-        public static string ToString(FightOutcome fo)
+        public static string ToString(Fight f)
         {
-            string s = ($"Viewership:{fo.Viewership:N0}");
+            return ($"Viewership:{f.Viewership:N0}");
 
-            return s;
         }
 
 
         // PRIVATE METHODS
 
-        private static double FightViewers(FightOutcome fo)
+        private static double FightViewers(Fight f)
         {
             double viewers;
 
 
-            Fighter f1 = fo.Fighter1();
-            Fighter f2 = fo.Fighter2();
+            Fighter A = f.FighterRed;
+            Fighter B = f.FighterBlue;
 
+            WeightClass w1 = (WeightClass)A.Weight;
 
-            //Country country = f1.Nationality;
-            //Console.WriteLine(f1.Nationality + "'s buff is " + country.PopularityBuff);
-
-            WeightClass w1 = (WeightClass)f1.Weight;
-
-            //WeightCoefficient[w1.Weight]
-
-
-
-            fo.Interested = MathUtils.Gauss(((f1.Performance["Elo"] + f2.Performance["Elo"]) / 2), 100) *
-                (f1.Nationality.PopularityBuff * f2.Nationality.PopularityBuff * w1.Popularity + f1.Belts + f2.Belts);
+            
+            f.Interested = MathUtils.Gauss(((A.Performance[FPType.ELO] + B.Performance[FPType.ELO]) / 2), 100) *
+                (A.Nationality.PopularityBuff * B.Nationality.PopularityBuff * w1.Popularity + A.Belts + B.Belts);
 
 
 
-            //viewers = f1.Performance["Fans"] + f1.Performance["Followers"] + f1.Performance["Casuals"];
-            //viewers += (f1.Performance["Fans"] + f2.Performance["Followers"] + f2.Performance["Casuals"]);
-
-
-            viewers = fo.Interested + (PWin(fo)) * f1.Performance["Followers"] + (1 - PWin(fo) * f2.Performance["Followers"]) + (PWin(fo)) * f1.Performance["Fans"] + (1 - PWin(fo) * f2.Performance["Fans"]);
+            viewers = f.Interested + (PWin(f)) * A.Performance[FPType.FOLLOWERS] + (1 - PWin(f) * B.Performance[FPType.FOLLOWERS])
+                + (PWin(f)) * A.Performance[FPType.FANS] + (1 - PWin(f) * B.Performance[FPType.FANS]);
 
 
             return viewers;
@@ -269,204 +276,28 @@ namespace FighterRanking
 
         private static double getBase(Fighter F)
         {
-            return F.Performance["Followers"] + F.Performance["Fans"];
+            return F.Performance[FPType.FOLLOWERS] + F.Performance[FPType.FANS];
         }
 
         private static double fightAttendance(Fight fight, Venue venue, double ticketPrice)
 
         {
 
-            Fighter A = fight.Fighter1();
-            Fighter B = fight.Fighter2();
-            FightOutcome fo = fight.Outcome;
+            Fighter A = fight.FighterRed;
+            Fighter B = fight.FighterBlue;
 
             double elasticity = venue.Elasticity;
-
-
-
-
-            /*using (XmlReader reader = XmlReader.Create(@"venues.xml"))
-            {
-                while (reader.Read())
-                {
-                    if (reader.IsStartElement())
-                    {
-                        switch (reader.Name.ToString())
-                        {
-
-                            case "Alabama":
-                                elasticity = -6;
-                                break;
-                            case "Alaska":
-                                elasticity = -6;
-                                break;
-                            case "Arizona":
-                                elasticity = -6;
-                                break;
-                            case "Arkansas":
-                                elasticity = -6;
-                                break;
-                            case "California":
-                                elasticity = -3;
-                                break;
-                            case "Colorado":
-                                elasticity = -6;
-                                break;
-                            case "Connecticut":
-                                elasticity = -6;
-                                break;
-                            case "Delaware":
-                                elasticity = -6;
-                                break;
-                            case "Florida":
-                                elasticity = -5;
-                                break;
-                            case "Georgia":
-                                elasticity = -5;
-                                break;
-                            case "Hawaii":
-                                elasticity = -6;
-                                break;
-                            case "Idaho":
-                                elasticity = -6;
-                                break;
-                            case "Illinois":
-                                elasticity = -6;
-                                break;
-                            case "Indiana":
-                                elasticity = -6;
-                                break;
-                            case "Iowa":
-                                elasticity = -6;
-                                break;
-                            case "Kansas":
-                                elasticity = -6;
-                                break;
-                            case "Kentucky":
-                                elasticity = -6;
-                                break;
-                            case "Louisiana":
-                                elasticity = -6;
-                                break;
-                            case "Maine":
-                                elasticity = -6;
-                                break;
-                            case "Maryland":
-                                elasticity = -6;
-                                break;
-                            case "Massachusetts":
-                                elasticity = -3;
-                                break;
-                            case "Michigan":
-                                elasticity = -6;
-                                break;
-                            case "Minnesota":
-                                elasticity = -6;
-                                break;
-                            case "Mississippi":
-                                elasticity = -6;
-                                break;
-                            case "Missouri":
-                                elasticity = -6;
-                                break;
-                            case "Montana":
-                                elasticity = -6;
-                                break;
-                            case "Nebraska":
-                                elasticity = -6;
-                                break;
-                            case "Nevada":
-                                elasticity = -2;
-                                break;
-                            case "New Hampshire":
-                                elasticity = -6;
-                                break;
-                            case "New Jersey":
-                                elasticity = -3;
-                                break;
-                            case "New Mexico":
-                                elasticity = -6;
-                                break;
-                            case "New York":
-                                elasticity = -3;
-                                break;
-                            case "North Carolina":
-                                elasticity = -6;
-                                break;
-                            case "North Dakota":
-                                elasticity = -6;
-                                break;
-                            case "Ohio":
-                                elasticity = -6;
-                                break;
-                            case "Oklahoma":
-                                elasticity = -6;
-                                break;
-                            case "Oregon":
-                                elasticity = -6;
-                                break;
-                            case "Pennsylvania":
-                                elasticity = -3;
-                                break;
-                            case "Rhode Island":
-                                elasticity = -6;
-                                break;
-                            case "South Carolina":
-                                elasticity = -6;
-                                break;
-                            case "South Dakota":
-                                elasticity = -6;
-                                break;
-                            case "Tennessee":
-                                elasticity = -6;
-                                break;
-                            case "Texas":
-                                elasticity = -6;
-                                break;
-                            case "Utah":
-                                elasticity = -6;
-                                break;
-                            case "Vermont":
-                                elasticity = -6;
-                                break;
-                            case "Virginia":
-                                elasticity = -6;
-                                break;
-                            case "Washington":
-                                elasticity = -6;
-                                break;
-                            case "Washington DC":
-                                elasticity = -6;
-                                break;
-                            case "West Virginia":
-                                elasticity = -6;
-                                break;
-                            case "Wisconsin":
-                                elasticity = -6;
-                                break;
-                            case "Wyoming":
-                                elasticity = -6;
-                                break;
-
-
-
-                        }
-                    }
-                }
-                Console.ReadKey();
-            }*/
 
             Random random = new Random();
             double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
 
             // maybe can replace mathResult with two drawing coefficients used respectively on each individual fan-base
 
-
             double locationBuff1 = City.LocationBuff(A, venue);
             double locationBuff2 = City.LocationBuff(B, venue);
 
-
-            double demand = mathResult * (getBase(A) * fo.Fighter1().Performance["Drawing Power"] * (1 - PWin(fo)) * locationBuff1 + getBase(B) * fo.Fighter2().Performance["Drawing Power"] * (1 - PWin(fo)) * locationBuff2);
+            double demand = mathResult * (getBase(A) * A.Performance[FPType.DRAWING_POWER] * (1 - PWin(fight)) * locationBuff1
+                + getBase(B) * B.Performance[FPType.DRAWING_POWER] * (1 - PWin(fight)) * locationBuff2);
 
             // elasticity also gets better if your hometown is near where you're fighting or if you have a conducive nationality to where you're fighting
             // puerto ricans sell well in new york
@@ -495,32 +326,29 @@ namespace FighterRanking
             return attendance;
         }
 
-        private static void AdjustDrawingPower(FightOutcome fo)
+        private static void AdjustDrawingPower(Fight f)
         {
             Random random = new Random();
             double mathResult = Math.Round((random.NextDouble() * (0.005) + 0.03));
-            if (fo.IsKO())
+            if (f.Outcome.IsKO())
             {
                 mathResult = mathResult * 3;
             }
 
-            if (fo.Fighter1() == fo.Winner)
-            {
-                fo.Fighter1().Performance["Drawing Power"] += fo.Fighter1().Performance["Drawing Power"] * mathResult * (1 - PWin(fo));
+            Fighter A = f.FighterRed;
+            Fighter B = f.FighterBlue;
 
-                fo.Fighter2().Performance["Drawing Power"] -= fo.Fighter2().Performance["Drawing Power"] * mathResult * (PWin(fo));
-            } else if (fo.Fighter2() == fo.Winner)
+            if (A == f.Outcome.Winner)
             {
-                fo.Fighter1().Performance["Drawing Power"] -= fo.Fighter1().Performance["Drawing Power"] * mathResult * (1 - PWin(fo));
-
-                fo.Fighter2().Performance["Drawing Power"] += fo.Fighter2().Performance["Drawing Power"] * mathResult * (PWin(fo));
+                A.Performance[FPType.DRAWING_POWER] += A.Performance[FPType.DRAWING_POWER] * mathResult * (1 - PWin(f));
+                B.Performance[FPType.DRAWING_POWER] -= B.Performance[FPType.DRAWING_POWER] * mathResult * (PWin(f));
+            } else if (B == f.Outcome.Winner)
+            {
+                A.Performance[FPType.DRAWING_POWER] -= A.Performance[FPType.DRAWING_POWER] * mathResult * (1 - PWin(f));
+                B.Performance[FPType.DRAWING_POWER] += B.Performance[FPType.DRAWING_POWER] * mathResult * (PWin(f));
             }
 
             
-
-            
-
-
             //DrawingPower = F.fans * DrawingCoefficient;
 
             // fighter drawing power should help determine the % of fans of a fighter that GO to fights. could be based on excitement (workrate/KO's) in ring + randomness. 
@@ -529,16 +357,10 @@ namespace FighterRanking
 
 
 
-
-        private static double PWin(FightOutcome fo)
+        private static double PWin(Fight f)
         {
-            return 1 / (1 + Math.Pow(10, (fo.Fighter2().Performance["Elo"] - fo.Fighter1().Performance["Elo"]) / 400));
-
+            return 1 / (1 + Math.Pow(10, (f.FighterBlue.Performance[FPType.ELO] - f.FighterRed.Performance[FPType.ELO]) / 400));
         }
-
-
-
-
 
 
     }

@@ -11,10 +11,18 @@ namespace Main
         public Judge[] Judges;
         public FightOutcome Outcome;
 
+
         public Fighter FighterRed{ get=> fighters[0];}
         public Fighter FighterBlue { get => fighters[1]; }
 
-        public Venue Venue { get; set; } 
+        public Venue Venue { get; set; }
+
+        //Popularity
+        public double Interested { get; set; }
+        public double Viewership { get; set; }
+        public double Attendance { get; set; }
+
+
 
         public Fight()
         {

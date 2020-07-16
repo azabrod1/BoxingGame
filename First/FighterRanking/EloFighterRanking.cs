@@ -63,8 +63,8 @@ namespace Boxing.FighterRating
             Ratings[f1.Name] += delta;
             Ratings[f2.Name] -= delta;
 
-            f1.Performance["Elo"] = Ratings[f1.Name];
-            f2.Performance["Elo"] = Ratings[f2.Name];
+            f1.Performance[FPType.ELO] = Ratings[f1.Name];
+            f2.Performance[FPType.ELO] = Ratings[f2.Name];
 
 
             return delta;
