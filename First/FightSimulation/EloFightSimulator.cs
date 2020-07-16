@@ -37,7 +37,7 @@ namespace FightSim
                 fight.Fighter2().Record.Wins++;
                 fight.Fighter1().Record.Losses++;
             }
-            FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null, fight.fighters);
+            FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null, fight.Fighers);
             fo.Viewership = getNetworkViewers(fight.Fighter1().Record.Rank, fight.Fighter2().Record.Rank);
             fight.Outcome = fo;
             return fo;

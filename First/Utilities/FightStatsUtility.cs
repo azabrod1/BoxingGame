@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Main;
@@ -53,11 +54,11 @@ namespace FightSim
             {
                 if (fighter != null)
                     sb.AppendFormat($"--{fighter.Name}--\n")
-                      .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), fights.WinPercent(fighter))
-                      .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), fights.PercentWinsByKO(fighter));
+                      .AppendFormat("Wins {0} ({1}%)\n", fights.Wins(fighter), string.Format("{0:.00}", fights.WinPercent(fighter)))
+                      .AppendFormat("KOs  {0} ({1}%)\n", fights.Wins(fighter, true), string.Format("{0:.00}", fights.PercentWinsByKO(fighter)));
             }
 
-            sb.AppendFormat($"--Draws--\nCount {fights.Draws() } ({fights.DrawPercent()}%)\n");
+            sb.AppendFormat($"--Draws--\nCount {fights.Draws() } ({string.Format("{0:.##}", fights.DrawPercent())}%)\n");
 
             Dictionary<MethodOfResult, int> methodsOfResult = fights.MethodOfResultStats();
 
@@ -88,12 +89,12 @@ namespace FightSim
             {
                 bool isFighter1 = fighter == fighters[0];
                 sb.AppendFormat("{0}\n", fighter)
-                  .AppendFormat("Avg Damage     {0}\n", list.AverageDamage(isFighter1))
-                  .AppendFormat("Avg Thrown     {0}\n", list.AverageThrown(isFighter1))
-                  .AppendFormat("Avg Landed     {0}\n", list.AverageLanded(isFighter1))
-                  .AppendFormat("Avg Accuracy   {0}\n", list.LandedPercent(isFighter1))
-                  .AppendFormat("Jab Percent    {0}\n", list.AvgJabPercent(isFighter1))
-                  .AppendFormat("Avg Knockdowns {0}\n", list.KnockDownsAvg(isFighter1))
+                  .AppendFormat("Avg Damage     {0:.00}\n", list.AverageDamage(isFighter1))
+                  .AppendFormat("Avg Thrown     {0:.00}\n", list.AverageThrown(isFighter1))
+                  .AppendFormat("Avg Landed     {0:.00}\n", list.AverageLanded(isFighter1))
+                  .AppendFormat("Avg Accuracy   {0:.00}\n", list.LandedPercent(isFighter1))
+                  .AppendFormat("Jab Percent    {0:.00}\n", list.AvgJabPercent(isFighter1))
+                  .AppendFormat("Avg Knockdowns {0:.00}\n", list.KnockDownsAvg(isFighter1))
                   .AppendLine();
             }
 

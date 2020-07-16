@@ -17,14 +17,13 @@ namespace FightSim
         private double BlockDamage;
         public int[]  Knockdowns = { 0, 0 };
 
-        private (int Jabs, int PowerPunches)[] PunchDistro;
+        private readonly (int Jabs, int PowerPunches)[] PunchDistro;
 
         public Block(FightState fight)
         {
             this.Fight = fight;
             Boxer = new FighterState[] { fight.F1, fight.F2 };
             PunchDistro = new (int Jabs, int PowerPunches)[2];
-
         }
 
         public class PunchResult
@@ -76,7 +75,7 @@ namespace FightSim
         * Return -1 if no KO
         * Return when in block it happened i.e. punch we at/ total punches this block * 60 (convert to seconds) 
         */
-        public (List<PunchResult> Punches, int Stoppage) Play()
+        public (List<PunchResult> Punches, int Stoppage) Run()
         {
             SetRandomVariables(); 
 

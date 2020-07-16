@@ -40,7 +40,7 @@ namespace FightSim
 
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fight fight)
         :
-        this(timeOfStoppage, method, winner, scorecards, fight.fighters)
+        this(timeOfStoppage, method, winner, scorecards, fight.Fighers)
         {
         
         }

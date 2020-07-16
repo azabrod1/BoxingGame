@@ -28,7 +28,7 @@ namespace Main
             this.Frequency = nationalityFreq;
 
             if (displayName.Length > 3)
-                throw new Exception("Display name for a country should not over 3 characters");
+                throw new Exception("Display name for a country should not over three characters");
         }
 
         static Country()

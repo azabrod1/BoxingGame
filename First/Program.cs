@@ -13,6 +13,7 @@ using log4net;
 using log4net.Config;
 using System.Reflection;
 using Boxing;
+using System.Collections.Concurrent;
 //using System.Text.Json;
 
 namespace Main
@@ -27,10 +28,10 @@ namespace Main
             //Console.WriteLine("****************************************\n\n");
 
             //Alex();
-          //  Vlad(); //TODO Uncomment and comment out mine
+            //  Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
 
-               Anya();
+            // Anya();
 
             //  Json();
             // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -39,10 +40,23 @@ namespace Main
             // XmlConfigurator.Configure();
 
             // WeightClass w = 147;
+            //  Anya();
+            // AlexConc();
 
-
+            Anya();
         }
 
+        private struct PerformanceStruct
+        {
+            public int i1;
+            public int i2;
+        }
+
+        private class PerformanceClass
+        {
+            public int i1;
+            public int i2;
+        }
 
 
         static void Anya()
@@ -108,16 +122,16 @@ namespace Main
 
             Fight fight = new Fight(fighter, opponent);
 
-            for (int f = 0; f < 7000; ++f)
+            for (int f = 0; f < 20000; ++f)
                 fights.Add(fight);
 
             IFightSimulator fs = new FightSimulatorGauss();
             var results = fs.SimulateManyFightsWithDetails(fights);
 
-            foreach (var result in results)
+            foreach (var (outcome, Stats) in results)
             {
-                outcomes.Add(result.outcome);
-                fightStats.Add(result.Stats.Condense());
+                outcomes.Add(outcome);
+                fightStats.Add(Stats.Condense());
             }
 
             stopwatch.Stop();
@@ -255,7 +269,7 @@ namespace Main
             Block block = new Block(fs);
             fs.Round = 3;
 
-            block.Play();
+            block.Run();
 
             List<double> list = new List<double>();
 
@@ -266,7 +280,7 @@ namespace Main
                 x = y = 0;
                 for (int min = 0; min < 1; ++min)
                 {
-                    block.Play();
+                    block.Run();
                     var distro = block.CreatePunchSchedule();
                     foreach (var punch in distro)
                         Console.WriteLine(punch.Attacker);
@@ -724,10 +738,10 @@ namespace Main
             List<double> list1 = new List<double>();
             List<double> list2 = new List<double>();
 
-            for (int i = 1; i < 200; ++i)
+            for (int i = 1; i < 2000; ++i)
             {
                 state.Round = MathUtils.RangeUniform(1, 13);
-                block.Play();
+                block.Run();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -791,7 +805,7 @@ namespace Main
             //.WriteLine(state.fightControl);
             //  Console.WriteLine(state.ReachBuff());
             Block block = new Block(state);
-            block.Play();
+            block.Run();
 
             //Console.WriteLine(state.f2.PunchCapacity());
 
@@ -805,7 +819,7 @@ namespace Main
             for (int i = 1; i < 3000; ++i)
             {
                 state.Round = MathUtils.RangeUniform(1, 13);
-                block.Play();
+                block.Run();
                 // double r =block.RoundIntensity();
                 //list.Add(normal.PunchCapacity(fs));
 
@@ -868,7 +882,7 @@ namespace Main
             Block block = new Block(fs);
             fs.Round = 3;
 
-            block.Play();
+            block.Run();
 
             List<double> list = new List<double>();
 
@@ -879,7 +893,7 @@ namespace Main
                 x = y = 0;
                 for (int min = 0; min < 3; ++min)
                 {
-                    block.Play();
+                    block.Run();
                     x += block.BoxerPunchesPerRound(fs.F1) / 3;
                     y += block.BoxerPunchesPerRound(fs.F2) / 3;
                 }
