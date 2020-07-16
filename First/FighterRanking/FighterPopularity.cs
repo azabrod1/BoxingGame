@@ -95,137 +95,102 @@ namespace Main
         public static void UpdatePopularity(Fight f)
         {
 
-            Fighter A = f.FighterRed;
-            Fighter B = f.FighterBlue;
+            Fighter W = f.Winner;
+            Fighter L = f.Loser;
+
+            if (W == null)
+            {
+                // todo handle draw here
+
+                return;
+            }
 
             // in case popularity has never been set up
             // set the initial values
             // (should not happen)
-            if (!A.Performance.ContainsKey(FPType.ACTIVE)){
-                UpdatePopularity(A);
+            if (!W.Performance.ContainsKey(FPType.ACTIVE)){
+                UpdatePopularity(W);
             }
-            if (!B.Performance.ContainsKey(FPType.ACTIVE)){
-                UpdatePopularity(B);
+            if (!L.Performance.ContainsKey(FPType.ACTIVE)){
+                UpdatePopularity(L);
             }
 
+            
 
+            double fansW = W.Performance[FPType.FANS];
+            double fansL = L.Performance[FPType.FANS];
 
-            double fans1 = A.Performance[FPType.FANS];
-            double fans2 = B.Performance[FPType.FANS];
+            double casualsW = W.Performance[FPType.CASUALS];
+            double casualsL = L.Performance[FPType.CASUALS];
 
-            double casuals1 = A.Performance[FPType.CASUALS];
-            double casuals2 = B.Performance[FPType.CASUALS];
+            double followersW = W.Performance[FPType.FOLLOWERS];
+            double followersL = L.Performance[FPType.FOLLOWERS];
 
-            double followers1 = A.Performance[FPType.FOLLOWERS];
-            double followers2 = B.Performance[FPType.FOLLOWERS];
+            double drawingPowerW = W.Performance[FPType.DRAWING_POWER];
+            double drawingPowerL = L.Performance[FPType.DRAWING_POWER];
 
-            double drawingPower1 = A.Performance[FPType.DRAWING_POWER];
-            double drawingPower2 = B.Performance[FPType.DRAWING_POWER];
+            //Console.WriteLine("Fighter1: " + ToString(A));
+            //Console.WriteLine("Fighter2: " + ToString(B));
 
-            Console.WriteLine("Fighter1: " + ToString(A));
-            Console.WriteLine("Fighter2: " + ToString(B));
-
-            double CountryCoeff1 = A.Nationality.PopularityBuff;
-            double CountryCoeff2 = B.Nationality.PopularityBuff;
-            double WeightCoeff = ((WeightClass)A.Weight).Popularity;
+            double CountryCoeffW = W.Nationality.PopularityBuff;
+            double CountryCoeffL = L.Nationality.PopularityBuff;
+            double WeightCoeff = ((WeightClass)W.Weight).Popularity;
 
 
             // do the calculation
 
-            if (A == f.Outcome.Winner)
-            {
+            
                 //winner
-                double delta = 0.09 * casuals1 * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
+                double delta = 0.09 * casualsW * (1 - PWin(f)) * WeightCoeff * CountryCoeffW;
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans1 += delta;
-                casuals1 -= delta;
+                fansW += delta;
+                casualsW -= delta;
 
-                delta = 0.4 * f.Interested * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
+                delta = 0.4 * f.Interested * (1 - PWin(f)) * WeightCoeff * CountryCoeffW;
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals1 += delta;
+                casualsW += delta;
                 //fo.Interested =- delta;
 
-                delta = 0.09 * casuals1 * (1 - PWin(f)) * WeightCoeff * CountryCoeff1;
+                delta = 0.09 * casualsW * (1 - PWin(f)) * WeightCoeff * CountryCoeffW;
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers1 += delta;
-                casuals1 -= 0.18 * casuals1;
+                followersW += delta;
+                casualsW -= 0.18 * casualsW;
 
                 //loser
 
-                delta = 0.1 * fans2 * (1 - PWin(f));
+                delta = 0.1 * fansL * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
-                fans2 -= delta;
-                casuals2 += delta;
+                fansL -= delta;
+                casualsL += delta;
 
-                delta = 0.1 * casuals2 * (1 - PWin(f));
+                delta = 0.1 * casualsL * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
-                casuals2 -= delta;
+                casualsL -= delta;
                 //fo.Interested = +delta;
 
-                delta = 0.1 * followers2 * (1 - PWin(f));
+                delta = 0.1 * followersL * (1 - PWin(f));
                 delta = MathUtils.Gauss(delta, 0.5);
-                followers2 -= delta;
-                casuals2 += delta;
+                followersL -= delta;
+                casualsL += delta;
 
-            }
-            else if (B == f.Outcome.Winner)
-            {
-
-                //loser
-
-                double delta = 0.09 * casuals1 * (PWin(f));
-                delta = MathUtils.Gauss(delta, 0.5);
-                fans1 -= delta;
-                casuals1 += delta;
-
-                delta = 0.4 * f.Interested * (PWin(f));
-                delta = MathUtils.Gauss(delta, 0.5);
-                casuals1 -= delta;
-                //fo.Interested =+ delta;
-
-                delta = 0.09 * casuals1 * (PWin(f));
-                delta = MathUtils.Gauss(delta, 0.5);
-                followers1 -= delta;
-                casuals1 += 0.18 * casuals1;
-
-                //winner
-
-                delta = 0.1 * fans2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
-                delta = MathUtils.Gauss(delta, 0.5);
-                fans2 += delta;
-                casuals2 -= -delta;
-
-                delta = 0.1 * casuals2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
-                delta = MathUtils.Gauss(delta, 0.5);
-                casuals2 += delta;
-                //fo.Interested =- delta;
-
-                delta = 0.1 * followers2 * (PWin(f)) * WeightCoeff * CountryCoeff2;
-                delta = MathUtils.Gauss(delta, 0.5);
-                followers2 += delta;
-                casuals2 -= delta;
-
-            }
-
+            
 
             // end of calculation
 
-            A.Performance[FPType.FANS] = fans1;
-            B.Performance[FPType.FANS] = fans2;
-            A.Performance[FPType.CASUALS] = casuals1;
-            B.Performance[FPType.CASUALS] = casuals2;
-            A.Performance[FPType.FOLLOWERS] = followers1;
-            B.Performance[FPType.FOLLOWERS] = followers2;
+            W.Performance[FPType.FANS] = fansW;
+            L.Performance[FPType.FANS] = fansL;
+            W.Performance[FPType.CASUALS] = casualsW;
+            L.Performance[FPType.CASUALS] = casualsL;
+            W.Performance[FPType.FOLLOWERS] = followersW;
+            L.Performance[FPType.FOLLOWERS] = followersL;
 
             
             f.Viewership = FightViewers(f);
-            //f.Attendance = 
+            f.Attendance = fightAttendance(f, f.Venue, f.TicketPrice);
 
             //Console.WriteLine(ToString(f.Outcome));
-            Console.WriteLine("Fighter1: " + ToString(A));
-            Console.WriteLine("Fighter2: " + ToString(B) + "\n");
-
-
+            Console.WriteLine("Fighter1: " + ToString(W));
+            Console.WriteLine("Fighter2: " + ToString(L) + "\n");
 
         }
 
@@ -311,7 +276,7 @@ namespace Main
 
             double price = 0; // average ticket price, up to user
 
-            
+          
 
             double attendance = -elasticity * price + demand;
             if (attendance > venue.Capacity)

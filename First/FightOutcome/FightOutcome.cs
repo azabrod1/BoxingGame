@@ -83,6 +83,13 @@ namespace FightSim
             }
         }
 
+
+        public Fighter Loser
+        {
+            get => (_winner == -1)?null: Fighters[1 - _winner]; 
+        }
+
+
         public bool IsKO()
         {
             return Method == MethodOfResult.KO || Method == MethodOfResult.TKO;

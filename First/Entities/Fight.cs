@@ -14,13 +14,16 @@ namespace Main
 
         public Fighter FighterRed{ get=> fighters[0];}
         public Fighter FighterBlue { get => fighters[1]; }
+        public Fighter Winner { get => Outcome.Winner; }
+        public Fighter Loser { get => Outcome.Loser; }
 
         public Venue Venue { get; set; }
 
-        //Popularity
+        //Popularity (todo should be moved to a separate class)
         public double Interested { get; set; }
         public double Viewership { get; set; }
         public double Attendance { get; set; }
+        public double TicketPrice { get; set; }
 
 
 
