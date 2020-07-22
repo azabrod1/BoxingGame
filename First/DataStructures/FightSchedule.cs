@@ -14,13 +14,6 @@ namespace DataStructures
         [JsonProperty] private ConcurrentDictionary<Fighter, Fight>      NextFight { get; set; }
         [JsonProperty] private ConcurrentDictionary<Fighter, Fight>      LastFight { get; set; }
 
-        public void NewGame()
-        {
-            Schedule  = new ConcurrentDictionary<DateTime, FightList>();
-            NextFight = new ConcurrentDictionary<Fighter, Fight>();
-            LastFight = new ConcurrentDictionary<Fighter, Fight>();
-        }
-
         public void AddFight(Fight fight)
         {
             FightList fightsThatDay = Schedule.GetOrAdd(fight.Date, key => new FightList());

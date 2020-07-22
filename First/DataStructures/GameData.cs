@@ -17,7 +17,7 @@ namespace Main
             return _StartDate.Add(new TimeSpan(Week * 7, 0, 0, 0));
         }
 
-        public void NewGame()
+        public void StartNewGame()
         {
             Console.WriteLine("Data Initialized");
             DateTime now = DateTime.Now;

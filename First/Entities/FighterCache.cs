@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using FighterRanking;
+using Newtonsoft.Json;
 
 namespace Main
 {
@@ -12,8 +13,7 @@ namespace Main
     [Serializable]
     public class FighterCache
     {
-        [Newtonsoft.Json.JsonPropertyAttribute]
-        private ConcurrentDictionary<string, Fighter> Cache { get; set; }
+        [JsonProperty] private ConcurrentDictionary<string, Fighter> Cache { get; set; }
 
         public FighterCache()
         {

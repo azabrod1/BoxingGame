@@ -16,11 +16,11 @@ namespace Main
         static readonly ILog LOGGER =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [JsonPropertyAttribute] private GameData Data               { get;  set; }
-        [JsonPropertyAttribute] private FighterCache Fighters       { get;  set; }
-        [JsonPropertyAttribute] private IFighterRating Rating       { get;  set; }
-        [JsonPropertyAttribute] private IFightSimulator FightSim    { get;  set; }
-        [JsonPropertyAttribute] private FightSchedule FightSchedule { get;  set; }
+        [JsonProperty] internal GameData Data               { get;  set; }
+        [JsonProperty] internal FighterCache Fighters       { get;  set; }
+        [JsonProperty] internal IFighterRating Rating       { get;  set; }
+        [JsonProperty] internal IFightSimulator FightSim    { get;  set; }
+        [JsonProperty] internal FightSchedule FightSchedule { get;  set; }
 
         public Application()
         {
@@ -32,7 +32,7 @@ namespace Main
             Rating = new EloFighterRating(35);
         }
 
-        public void NewGame()
+        public void StartNewGame()
         {
             //Create initial pool of fighters
             foreach (WeightClass wc in WeightClass.AllWeightClasses())
@@ -43,6 +43,20 @@ namespace Main
 
             SimFights(50);
             Console.WriteLine(Status());
+        }
+
+        public static Application CreateOrLoad()
+        {
+            Application app;
+            //Try load save data, if not found create new game
+            if (null == (app = DataPersistance.LoadGame()))
+            {
+                app = new Application();
+                Console.WriteLine("ffsds");
+                NewGame.Start(app); //New Game
+            }
+
+            return app;
         }
 
         //TODO crap to remove 

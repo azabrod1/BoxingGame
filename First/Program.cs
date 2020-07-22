@@ -61,17 +61,18 @@ namespace Main
             //    Console.WriteLine(f);
             //}
 
-            Application app = new Application();
-            NewGame.StartNewGame(app);
-            DataPersistance.SaveGame(app);
+            //Application app = Application.CreateOrLoad();
 
-            //Application app = DataPersistance.LoadGame();
-            //Console.WriteLine(app);
-            //Console.WriteLine(app);
+            //app.SaveGame(); //Save Game
 
-            //     NewGame.Lo(app);
-            //    app.SaveGame();
+            Caroline();
+        }
 
+        static void Caroline()
+        {
+            Application app = Application.CreateOrLoad();
+
+            app.SaveGame(); //Save Game
 
         }
 
