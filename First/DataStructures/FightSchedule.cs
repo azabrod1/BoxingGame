@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Main;
+using Newtonsoft.Json;
 using FightList = System.Collections.Concurrent.ConcurrentDictionary<Main.Fight, bool>;
 
 namespace DataStructures
 {
     [Serializable]
+    [NewGame]
     public class FightSchedule
     {
-        private ConcurrentDictionary<DateTime, FightList> Schedule { get; set; }
-        private ConcurrentDictionary<Fighter, Fight> NextFight;
-        private ConcurrentDictionary<Fighter, Fight> LastFight;
-
+        [JsonProperty] private ConcurrentDictionary<DateTime, FightList> Schedule  { get; set; }
+        [JsonProperty] private ConcurrentDictionary<Fighter, Fight>      NextFight { get; set; }
+        [JsonProperty] private ConcurrentDictionary<Fighter, Fight>      LastFight { get; set; }
 
         public void NewGame()
         {
-            Schedule = new ConcurrentDictionary<DateTime, FightList>();
+            Schedule  = new ConcurrentDictionary<DateTime, FightList>();
             NextFight = new ConcurrentDictionary<Fighter, Fight>();
+            LastFight = new ConcurrentDictionary<Fighter, Fight>();
         }
 
         public void AddFight(Fight fight)

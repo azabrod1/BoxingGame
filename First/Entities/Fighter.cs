@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 
 using System;
-using System.ComponentModel;
-using System.Text;
 using FightSim;
 
 namespace Main
@@ -16,41 +14,36 @@ namespace Main
         public FighterRecord Record { get; set; }
 
         //Combat Attributes
-        public int Accuracy { get; set; } = 50;
-        public int Aggression { get; set; } = 50;
-        public int Defense { get; set; } = 50;
-        public int Durability { get; set; } = 50;
-        public int FootWork { get; set; } = 50;
-        public int Power { get; set; } = 50;
-        public int RingGen { get; set; } = 50;
-        public int HandSpeed { get; set; } = 50;
-        public int Stamina { get; set; } = 50;
+        public double Accuracy   { get; set; } = 50;
+        public double Aggression { get; set; } = 50;
+        public double Defense    { get; set; } = 50;
+        public double Durability { get; set; } = 50;
+        public double FootWork   { get; set; } = 50;
+        public double HandSpeed  { get; set; } = 50;
+        public double Power      { get; set; } = 50;
+        public double RingGen    { get; set; } = 50;
+        public double Stamina    { get; set; } = 50;
 
         //Physical/Personal Attributes
         public int Reach { get; set; } = 72;
+        public int Age { get; set; }   = 25;
+        public int AgeCurve { get; internal set; } = FighterAging.ALWAYS_BAD_CURVE;
 
         public double Weight { get { return _Weight; } set { _Weight = value; JabPercent = ExpectedJabPercent();  } }
         public int Height { get; set; }
+
         public Country Nationality { get { return _Nationality; } set { _Nationality = value.Name; } }
         public string _Nationality = "United States";
 
-
-
         public Dictionary<string, double> Performance { get; set; } = new Dictionary<string, double>();
-        public int Belts;
 
-
+        public int Belts; //TODO: This should be stored elsewhere
 
         //Strategy variables - different fighters will have different stats
         public double DistancePreference = 0.5;
-        public double JabPercent;
+        public double JabPercent { get; internal set; }
 
         private double _Weight = 150;
-
-        private Fighter()
-        {
-
-        }
 
         public Fighter(string name = "")
         {
@@ -75,7 +68,23 @@ namespace Main
                                                HandSpeed, 6,
                                                Stamina, 7,
                                                Power, 8
-                 );
+                                              );
+
+            return skill;
+        }
+
+        public double AverageSkill() 
+        {
+            double skill = 0;
+            skill += MathUtils.WeightedAverage(Accuracy, 10,
+                                               Defense, 10,
+                                               Durability, 10,
+                                               FootWork, 10,
+                                               RingGen, 10,
+                                               HandSpeed, 10,
+                                               Stamina, 10,
+                                               Power, 10
+                                              );
 
             return skill;
         }
@@ -107,9 +116,6 @@ namespace Main
             return Utility.UsefulString(this);
         }
 
-        internal double fans()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

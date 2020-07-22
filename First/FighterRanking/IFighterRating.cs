@@ -3,7 +3,7 @@ using Main;
 
 namespace Boxing.FighterRating
 {
-
+    [NewGame]
     public interface IFighterRating
     {
         /**Get Elo for a player! 
@@ -17,7 +17,7 @@ namespace Boxing.FighterRating
          */
         public bool AddFighter(Fighter fighter);
 
-        public void AddFighters(IEnumerable<Fighter> fighters)
+        public virtual void AddFighters(IEnumerable<Fighter> fighters)
         {
             foreach (var fighter in fighters)
                 AddFighter(fighter);
@@ -127,7 +127,6 @@ namespace Boxing.FighterRating
 
             return CalculateRatingChange(outcome.Fighter1(), outcome.Fighter2(), score);
         }
-
     }
 
 }

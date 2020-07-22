@@ -12,15 +12,14 @@ using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
 using System.Reflection;
-using Boxing;
-using System.Collections.Concurrent;
+
 //using System.Text.Json;
 
 namespace Main
 {
     class Program
     {
-        static readonly ILog log =
+        static readonly ILog LOGGER =
         LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static void Main(string[] args)
@@ -31,7 +30,6 @@ namespace Main
             //  Vlad(); //TODO Uncomment and comment out mine
             //  AlexConc();
 
-            // Anya();
 
             //  Json();
             // var logRepo = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -40,27 +38,48 @@ namespace Main
             // XmlConfigurator.Configure();
 
             // WeightClass w = 147;
-            //  Anya();
             // AlexConc();
 
-            Anya();
-        }
+            // Anya();
 
-        private struct PerformanceStruct
-        {
-            public int i1;
-            public int i2;
-        }
+            //var age = FighterAging.AGING_DICT;
 
-        private class PerformanceClass
-        {
-            public int i1;
-            public int i2;
-        }
+            //foreach(var x in age)
+            //{
+            //    Console.WriteLine("{" + $"{x.Key}, {100-x.Value}" +"},   " + $"//{x.Value}");
+            //}
 
+            //FighterCache boxers = new FighterCache();
+
+            //Fighter f = boxers.CreateRandomFighter();
+            //f.AgeCurve = 0;
+            //FighterAging.YouthDebuff(f);
+
+            //for (f.Age = 16 ; f.Age < 55; ++f.Age)
+            //{
+            //    FighterAging.BirthdayBuff(f);
+            //    Console.WriteLine(f);
+            //}
+
+            Application app = new Application();
+            NewGame.StartNewGame(app);
+            DataPersistance.SaveGame(app);
+
+            //Application app = DataPersistance.LoadGame();
+            //Console.WriteLine(app);
+            //Console.WriteLine(app);
+
+            //     NewGame.Lo(app);
+            //    app.SaveGame();
+
+
+        }
 
         static void Anya()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             FightSimPlayTester game = new FightSimPlayTester();
             foreach (WeightClass wc in WeightClass.AllWeightClasses())
                 game.AddFighters(wc.Size, wc.Weight);
@@ -68,12 +87,15 @@ namespace Main
             game.SimFights(50);
 
             Console.WriteLine(game.Status());
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
         }
 
         static void Vlad()
-        {
-
-            
+        { 
         }
 
         static void AlexConc()

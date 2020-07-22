@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boxing.FighterRating;
-using FighterRanking;
 using FightSim;
 using log4net;
 using Main;
@@ -25,8 +24,6 @@ namespace Utilities
         {
             this.Fighters = new FighterCache();
             this.Rating = new EloFighterRating();
-
-            
         }
 
         public void SimFights(int numFights)
@@ -45,36 +42,13 @@ namespace Utilities
                     outcome.Fighters[0].UpdateRecord(outcome);
                     outcome.Fighters[1].UpdateRecord(outcome);
                     Rating.CalculateRatingChange(outcome);
-                    FighterPopularity.UpdatePopularity(outcome);
+                  //  FighterPopularity.UpdatePopularity(outcome);
                 }
 
             }
         }
 
-        //Top: how many of the top guys to display
-        public string Status(int top = -1)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (top == -1)
-                top = Fighters.Count();
 
-            List<Fighter> fighters = Fighters.AllFighters();
-
-            fighters.Sort((f1, f2) => Rating.Rating(f1).CompareTo(Rating.Rating(f2)));
-
-            for (int f = 0; f < top; ++f)
-            {
-                Fighter curr = fighters[f];
-                sb.AppendFormat($"{f + 1}. {curr.Name}\n\t{curr.Record} Rating: {Rating.Rating(curr)}\n");
-                sb.AppendFormat($"\tSkill Level: {curr.OverallSkill()} Weight: {curr.Weight}");
-                //sb.AppendLine();
-                sb.AppendLine(curr.ToString());
-                sb.AppendLine();
-
-            }
-
-            return sb.ToString();
-        }
 
         private List<Fight> ScheduleFights(WeightClass wc)
         {
@@ -115,6 +89,31 @@ namespace Utilities
             LOGGER.Info($"Generating {numFighters} fighters took {elapsed_time} ms");
 
             return added;
+        }
+
+        //Top: how many of the top guys to display
+        public string Status(int top = -1)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (top == -1)
+                top = Fighters.Count();
+
+            List<Fighter> fighters = Fighters.AllFighters();
+
+            fighters.Sort((f1, f2) => Rating.Rating(f1).CompareTo(Rating.Rating(f2)));
+
+            for (int f = 0; f < top; ++f)
+            {
+                Fighter curr = fighters[f];
+                sb.AppendFormat($"{f + 1}. {curr.Name}\n\t{curr.Record} Rating: {Rating.Rating(curr)}\n");
+                sb.AppendFormat($"\tSkill Level: {curr.OverallSkill()} Weight: {curr.Weight}");
+                //sb.AppendLine();
+                sb.AppendLine(curr.ToString());
+                sb.AppendLine();
+
+            }
+
+            return sb.ToString();
         }
 
     }

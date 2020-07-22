@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json.Utilities;
 
 namespace Main
 {
@@ -24,7 +28,6 @@ namespace Main
 
     public static class Utility
     {
-
         //Names
         static int PlayerNO = 1;
         public static string RandomNameSimple()
@@ -144,8 +147,8 @@ namespace Main
 
             while (i < param.Length)
             {
-                xTotal *= Math.Pow((double)param[i + 2], ((int)param[i]) / 10.0);
-                yTotal *= Math.Pow((double)param[i + 2], ((int)param[i + 1]) / 10.0);
+                xTotal *= Math.Pow((double)param[i + 2], ((double)param[i]) / 10.0);
+                yTotal *= Math.Pow((double)param[i + 2], ((double)param[i + 1]) / 10.0);
                 i += 3;
             }
 
@@ -172,7 +175,7 @@ namespace Main
 
             string name = (_name != null && _name.GetValue(obj) != null) ? _name.GetValue(obj).ToString() : "";
 
-            if(name.Length == 0)
+            if (name.Length == 0)
             {
                 var _ID = obj.GetType().GetProperty("ID");
                 if (_ID != null && _ID.GetValue(obj) != null)
@@ -189,6 +192,108 @@ namespace Main
 
             return sb.ToString();
         }
+
+        public static OSPlatform GetOSPlatform()
+        {
+
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                return OSPlatform.Windows;
+
+            if (Environment.OSVersion.Platform == PlatformID.MacOSX)
+                return OSPlatform.OSX;
+
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    return OSPlatform.OSX;
+                }
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    return OSPlatform.Linux;
+                }
+            }
+
+            throw new Exception($"Unidentified OS {RuntimeInformation.OSArchitecture }");
+        }
+
+        public static void ArgumentNotNull(object? value, string parameterName)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(parameterName);
+            }
+
+       //     Type t;
+            //t.ge
+
+
+        }
+
+
+        public static object GetMemberValue(MemberInfo member, object target)
+        {
+            ArgumentNotNull(member, nameof(member));
+            ArgumentNotNull(target, nameof(target));
+
+            switch (member.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo)member).GetValue(target);
+                case MemberTypes.Property:
+                    try
+                    {
+                        return ((PropertyInfo)member).GetValue(target, null);
+                    }
+                    catch (TargetParameterCountException e)
+                    {
+                        throw new ArgumentException($"MemberInfo '{nameof(member)}' has index parameters {e}");
+                    }
+                default:
+                    throw new ArgumentException($"MemberInfo '{nameof(member)}' is not of type FieldInfo or PropertyInfo");
+            }
+        }
+
+        public static void SetMemberValue(MemberInfo member, object target, object? value)
+        {
+            ArgumentNotNull(member, nameof(member));
+            ArgumentNotNull(target, nameof(target));
+
+            switch (member.MemberType)
+            {
+                case MemberTypes.Field:
+                    ((FieldInfo)member).SetValue(target, value);
+                    break;
+                case MemberTypes.Property:
+                    ((PropertyInfo)member).SetValue(target, value, null);
+                    break;
+                default:
+                    throw new ArgumentException($"MemberInfo '{nameof(member)}' must be of type FieldInfo or PropertyInfo");
+            }
+        }
+
+        public static bool IsList(object o)
+        {
+            if (o == null) return false;
+            return o is IList &&
+                   o.GetType().IsGenericType &&
+                   o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>));
+        }
+
+        public static bool IsDictionary(object o)
+        {
+            if (o == null) return false;
+            return (o is IDictionary &&
+                     o.GetType().IsGenericType &&
+                     (o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(Dictionary<,>))
+                     || o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(ConcurrentDictionary<,>))));
+        }
+
+        public static bool IsDictionary(Type type)
+        {
+            return typeof(IDictionary).IsAssignableFrom(type);
+        }
+
 
     }
 }

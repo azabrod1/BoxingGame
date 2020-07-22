@@ -8,7 +8,8 @@ using FighterRanking;
 namespace Main
 {
     //Holds all the games fighters
-    [Serializable()]
+    [NewGame]
+    [Serializable]
     public class FighterCache
     {
         [Newtonsoft.Json.JsonPropertyAttribute]
@@ -16,7 +17,7 @@ namespace Main
 
         public FighterCache()
         {
-            Cache = new ConcurrentDictionary<string, Fighter>();
+           // Cache = new ConcurrentDictionary<string, Fighter>();
         }
 
         public Fighter Get(string name)
@@ -61,7 +62,7 @@ namespace Main
             {
                 int toUpgrade = MathUtils.RangeUniform(0, ScaledCombatTraits.Count());
                 var property = hungryYoungLion.GetType().GetProperty(ScaledCombatTraits[toUpgrade]);
-                int currentSkill = (int)property.GetValue(hungryYoungLion);
+                double currentSkill = (double) property.GetValue(hungryYoungLion);
                 if (currentSkill < 100)
                 {
                     property.SetValue(hungryYoungLion, currentSkill + 1, null);
@@ -95,7 +96,7 @@ namespace Main
 
         //Assign the fighter a unique name - this will
         //be the fighter's ID!! 
-        public Fighter NewFighterWithRandomName()
+        private Fighter NewFighterWithRandomName()
         {
             Fighter fighter = null;
             bool preferCommonNames = Cache.Count < 10000; //Ensure common names proportionally represented
@@ -128,8 +129,7 @@ namespace Main
             (100,1),
          };
 
-        static double TOTAL_FIGHTERS_DISTRO = SKILL_DISTRIBUTION.Select(element => element.numFighters).Sum();
-
+        static readonly double TOTAL_FIGHTERS_DISTRO = SKILL_DISTRIBUTION.Select(element => element.numFighters).Sum();
 
         //According to the expected skill distribution 
         private static int RandomSkillLevel()

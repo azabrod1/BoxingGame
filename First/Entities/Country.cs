@@ -20,14 +20,14 @@ namespace Main
         public static Dictionary<string, Country> Countries { get; internal set; }
         public static double COUNTRY_FREQ_SUM;
 
-        public Country(string name, string displayName, double popularityBuff, double nationalityFreq)
+        public Country(string name, string shortName, double popularityBuff, double nationalityFreq)
         {
             this.Name = name;
-            this.ShortName = displayName;
+            this.ShortName = shortName;
             this.PopularityBuff = popularityBuff;
             this.Frequency = nationalityFreq;
 
-            if (displayName.Length > 3)
+            if (shortName.Length > 3)
                 throw new Exception("Display name for a country should not over three characters");
         }
 

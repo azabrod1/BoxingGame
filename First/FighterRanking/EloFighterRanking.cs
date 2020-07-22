@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using log4net;
 using Main;
 using Newtonsoft.Json;
 
 namespace Boxing.FighterRating
 {
-    [Serializable()]
-    //Thread safe (I hope) Elo Pool
+    [Serializable]
+    [NewGame]
     public class EloFighterRating : IFighterRating
     {
-        [JsonProperty] private readonly ConcurrentDictionary<string, double> Ratings;
+        [JsonProperty] private ConcurrentDictionary<string, double> Ratings { get; set; }
 
         [JsonProperty] public int K { get; }
 
         [JsonProperty] double InitElo { get; }
 
+        static readonly ILog LOGGER =
+        LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public EloFighterRating(int k = 50, double initElo = 1500)
         {
-            Ratings = new ConcurrentDictionary<string, double>();
             K = k;
             InitElo = initElo;
         }
@@ -69,5 +72,16 @@ namespace Boxing.FighterRating
 
             return delta;
         }
+
+        //public virtual void InitNewGame() DO WE NEED THESE 
+        //{
+        //    LOGGER.Debug("Finit Elo New Game");
+        //}
+
+        //public virtual void NewGame()
+        //{
+        //    LOGGER.Debug("FiElo New Game");
+        //}
+
     }
 }
