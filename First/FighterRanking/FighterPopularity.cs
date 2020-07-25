@@ -146,7 +146,7 @@ namespace Main
                 fansW += delta;
                 casualsW -= delta;
 
-                delta = 0.4 * f.Interested * (1 - PWin(f)) * WeightCoeff * CountryCoeffW;
+                delta = 0.4 * f.Financials.Interested * (1 - PWin(f)) * WeightCoeff * CountryCoeffW;
                 delta = MathUtils.Gauss(delta, 0.5);
                 casualsW += delta;
                 //fo.Interested =- delta;
@@ -185,8 +185,8 @@ namespace Main
             L.Performance[FPType.FOLLOWERS] = followersL;
 
             
-            f.Viewership = FightViewers(f);
-            f.Attendance = fightAttendance(f, f.Venue, f.TicketPrice);
+            f.Financials.Viewership = FightViewers(f);
+            f.Financials.Attendance = fightAttendance(f);
 
             //Console.WriteLine(ToString(f.Outcome));
             Console.WriteLine("Fighter1: " + ToString(W));
@@ -206,7 +206,7 @@ namespace Main
 
         public static string ToString(Fight f)
         {
-            return ($"Viewership:{f.Viewership:N0}");
+            return ($"Viewership:{f.Financials.Viewership:N0}");
 
         }
 
@@ -224,12 +224,12 @@ namespace Main
             WeightClass w1 = (WeightClass)A.Weight;
 
             
-            f.Interested = MathUtils.Gauss(((A.Performance[FPType.ELO] + B.Performance[FPType.ELO]) / 2), 100) *
+            f.Financials.Interested = MathUtils.Gauss(((A.Performance[FPType.ELO] + B.Performance[FPType.ELO]) / 2), 100) *
                 (A.Nationality.PopularityBuff * B.Nationality.PopularityBuff * w1.Popularity + A.Belts + B.Belts);
 
 
 
-            viewers = f.Interested + (PWin(f)) * A.Performance[FPType.FOLLOWERS] + (1 - PWin(f) * B.Performance[FPType.FOLLOWERS])
+            viewers = f.Financials.Interested + (PWin(f)) * A.Performance[FPType.FOLLOWERS] + (1 - PWin(f) * B.Performance[FPType.FOLLOWERS])
                 + (PWin(f)) * A.Performance[FPType.FANS] + (1 - PWin(f) * B.Performance[FPType.FANS]);
 
 
@@ -244,12 +244,15 @@ namespace Main
             return F.Performance[FPType.FOLLOWERS] + F.Performance[FPType.FANS];
         }
 
-        private static double fightAttendance(Fight fight, Venue venue, double ticketPrice)
+        private static double fightAttendance(Fight fight)
 
         {
 
             Fighter A = fight.FighterRed;
             Fighter B = fight.FighterBlue;
+            Venue venue = fight.Financials.Venue;
+
+
 
             double elasticity = venue.Elasticity;
 

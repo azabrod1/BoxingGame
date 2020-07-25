@@ -10,6 +10,7 @@ namespace Main
 
         public Judge[] Judges;
         public FightOutcome Outcome;
+        public Financials Financials;
 
 
         public Fighter FighterRed{ get=> fighters[0];}
@@ -17,13 +18,13 @@ namespace Main
         public Fighter Winner { get => Outcome.Winner; }
         public Fighter Loser { get => Outcome.Loser; }
 
-        public Venue Venue { get; set; }
+        public Venue Venue { get => Financials.Venue; set => Financials.Venue = value; }
 
         //Popularity (todo should be moved to a separate class)
-        public double Interested { get; set; }
-        public double Viewership { get; set; }
-        public double Attendance { get; set; }
-        public double TicketPrice { get; set; }
+        //public double Interested { get; set; }
+        //public double Viewership { get; set; }
+        //public double Attendance { get; set; }
+        //public double TicketPrice { get; set; }
 
 
 

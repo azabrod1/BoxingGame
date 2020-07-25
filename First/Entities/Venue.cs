@@ -11,12 +11,16 @@ namespace Main
     public class Venue
     {
 
-        public string Name { get; }              //Country Full Name - the identifier
-        //public string ShortName { get; }         //GUI Friendly Short Name <= 3 characters
+        public string Name { get; }                 
+        //public string ShortName { get; }          
         public double Elasticity { get; }
         public double Capacity { get; }
+        public double BaseCost { get; }
+
         public string City { get; }
         public string State { get => ((City)this.City).State; }
+
+
 
         public static Dictionary<string, Venue> Venues { get; internal set; }
 
