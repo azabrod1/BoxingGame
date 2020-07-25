@@ -17,16 +17,17 @@ namespace FightSim
 
     public class FightOutcome
     {
-        public double Interested { get; set; }
+        //TODO: please remove this does not belong here
+        public double Interested { get; set; } //What the fuck does this even mean???
+        public double Viewership { get; set; } //todo this should prob be on Fight object eventually
+
         public readonly int TimeOfStoppage; //Minute fight ended... should do seconds eventually, -1 for no KO
         public readonly MethodOfResult Method;
-        public readonly Fighter[] Fighters;
-
         private int _winner = -1;
-
         public readonly int[,] Scorecards = new int[3, 2];
 
-        public double Viewership { get; set; } //todo this should prob be on Fight object eventually
+        public readonly Fighter[] Fighters;
+
 
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fighter[] fighters)
         {
@@ -35,14 +36,12 @@ namespace FightSim
             this.Scorecards = scorecards;
             this.Fighters = fighters;
             this.Winner = winner;
-
         }
 
         public FightOutcome(int timeOfStoppage, MethodOfResult method, Main.Fighter winner, int[,] scorecards, Fight fight)
         :
         this(timeOfStoppage, method, winner, scorecards, fight.Fighers)
         {
-        
         }
 
         public override string ToString()
@@ -54,7 +53,6 @@ namespace FightSim
                 ret += String.Format(", Time of stoppage: Round {0}, Time: {1}", RoundOfStoppage(), TimeOfStoppage - RoundOfStoppage() * 180);
 
             return ret; 
-
         }
 
         public bool IsDraw()

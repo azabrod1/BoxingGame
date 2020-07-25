@@ -17,7 +17,7 @@ namespace Main
 
         public FighterCache()
         {
-           // Cache = new ConcurrentDictionary<string, Fighter>();
+            Cache = new ConcurrentDictionary<string, Fighter>();
         }
 
         public Fighter Get(string name)

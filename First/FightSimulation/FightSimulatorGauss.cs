@@ -24,6 +24,5 @@ namespace FightSim
 
             return (liveFight.Outcome, liveFight.FightStats);
         }
-
     }
 }

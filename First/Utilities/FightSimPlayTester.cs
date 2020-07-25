@@ -6,24 +6,33 @@ using Boxing.FighterRating;
 using FightSim;
 using log4net;
 using Main;
+using MathNet.Numerics;
 
 namespace Utilities
 {
+    [NewGame]
     public class FightSimPlayTester
     {
         static readonly ILog LOGGER =
         LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public FighterCache Fighters;
+        public FighterCache Fighters { get; set; }
         private readonly IFightSimulator FightSim = new FightSimulatorGauss();
-        double MatchCoef { get; set; } = 0.05; //Higher values mean more likely fighters someone as good as them
-        IFighterRating Rating;
+        double MatchCoef { get; set; } //Higher values mean more likely fighters someone as good as them
+        IFighterRating Rating { get; set; }
         List<IFighterRating> AllRatings = new List<IFighterRating>();
 
-        public FightSimPlayTester()
+        static List<double> Xs = new List<double>();
+        static List<double> Ys = new List<double>();
+
+        public static Dictionary<int, (int fights, int wins)> stat = new Dictionary<int, (int fights, int wins)>();
+
+
+        public FightSimPlayTester(double coef = 0.05)
         {
             this.Fighters = new FighterCache();
             this.Rating = new EloFighterRating();
+            this.MatchCoef = coef;
         }
 
         public void SimFights(int numFights)
@@ -41,14 +50,87 @@ namespace Utilities
                 {
                     outcome.Fighters[0].UpdateRecord(outcome);
                     outcome.Fighters[1].UpdateRecord(outcome);
+                    AssessOutcome(outcome);
                     Rating.CalculateRatingChange(outcome);
-                  //  FighterPopularity.UpdatePopularity(outcome);
+                    //  FighterPopularity.UpdatePopularity(outcome);
                 }
-
             }
         }
 
+        void AssessOutcome(FightOutcome outcome)
+        {
+             double f0E = Rating.Rating(outcome.Fighters[0]);
+             double f1E = Rating.Rating(outcome.Fighters[1]);
 
+           // double f0E = outcome.Fighters[0].OverallSkill();
+           // double f1E = outcome.Fighters[1].OverallSkill();
+
+            int skillDif = Convert.ToInt32( f0E - f1E);
+
+            //if (skillDif < 0)
+            //    return;
+
+            if (!stat.ContainsKey(skillDif))
+                stat[skillDif] = (0, 0);
+
+            double winnerNum = outcome.WinnerNum();
+            if (winnerNum == -1)
+                winnerNum = 0.5;
+
+            if (winnerNum == 0.5)
+                return;
+
+            Xs.Add(f1E - f0E);
+            Ys.Add(winnerNum);
+
+            (int fights, int wins) = stat[skillDif];
+
+            stat[skillDif] = (fights + 1, wins + (int) winnerNum);
+
+        }
+
+
+        public double[] Regress()
+        {
+
+            double[] p = Fit.Polynomial(Xs.ToArray(), Ys.ToArray(), 2); // polynomial of order 2
+                                                                        //   Tuple<double, double> p2 = Fit.Line(Xs.ToArray(), Ys.ToArray());
+                                                                        //    Console.WriteLine(p2);
+
+
+            double[][] samples = new double[Xs.Count][];
+
+            for(int x = 0; x < Xs.Count; ++x)
+                samples[x] = new double[] { Xs[x], Xs[x] * Math.Abs(Xs[x]) };
+            
+            double[] p2 = Fit.MultiDim(
+                samples,
+                Ys.ToArray(),
+                intercept: true);
+
+
+            var list = stat.Select(i => i).ToList();
+            list.Sort((x, y) => y.Key.CompareTo(x.Key));
+
+            list.Select(i => $"{i.Key}: {100.0*(double)i.Value.wins/ i.Value.fights}").ToList().ForEach(Console.WriteLine);
+
+            double[] xs = new double[list.Count];
+            double[] ys = new double[list.Count];
+
+            for(int i = 0; i < list.Count; ++i)
+            {
+                xs[i] = list[i].Key;
+                ys[i] = 100.0 * (double)list[i].Value.wins / list[i].Value.fights;
+            }
+
+            (var a, var b) = Fit.Line(xs, ys);
+
+            Console.WriteLine($"a {a} b{b} R {GoodnessOfFit.RSquared(xs.Select(x => a + b * x), ys)}  ");
+
+            Console.WriteLine(Utility.UsefulString(p) + "\n.........\n");
+
+            return p2;
+        }
 
         private List<Fight> ScheduleFights(WeightClass wc)
         {

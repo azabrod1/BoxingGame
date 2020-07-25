@@ -31,8 +31,5 @@ namespace Main
         public const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
         public const double PREF_DISTANCE_WEIGHT_ON_JAB = 0.70; //Jab mean offseted effected 70% by preferred distance, 30% actual distance
 
- 
-
-
     }
 }

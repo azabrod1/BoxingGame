@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
 using System.Reflection;
+using MathNet.Numerics;
+using Microsoft.Data.Sqlite;
 
 //using System.Text.Json;
 
@@ -38,7 +40,7 @@ namespace Main
             // XmlConfigurator.Configure();
 
             // WeightClass w = 147;
-            // AlexConc();
+            //AlexConc();
 
             // Anya();
 
@@ -65,23 +67,172 @@ namespace Main
 
             //app.SaveGame(); //Save Game
 
-            Caroline();
+            //Caroline();
+
+            //  Anya();
+
+            // Console.WriteLine( 1 / (1.0 + Math.Pow(10.0, (400.0) / 400.0)));
+
+            //  AnyaReg();
+
+            //const int A_Skill = 98;
+            //const int B_Skill = 50;
+
+            //Fighter fighter = new Fighter("Benji")
+            //{
+            //    Weight = 147,
+            //    Stamina = 100,
+            //    HandSpeed = A_Skill,
+            //    RingGen = A_Skill,
+            //    Aggression = 50,
+            //    FootWork = A_Skill,
+            //    Reach = 84,
+            //    Durability = A_Skill,
+            //    Power = A_Skill,
+            //    Defense = A_Skill,
+            //    Accuracy = A_Skill,
+            //};
+
+            //Fighter opponent = new Fighter("Cody")
+            //{
+            //    Weight = 147,
+            //    Stamina = B_Skill,
+            //    HandSpeed = B_Skill,
+            //    RingGen = B_Skill,
+            //    Aggression = 50,
+            //    FootWork = B_Skill,
+            //    Reach = 84,
+            //    Durability = B_Skill,
+            //    Power = 100,
+            //    Defense = B_Skill,
+            //    Accuracy = B_Skill,
+            //};
+
+            //Console.WriteLine(FightSimulatorGauss.WinOddsSkill(fighter, opponent));
+
+            // AnyaReg(); ;
+
+            SQLite();
+        }
+
+        static void SQLite()
+        {
+
+            string cs = "Data Source=Wee.db:";
+            string stm = "SELECT SQLITE_VERSION()";
+
+            using var con = new SqliteConnection(cs);
+            con.Open();
+
+            //using var cmd = new SqliteCommand(stm, con);
+
+            //cmd.CommandText = "DROP TABLE IF EXISTS cars";
+            //cmd.ExecuteNonQuery();
+
+            //cmd.CommandText = @"CREATE TABLE cars(id INTEGER PRIMARY KEY,
+            //        name TEXT, price INT)";
+            //cmd.ExecuteNonQuery();
+
+            //cmd.CommandText = "INSERT INTO cars(name, price) VALUES('Audi',52642)";
+            //cmd.ExecuteNonQuery();
+
+
+            stm = "SELECT * FROM cars LIMIT 5";
+
+            using var cmd = new SqliteCommand(stm, con);
+            using SqliteDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                Console.WriteLine($"{rdr.GetInt32(0)} {rdr.GetString(1)} {rdr.GetInt32(2)}");
+            }
+
         }
 
         static void Caroline()
         {
             Application app = Application.CreateOrLoad();
+            Fighter f1 = app.Fighters.Get("ALEXIS ABEL");
 
-            app.SaveGame(); //Save Game
+            Fighter f2 = app.Fighters.Get("YOUNG BURT");
 
+          //  FighterRanking.FighterPopularity.PWin();
+
+           // app.FightSim.
+
+
+            Console.WriteLine(app.Status());
+
+            //   Console.WriteLine(1 / (1 + Math.Pow(10, ( 50.0) / 400)));
+
+            //List<FightOutcome> outcomes = new List<FightOutcome>();
+            //List<FightStats> fightStats = new List<FightStats>();
+
+            //List<Fight> fights = new List<Fight>();
+
+            //Fight fight = new Fight(f1, f2);
+
+            //for (int f = 0; f < 20000; ++f)
+            //    fights.Add(fight);
+
+            //IFightSimulator fs = new FightSimulatorGauss();
+            //var results = fs.SimulateManyFightsWithDetails(fights);
+
+            //foreach (var (outcome, Stats) in results)
+            //{
+            //    outcomes.Add(outcome);
+            //    fightStats.Add(Stats.Condense());
+            //}
+
+            //stopwatch.Stop();
+            //long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+            //Console.WriteLine(fightStats.SummaryStats(f1.Name, f2.Name));
+            //Console.WriteLine(outcomes.SummaryFightOutcomes());
+
+            //Console.WriteLine("elapsed {0}", elapsed_time);
+
+
+            //double[] p = Fit.MultiDim(
+            //    new[] { new[] { 1.0, 4.0 }, new[] { 2.0, 5.0 }, new[] { 3.0, 2.0 } },
+            //    new[] { 15.0, 20, 10 },
+            //     intercept: true);
+
+
+
+            //  app.SaveGame(); //Save Game
         }
 
-        static void Anya()
+        static void AnyaReg()
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            FightSimPlayTester game = new FightSimPlayTester();
+            FightSimPlayTester game = new FightSimPlayTester(0.01);
+            NewGame.Start(game);
+            foreach (WeightClass wc in WeightClass.AllWeightClasses())
+                game.AddFighters(wc.Size, wc.Weight);
+
+            game.SimFights(150);
+
+            Console.WriteLine(game.Status());
+
+            stopwatch.Stop();
+            long elapsed_time = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("elapsed {0}", elapsed_time);
+
+            Console.WriteLine(Utility.UsefulString(game.Regress()));
+        }
+
+        static void Anya()
+        {
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            FightSimPlayTester game = new FightSimPlayTester(0.01);
+            NewGame.Start(game);
             foreach (WeightClass wc in WeightClass.AllWeightClasses())
                 game.AddFighters(wc.Size, wc.Weight);
 
@@ -93,6 +244,7 @@ namespace Main
             long elapsed_time = stopwatch.ElapsedMilliseconds;
 
             Console.WriteLine("elapsed {0}", elapsed_time);
+
         }
 
         static void Vlad()
@@ -133,7 +285,7 @@ namespace Main
                 FootWork = B_Skill,
                 Reach = 84,
                 Durability = B_Skill,
-                Power = 100,
+                Power = B_Skill,
                 Defense = B_Skill,
                 Accuracy = B_Skill,
             };

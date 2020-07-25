@@ -164,20 +164,37 @@ namespace Main
             return sb.ToString();
         }
 
-        public static string UsefulString(Object obj)
+        public static string UsefulString(object? obj)
         {
             if (obj == null)
                 return "null";
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            Type type = obj.GetType();
 
-            var _name = obj.GetType().GetProperty("Name");
+            if (type.IsPrimitive)
+                return obj.ToString();
+
+            //if (type.IsArray)
+            //{
+            //    var array = obj as Array;
+
+            //    for (int idx = 0; idx < array.Length; ++idx)
+            //    {
+            //        sb.AppendLine($"[{idx}] : {UsefulString(array.GetValue(idx))}");
+            //    }
+
+            //    return sb.ToString();
+
+            //}
+
+            var _name = type.GetProperty("Name");
 
             string name = (_name != null && _name.GetValue(obj) != null) ? _name.GetValue(obj).ToString() : "";
 
             if (name.Length == 0)
             {
-                var _ID = obj.GetType().GetProperty("ID");
+                var _ID = type.GetProperty("ID");
                 if (_ID != null && _ID.GetValue(obj) != null)
                     name = _ID.GetValue(obj).ToString();
             }
@@ -223,11 +240,6 @@ namespace Main
             {
                 throw new ArgumentNullException(parameterName);
             }
-
-       //     Type t;
-            //t.ge
-
-
         }
 
 
@@ -293,6 +305,7 @@ namespace Main
         {
             return typeof(IDictionary).IsAssignableFrom(type);
         }
+
 
 
     }

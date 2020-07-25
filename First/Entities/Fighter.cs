@@ -73,6 +73,25 @@ namespace Main
             return skill;
         }
 
+        public double OverallSkillP4P() //Not exact
+        {
+            double skill = 0;
+            skill += MathUtils.WeightedAverage(Accuracy, 11,
+                                               Defense, 11,
+                                               Durability, 7,
+                                               FootWork, 7,
+                                               RingGen, 7,
+                                               HandSpeed, 6,
+                                               Stamina, 7,
+                                               Power, 8
+                                              );
+
+            if (skill > Constants.P4P_BUFF_THRESHOLD)
+                skill += 1.3 * (skill - Constants.P4P_BUFF_THRESHOLD);
+
+            return skill;
+        }
+
         public double AverageSkill() 
         {
             double skill = 0;

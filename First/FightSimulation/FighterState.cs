@@ -55,7 +55,7 @@ namespace FightSim
 
             //After certain point your skills really scale! 
             if (accuracy > Constants.P4P_BUFF_THRESHOLD)
-                accuracy = 2.5 * accuracy - Constants.P4P_BUFF_THRESHOLD;
+                accuracy += 1 * (accuracy - Constants.P4P_BUFF_THRESHOLD);
 
             return accuracy;
         }
@@ -66,7 +66,7 @@ namespace FightSim
 
             //P4P fighters are really hard to challenge 
             if (defense > Constants.P4P_BUFF_THRESHOLD)
-                defense = 2.5 * defense - Constants.P4P_BUFF_THRESHOLD;
+                defense = 1 * (defense - Constants.P4P_BUFF_THRESHOLD);
 
             return defense;
         }
@@ -169,6 +169,25 @@ namespace FightSim
         public string Name()
         {
             return Self.Name;
+        }
+
+        public static double WinOddsSkill(Fighter f0, Fighter f1)
+        {
+            double f0Ovrl = f0.OverallSkillP4P();
+            double f1Ovrl = f1.OverallSkillP4P();
+
+            double skillDif = f0Ovrl - f1Ovrl;
+            if (skillDif > 25)
+                return 1;
+
+            if (skillDif < -25)
+                return 0;
+
+            double offset = Math.Abs(skillDif) * 0.039 + skillDif * skillDif * -0.0006665;
+            if (skillDif < 0)
+                offset *= -1;
+
+            return Math.Min(1, Math.Max(0, 0.5 + offset));
         }
 
     }

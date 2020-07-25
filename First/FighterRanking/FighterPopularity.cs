@@ -9,12 +9,10 @@ using System.Xml;
 
 namespace FighterRanking
 {
-
-
     public static class FighterPopularity
     {
         // simple dictionaries to hold country and weight popularity coefficients
-        // #todo: integrate with the rest of the program and persist the coefficients in XLM
+        // #todo: integrate with the rest of the program and persist the coefficients in XLM        #What the fuck is XLM - alex
 
         //private static Dictionary<string, double> CountryCoefficient = new Dictionary<string, double>() { { "US", 1.1 }, { "Mexico", 2.0 } };
 
@@ -498,7 +496,7 @@ namespace FighterRanking
         }
 
 
-        private static double PWin(FightOutcome fo)
+        internal static double PWin(FightOutcome fo)
         {
             return 1 / (1 + Math.Pow(10, (fo.Fighter2().Performance["Elo"] - fo.Fighter1().Performance["Elo"]) / 400));
 
