@@ -6,6 +6,8 @@ namespace Main
 
         public const double ATTRIB_BUFF_DEFAULT       = 2;
         public const double BLOCKS_IN_ROUND           = 3;
+        public const int    JUDGE_POOL_SIZE           = 500;
+        public const int    NAME_GEN_MAX_TRIES        = 1000;
 
 
         //Math
@@ -30,6 +32,5 @@ namespace Main
         public const double PUNCHES_FROM_INTENSITY = 55;   //per fighter!
         public const double PUNCHES_THROWN_STD = 10;       //Math.Sqrt(2); //15 * Root(2); as we are adding two normals, we want std for punches thrown to be 15
         public const double PREF_DISTANCE_WEIGHT_ON_JAB = 0.70; //Jab mean offseted effected 70% by preferred distance, 30% actual distance
-
     }
 }

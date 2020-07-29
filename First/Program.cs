@@ -12,8 +12,8 @@ using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
 using System.Reflection;
-using MathNet.Numerics;
 using Microsoft.Data.Sqlite;
+using SQLite;
 
 //using System.Text.Json;
 
@@ -112,17 +112,114 @@ namespace Main
 
             // AnyaReg(); ;
 
-            SQLite();
+            //  SQLite();
+
+            // To get the values alone, use the Values property.
+
+            //Application app = new Application();
+            //NewGame.Start(app); //New Game
+            //Console.WriteLine(   app.Status());
+
+     
+
+
+        }
+
+        class G
+        {
+
+            [PrimaryKey, AutoIncrement]
+            public int Id { get; set; }
+            public int x { get; set; } = 5;
+            public int y { get; set; } = 23;
+            public int z = MathUtils.RangeUniform(0, 100);
+            public List<int> Ey { get; set; } = new List<int>(new int[]{2, 2, 2, 2});
+
+
+
+
+            public override string ToString()
+            {
+                return $"{Id} {x} {y} {z}";
+            }
         }
 
         static void SQLite()
         {
+            string path = Path.Combine(DataPersistance.GetSaveDataDirectory(), "SQL2.sqlite");
 
-            string cs = "Data Source=Wee.db:";
-            string stm = "SELECT SQLITE_VERSION()";
+            string cs = $"{path}";
+            // SQLiteConnection.CreateFile("cs");
 
-            using var con = new SqliteConnection(cs);
-            con.Open();
+        //    string stm = "SELECT SQLITE_VERSION()";
+
+            // using var con = new SqliteConnection(cs);
+            // con.Open();
+
+            // con.Crea
+
+            using var con2 = new SQLiteConnection(cs,
+                     SQLiteOpenFlags.Create |
+                     SQLiteOpenFlags.FullMutex |
+                     SQLiteOpenFlags.ReadWrite);
+
+            con2.CreateTable<G>();
+
+            Console.WriteLine(con2.Insert(new G()));
+
+            var query = con2.Table<G>().Where(v => true);
+
+            foreach (var fx in query)
+                Console.WriteLine("Fight: " + fx);
+
+            const int A_Skill = 98;
+            const int B_Skill = 93;
+
+            Fighter fighter = new Fighter("Benji")
+            {
+                Weight = 147,
+                Stamina = 100,
+                HandSpeed = A_Skill,
+                RingGen = A_Skill,
+                Aggression = 50,
+                FootWork = A_Skill,
+                Reach = 84,
+                Durability = A_Skill,
+                Power = A_Skill,
+                Defense = A_Skill,
+                Accuracy = A_Skill,
+            };
+
+            Fighter opponent = new Fighter("Cody")
+            {
+                Weight = 147,
+                Stamina = B_Skill,
+                HandSpeed = B_Skill,
+                RingGen = B_Skill,
+                Aggression = 50,
+                FootWork = B_Skill,
+                Reach = 84,
+                Durability = B_Skill,
+                Power = B_Skill,
+                Defense = B_Skill,
+                Accuracy = B_Skill,
+            };
+
+            Fight fight = new Fight(fighter, opponent, 12);
+
+            //con2.CreateTable<Fight>();
+
+            //Console.WriteLine( con2.Insert(fight));
+
+            //var query = con2.Table<Fight>().Where(v => true);
+
+            //foreach (var fx in query)
+            //    Console.WriteLine("Fight: " + fx);
+
+            // var output = con2.GetTableInfo("F");
+
+            //Console.WriteLine(output);
+
 
             //using var cmd = new SqliteCommand(stm, con);
 
@@ -137,15 +234,15 @@ namespace Main
             //cmd.ExecuteNonQuery();
 
 
-            stm = "SELECT * FROM cars LIMIT 5";
+            //stm = "SELECT * FROM cars LIMIT 5";
 
-            using var cmd = new SqliteCommand(stm, con);
-            using SqliteDataReader rdr = cmd.ExecuteReader();
+            //using var cmd = new SqliteCommand(stm, con);
+            //using SqliteDataReader rdr = cmd.ExecuteReader();
 
-            while (rdr.Read())
-            {
-                Console.WriteLine($"{rdr.GetInt32(0)} {rdr.GetString(1)} {rdr.GetInt32(2)}");
-            }
+            //while (rdr.Read())
+            //{
+            //    Console.WriteLine($"{rdr.GetInt32(0)} {rdr.GetString(1)} {rdr.GetInt32(2)}");
+            //}
 
         }
 

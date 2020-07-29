@@ -17,28 +17,28 @@ namespace FightSim
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             Fighter winner;
 
-            int f1 = int.Parse(String.Join("", fight.Fighter1().Name.Where(char.IsDigit)));
-            int f2 = int.Parse(String.Join("", fight.Fighter2().Name.Where(char.IsDigit)));
+            int f1 = int.Parse(String.Join("", fight.Fighter0().Name.Where(char.IsDigit)));
+            int f2 = int.Parse(String.Join("", fight.Fighter1().Name.Where(char.IsDigit)));
            
             if (f1 > f2)
             {
                 // fighter 1 won
-                updateElo(fight.Fighter1(), fight.Fighter2());
-                winner = fight.Fighter1();
+                updateElo(fight.Fighter0(), fight.Fighter1());
+                winner = fight.Fighter0();
 
-                fight.Fighter1().Record.Wins++;
-                fight.Fighter2().Record.Losses++;
+                fight.Fighter0().Record.Wins++;
+                fight.Fighter1().Record.Losses++;
 
             }
             else
             {
-                updateElo(fight.Fighter2(), fight.Fighter1());
-                winner = fight.Fighter2();
-                fight.Fighter2().Record.Wins++;
-                fight.Fighter1().Record.Losses++;
+                updateElo(fight.Fighter1(), fight.Fighter0());
+                winner = fight.Fighter1();
+                fight.Fighter1().Record.Wins++;
+                fight.Fighter0().Record.Losses++;
             }
             FightOutcome fo = new FightOutcome(0, FightSim.MethodOfResult.NC, winner, null, fight.Fighers);
-            fo.Viewership = getNetworkViewers(fight.Fighter1().Record.Rank, fight.Fighter2().Record.Rank);
+            fo.Viewership = getNetworkViewers(fight.Fighter0().Record.Rank, fight.Fighter1().Record.Rank);
             fight.Outcome = fo;
             return fo;
         }

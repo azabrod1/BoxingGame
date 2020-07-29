@@ -42,7 +42,7 @@ namespace Main
 
         public Fighter CreateRandomFighter(int weight = -1)
         {
-            Fighter hungryYoungLion = NewFighterWithRandomName();
+            Fighter hungryYoungLion = new Fighter("NameToBeAdded");
 
             string[] ScaledCombatTraits =
             ConfigurationManager.AppSettings["ScaledFighterCombatTraits"].Split(",");
@@ -77,6 +77,13 @@ namespace Main
                 hungryYoungLion.GetType().GetProperty(property).SetValue(hungryYoungLion, MathUtils.RangeUniform(0, 100), null);
 
             FighterPopularity.UpdatePopularity(hungryYoungLion);
+
+            Utility.UniqueRandomName(Cache.Count > 10000, _name =>
+            {
+                hungryYoungLion.Name = _name;
+                return Cache.TryAdd(_name, hungryYoungLion);
+            }
+            );
 
             return hungryYoungLion;
         }

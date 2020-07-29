@@ -30,17 +30,6 @@ namespace Main
             TypeNameHandling = TypeNameHandling.All
         };
 
-        public static string GetSaveDataPath()
-        {
-            var directory = GetSaveDataDirectory();
-            Directory.CreateDirectory(directory);
-            if (!Directory.Exists(directory))
-                throw new Exception($"Could not create save data directory {directory}");
-
-            string path = GetSaveDataDirectory() + ConfigurationManager.AppSettings["SaveFile"];
-            return path;
-        }
-
         public static void SaveGame(this Application app)
         {
             

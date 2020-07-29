@@ -179,6 +179,40 @@ namespace Main
 
         }
 
+        public static ICollection<E> RandomBunch<E>(IEnumerable<E> stuff, int size)
+        {
+            int length = stuff.Count();
+            E randomElement;
+            if (size > length)
+                throw new ArgumentOutOfRangeException($"Number of items requested {size} greater than size of collection {stuff.Count()}");
+
+            E[] bunch = new E[size];
+
+            if (size < 8) {
+
+                int idx = 0;
+
+                while (idx < size)
+                {
+                    randomElement = stuff.ElementAt(MathUtils.RangeUniform(0, length));
+                    int idxElement = Array.IndexOf(bunch, randomElement);
+                    if(idxElement == -1 || idxElement >= idx) //the second condition is for zeros/nulls in innitiialized array
+                        bunch[idx++] = randomElement;
+
+                }
+                return bunch;
+            }
+
+            Dictionary<int, int> taken = new Dictionary<int, int>(Convert.ToInt32(size * 2.2));
+            while (size-- > 0)
+            {
+                int selected = MathUtils.RangeUniform(0, length);
+                bunch[size] = stuff.ElementAt(taken.ContainsKey(selected)? taken[selected] : selected);
+                taken[selected] = taken.ContainsKey(--length) ? taken[length] : length;
+            }
+                 
+            return bunch;
+        }
 
     }
 }

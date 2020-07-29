@@ -1,34 +1,44 @@
 ﻿using System;
 using FightSim;
+using SQLite;
+
 namespace Main
 {
     //Holds perm vars about the fight - eventually we should split it out in fight boxscore( total bunches) and fight info (like venue)
+    [Table("FightHistory")]
     public class Fight
     {
-        public readonly int RoundsScheduled;
-        public readonly Fighter[] Fighers;
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
 
-        public Judge[] Judges;
-        public FightOutcome Outcome;
-        public DateTime Date;
+        public int RoundsScheduled { get; }
+        public Fighter[] Fighers { get; }
+
+        public Judge[] Judges { get; }
+        public FightOutcome Outcome { get; set; }
+        public DateTime Date { get; set; }
 
         public Fight()
         {
         }
 
-        public Fight(Fighter f1, Fighter f2, int roundsScheduled = 12)
+        public Fight(Fighter f0, Fighter f1, int roundsScheduled = 12, Judge[] judges = null)
         {
-            this.Fighers = new Fighter[] {f1, f2};
+            this.Fighers = new Fighter[] {f0, f1};
             this.RoundsScheduled = roundsScheduled;
-            this.Judges = new Judge[] { Judge.RandomJudge(), Judge.RandomJudge(), Judge.RandomJudge() };
+
+            if(judges == null)
+                judges = new Judge[] { Judge.RandomJudge(), Judge.RandomJudge(), Judge.RandomJudge() };
+
+            Judges = judges;
         }  
 
-        public Fighter Fighter1()
+        public Fighter Fighter0()
         {
             return Fighers[0];
         }
 
-        public Fighter Fighter2()
+        public Fighter Fighter1()
         {
             return Fighers[1];
         }

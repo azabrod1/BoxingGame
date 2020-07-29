@@ -9,7 +9,7 @@ namespace FightSim
     public class FightState
     {
         public int Minute { get; set; } = -1;
-        public int Round { get { return Minute / 3; } set { Minute = value * 3; }  }
+        public int Round { get { return Minute / 3; } set { Minute = value * 3; } }
 
         public Fight Fight;
         public FighterState F1, F2;
@@ -18,7 +18,7 @@ namespace FightSim
         public List<FightStats> FightStats; //Round By Round fight stats
         public int TimeOfStoppage;          //The second the fight ends
         public int[,] Scorecards;
-        public bool Concluded { get { return TimeOfStoppage != -1 || 1+Minute == Fight.RoundsScheduled * 3; } }
+        public bool Concluded { get { return TimeOfStoppage != -1 || 1 + Minute == Fight.RoundsScheduled * 3; } }
         public List<List<Block.PunchResult>> Punches { get; set; }
         public FightOutcome Outcome { get; internal set; }
 
@@ -29,15 +29,15 @@ namespace FightSim
             this.Fight = fight;
             this.FightControl = CalcFightControl();
 
-            this.F1 = new FighterState(fight.Fighter1());
-            this.F2 = new FighterState(fight.Fighter2());
+            this.F1 = new FighterState(fight.Fighter0());
+            this.F2 = new FighterState(fight.Fighter1());
 
             //We should add some randomness here?
-            FightDistance = FightControl * F1.PreferredDistance(F2) + (1-FightControl) * F2.PreferredDistance(F1);
+            FightDistance = FightControl * F1.PreferredDistance(F2) + (1 - FightControl) * F2.PreferredDistance(F1);
             FightStats = new List<FightStats>();
 
             this.TimeOfStoppage = -1;
-            this.Scorecards     = new int[3, 2];
+            this.Scorecards = new int[3, 2];
             this.Punches = new List<List<Block.PunchResult>>();
 
             InitNextRound();
@@ -76,7 +76,7 @@ namespace FightSim
                 InitNextRound();
             }
         }
-        
+
         public void NextMinute()
         {
             if (Concluded)
@@ -115,26 +115,26 @@ namespace FightSim
         //Percent of match control that Fighter1() gets
         public double CalcFightControl()
         {
-            double control = Utility.AttributeRatioCustom(Fight.Fighter1().RingGen, Fight.Fighter2().RingGen, 2d, Fight.Fighter1().FootWork, Fight.Fighter2().FootWork, Constants.SQR_ROOT_TWO);
+            double control = Utility.AttributeRatioCustom(Fight.Fighter0().RingGen, Fight.Fighter1().RingGen, 2d, Fight.Fighter0().FootWork, Fight.Fighter1().FootWork, Constants.SQR_ROOT_TWO);
             return control;
         }
 
         public Fighter Boxer1()
         {
-            return Fight.Fighter1();
+            return Fight.Fighter0();
         }
 
         public Fighter Boxer2()
         {
-            return Fight.Fighter2();
+            return Fight.Fighter1();
         }
 
         //Percent of punches a fighter gains or loses due to reach advantage/disadvantage 
         public double ReachBuff()
         {
             double reachDifference = Boxer1().Reach - Boxer2().Reach;
-            double ringGen = reachDifference > 0? Boxer1().RingGen : Boxer2().RingGen;
-            return reachDifference * REACH_ADV * FightDistance*ringGen*0.01;
+            double ringGen = reachDifference > 0 ? Boxer1().RingGen : Boxer2().RingGen;
+            return reachDifference * REACH_ADV * FightDistance * ringGen * 0.01;
         }
 
         public int CurrentRound()

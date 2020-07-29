@@ -18,8 +18,8 @@ namespace DataStructures
         {
             FightList fightsThatDay = Schedule.GetOrAdd(fight.Date, key => new FightList());
             fightsThatDay[fight] = true;
+            NextFight[fight.Fighter0()] = fight;
             NextFight[fight.Fighter1()] = fight;
-            NextFight[fight.Fighter2()] = fight;
         }
 
         public bool CancelFight(Fight fight)
@@ -34,8 +34,8 @@ namespace DataStructures
         {
             if(Schedule.TryGetValue(fight.Date, out FightList fightsThatDay) && fightsThatDay.TryRemove(fight, out _))
             {
+                LastFight[fight.Fighter0()] = fight;
                 LastFight[fight.Fighter1()] = fight;
-                LastFight[fight.Fighter2()] = fight;
                 return true;
             }
 

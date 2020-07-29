@@ -6,7 +6,7 @@ using static FightSim.Block;
 
 namespace FightSim
 {
-    public class Judge
+    public class Judge : Person
     {
         readonly double LandedWeight;
         readonly double CleanessWeight;
@@ -15,7 +15,7 @@ namespace FightSim
         /* Some judges may have negative threshold, counting things that almost land! */
         readonly double IsLandedThreshold;
 
-        public Judge(double landedWeight, double cleanessWeight, double damageWeight, double isLandedThreshold = 0)
+        public Judge(double landedWeight, double cleanessWeight, double damageWeight, double isLandedThreshold = 0, string name = "") : base(PersonType.JUDGE, name)
         {
             this.LandedWeight = landedWeight;
             this.CleanessWeight = cleanessWeight;
@@ -23,7 +23,7 @@ namespace FightSim
             this.IsLandedThreshold = isLandedThreshold;
         }
 
-        public static Judge RandomJudge()
+        public static Judge RandomJudge(string name = "")
         {
             double isLandedThreshold = Main.MathUtils.Gauss(0, 0.03);
 
@@ -31,7 +31,7 @@ namespace FightSim
             double landedWeight   = 1.25 * Math.Max( 0, Main.MathUtils.Gauss(2, 1));
             double cleanessWeight = Math.Max( 0, Main.MathUtils.Gauss(2, 1));
 
-            return new Judge(landedWeight, cleanessWeight, damageWeight, isLandedThreshold);
+            return new Judge(landedWeight, cleanessWeight, damageWeight, isLandedThreshold, name);
         }
 
         public int[] ScoreRound(List<PunchResult> punches, FightStats roundStats)
@@ -87,4 +87,6 @@ namespace FightSim
         }
 
     }
+
+
 }

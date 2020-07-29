@@ -65,11 +65,6 @@ namespace Main
             return ResultFromDistribution(fnames, uniform);
         }
 
-        public static string GetRandomName(bool uniform)
-        {
-            return string.Format("{0} {1}", GetRandomFirstName(uniform), GetRandomLastName(uniform));
-        }
-
         public static StrAttDistribution LoadDistributionFile(string filename)
         {
             List<string> names = new List<string>();
@@ -305,6 +300,23 @@ namespace Main
         {
             return typeof(IDictionary).IsAssignableFrom(type);
         }
+
+        public delegate bool NameValidator(string name);
+
+        public static string UniqueRandomName(bool uniform, NameValidator valid = null, int tries = Constants.NAME_GEN_MAX_TRIES)
+        {
+            for (int attempt = 0; attempt < tries; ++attempt)
+            {
+                string name = Utility.GetRandomFirstName(uniform) + " " + Utility.GetRandomLastName(uniform);
+                if (null == valid || valid(name))
+                    return name;
+
+            }
+
+            throw new InvalidOperationException("Unique name generation failed. Did we run out of names?");
+
+        }
+
 
 
 

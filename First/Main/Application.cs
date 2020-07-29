@@ -16,11 +16,12 @@ namespace Main
         static readonly ILog LOGGER =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [JsonProperty] internal GameData Data               { get;  set; }
-        [JsonProperty] internal FighterCache Fighters       { get;  set; }
-        [JsonProperty] internal IFighterRating Rating       { get;  set; }
-        [JsonProperty] internal IFightSimulator FightSim    { get;  set; }
-        [JsonProperty] internal FightSchedule FightSchedule { get;  set; }
+        [JsonProperty] internal GameData        Data          { get;  set; }
+        [JsonProperty] internal FighterCache    Fighters      { get;  set; }
+        [JsonProperty] internal IFighterRating  Rating        { get;  set; }
+        [JsonProperty] internal IFightSimulator FightSim      { get;  set; }
+        [JsonProperty] internal FightSchedule   FightSchedule { get;  set; }
+        [JsonProperty] internal PeopleCache     Agents        { get;  set; }
 
         public Application()
         {
@@ -41,8 +42,13 @@ namespace Main
                     RegisterFighter(Fighters.CreateRandomFighter(wc.Weight));
                 }
 
+            for(int j = 0; j < Constants.JUDGE_POOL_SIZE; ++j)
+            {
+                Agents.Add(Judge.RandomJudge(Utility.UniqueRandomName(true,
+                                                                      name => !Agents.Contains(name))));
+            }
+
             SimFights(50);
-            Console.WriteLine(Status());
         }
 
         public static Application CreateOrLoad()
@@ -52,14 +58,13 @@ namespace Main
             if (null == (app = DataPersistance.LoadGame()))
             {
                 app = new Application();
-                Console.WriteLine("ffsds");
                 NewGame.Start(app); //New Game
             }
 
             return app;
         }
 
-        //TODO crap to remove 
+        //TODO move eventually
         private void SimFights(int numFights)
         {
             for (int fightNight = 0; fightNight < numFights; ++fightNight)
@@ -95,7 +100,8 @@ namespace Main
                     if (MathUtils.RangeUniform(0, 1) < 0.05)
                         break;
 
-                schedule.Add(new Fight(fighters[f1], fighters[f2]));
+                var judges = Agents.RandomBunch(PersonType.JUDGE, 3).Select(j => (Judge)j).ToArray();
+                schedule.Add(new Fight(fighters[f1], fighters[f2], 12, judges));
                 fighters.RemoveAt(f1); fighters.RemoveAt(f2 - 1);
             }
 

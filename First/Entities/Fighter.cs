@@ -9,7 +9,7 @@ namespace Main
     [Serializable]
     public class Fighter
     {
-        public string Name { get; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
+        public string Name { get; internal set; } //Uniquely identifies player #todo lets have a cache of names to ensure no DUPS
 
         public FighterRecord Record { get; set; }
 
